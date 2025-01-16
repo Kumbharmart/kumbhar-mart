@@ -29,15 +29,18 @@ const Footer = () => {
         <div className="bg-sky-600 py-6">
           <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 px-4">
             {/* Download Section */}
-            <div className="text-center">
-              <a href="/">
-                      <img
-                  src={km}
-                  alt="Logo"
-                  className="mx-auto w-28 h-10"
-                  style={{ borderRadius: '5px' }} // Adjust the value as needed
-                  />
-              </a>
+            <div className="text-center flex justify-center items-center">
+      <a href="/">
+        <img
+          src={km}
+          alt="Logo"
+          className="mx-auto w-28 h-10"
+          style={{
+            borderRadius: '8px', // Soft rounded corners
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
+          }}
+        />
+      </a>
               <h2 className="mt-3 text-lg font-bold text-white">Download our app</h2>
               <div className="flex justify-center items-center gap-3 mt-3">
   <a href="https://play.google.com/">

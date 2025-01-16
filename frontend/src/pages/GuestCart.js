@@ -20,12 +20,7 @@ const GuestCart = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
   
-  const totalPrice = useMemo(() => {
-    return data.reduce(
-      (acc, item) => acc + item.quantity * item.productDetails.sellingPrice,
-      0
-    );
-  }, [data]);
+  
 
   const totalQty = useMemo(() => {
     return data.reduce((acc, item) => acc + item.quantity, 0);
@@ -40,6 +35,8 @@ const GuestCart = () => {
   const [streetSuggestions, setStreetSuggestions] = useState([]);
   const [citySuggestions, setCitySuggestions] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
+  
 
   const fetchData = async () => {
     try {
@@ -62,6 +59,12 @@ const GuestCart = () => {
     }
     fetchData(); // Fetch cart data
   }, [user, authToken]);
+  useEffect(() => {
+    if (!loading) {
+      const total = data.reduce((acc, item) => acc + (item.sellingPrice || 0) * item.quantity, 0);
+      setTotalPrice(total);
+    }
+  }, [data, loading]);
 
   useEffect(() => {
     if (!loading && data.length > 0) {
