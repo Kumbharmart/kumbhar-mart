@@ -3,7 +3,8 @@ import { FaInstagram, FaLinkedin, FaFacebook } from "react-icons/fa";
 import { IoIosCall, IoMdMail } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
 import yml from '../assest/banner/yml.png';
-import km from '../assest/banner/km.png';
+import km from '../assest/banner/ymllogo.jpg';
+
 // Scroll to top component with smooth scroll
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -34,7 +35,7 @@ const Footer = () => {
         <img
           src={km}
           alt="Logo"
-          className="mx-auto w-28 h-10"
+          className="mx-auto w-40 h-10"
           style={{
             borderRadius: '8px', // Soft rounded corners
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
