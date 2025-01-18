@@ -29,6 +29,7 @@ const UploadProduct = ({
     percentOff: "5",
     gst: "",
     gstAmount: "",
+    margin: "",
     sellerId: seller ? seller._id : null, // Default to null if no seller
   });
   console.log("Product Data Sent from Frontend: ", data);
@@ -50,12 +51,13 @@ const UploadProduct = ({
       };
   
       // Recalculate sellingPrice if price or percentOff changes
-      if (updatedData.price && updatedData.percentOff) {
+      if (updatedData.price && updatedData.percentOff && updatedData.margin) {
         const priceValue = parseFloat(updatedData.price);
         const discount = parseFloat(updatedData.percentOff);
+        const margin = parseFloat(updatedData.margin)
         
         if (priceValue > 0 && discount >= 0) {
-          const sellingPriceValue = priceValue - (priceValue * (discount / 100));
+          const sellingPriceValue = priceValue - (margin * (discount / 100));
           updatedData.sellingPrice = Math.ceil(sellingPriceValue);
         }
       }
@@ -272,6 +274,18 @@ const UploadProduct = ({
           required
           onWheel={(e) => e.target.blur()} // Prevents scroll behavior
         />
+          <label htmlFor='margin' className='mt-3'>Margin Amount :</label>
+           <input
+             type='number'
+             id='margin'
+             placeholder='Enter Margin Amount'
+             value={data.margin}
+             name='margin'
+             onChange={handleOnChange}
+             className='p-2 bg-slate-100 border rounded'
+             required
+             onWheel={(e) => e.target.blur()} // Prevents scroll behavior
+           />
 
           <label htmlFor='percentOff' className='mt-3'>Discount Percentage (%):</label>
           <input

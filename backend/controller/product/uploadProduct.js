@@ -3,7 +3,7 @@ const productModel = require("../../models/productModel");
 
 async function UploadProductController(req, res) {
     try {
-      const { productName, brandName, category, subcategory, productImage, price, sellingPrice, quantity, soldBy, percentOff, gst, gstAmount, sellerId } = req.body;
+      const { productName, brandName, category, subcategory, productImage, price, sellingPrice, quantity, soldBy, percentOff, gst, gstAmount,margin, sellerId } = req.body;
   
   
       const productData = {
@@ -19,6 +19,7 @@ async function UploadProductController(req, res) {
         percentOff,
         gst,
         gstAmount,
+        margin,
         sellerId,
       };
   

@@ -14,6 +14,7 @@ const productSchema = mongoose.Schema(
     quantity: Number,
     gst: Number, // GST percentage
     gstAmount: Number, // Calculated GST amount
+    margin: Number,
     soldBy: String,
     features: String,
     productInfo: String,
