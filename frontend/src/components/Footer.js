@@ -3,6 +3,7 @@ import { FaInstagram, FaLinkedin, FaFacebook } from "react-icons/fa";
 import { IoIosCall, IoMdMail } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
 import yml from '../assest/banner/yml.png';
+import kmlogo from '../assest/banner/kmlogo.jpg';
 
 // Scroll to top component with smooth scroll
 const ScrollToTop = () => {
@@ -32,7 +33,7 @@ const Footer = () => {
             <div className="text-center">
               <a href="/">
                       <img
-                  src={yml}
+                  src={kmlogo}
                   alt="Logo"
                   className="mx-auto w-28 h-10"
                   style={{ borderRadius: '5px' }} // Adjust the value as needed
@@ -105,19 +106,19 @@ const Footer = () => {
             <div className="mb-4 lg:mb-0">
               <h4 className="text-lg font-semibold text-white">Start a conversation</h4>
               <p className="text-gray-400">
-                Office No 1, Opposite Rajmudra Petrolpump, Murunji Road, Marunji, Mulshi, 411057.
+              Opposite Z.Z.P School, Kumbhar Mart, Shimpore (New), Khednagar, Tal. Karjat, Dist.Ahamednagar
               </p>
-              <p className="text-gray-400">Pune, Maharashtra</p>
+              <p className="text-gray-400">Ahamednagar, Maharashtra</p>
             </div>
 
             <div className="space-y-1 text-white">
               <p className="flex items-center gap-2">
                 <IoIosCall className="text-lg" />
-                +91-8850115960
+                +91-7722035103
               </p>
               <p className="flex items-center gap-2">
                 <IoMdMail className="text-lg" />
-                info@ymlmart.com
+                martkumbhar@gmail.com
               </p>
             </div>
           </div>
@@ -126,7 +127,7 @@ const Footer = () => {
         {/* Social Links & Copyright */}
         <div className="bg-gray-800 text-gray-400 py-2">
           <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-center md:text-left">&copy; 2024 | Yahshua Marketing Limited.</p>
+            <p className="text-center md:text-left">&copy; 2024 | Kumbhar Mart .</p>
             <div className="flex gap-3 justify-center md:justify-end mt-2 md:mt-0">
               <a href="https://www.instagram.com/ymlmartofficial?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="hover:text-white">
                 <FaInstagram size={18} />
