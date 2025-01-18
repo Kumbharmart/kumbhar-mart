@@ -3,7 +3,6 @@ import { FaInstagram, FaLinkedin, FaFacebook } from "react-icons/fa";
 import { IoIosCall, IoMdMail } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
 import yml from '../assest/banner/yml.png';
-import km from '../assest/banner/ymllogo.jpg';
 
 // Scroll to top component with smooth scroll
 const ScrollToTop = () => {
@@ -30,18 +29,15 @@ const Footer = () => {
         <div className="bg-sky-600 py-6">
           <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 px-4">
             {/* Download Section */}
-            <div className="text-center flex justify-center items-center">
-      <a href="/">
-        <img
-          src={km}
-          alt="Logo"
-          className="mx-auto w-40 h-10"
-          style={{
-            borderRadius: '8px', // Soft rounded corners
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
-          }}
-        />
-      </a>
+            <div className="text-center">
+              <a href="/">
+                      <img
+                  src={yml}
+                  alt="Logo"
+                  className="mx-auto w-28 h-10"
+                  style={{ borderRadius: '5px' }} // Adjust the value as needed
+                  />
+              </a>
               <h2 className="mt-3 text-lg font-bold text-white">Download our app</h2>
               <div className="flex justify-center items-center gap-3 mt-3">
   <a href="https://play.google.com/">
@@ -109,19 +105,19 @@ const Footer = () => {
             <div className="mb-4 lg:mb-0">
               <h4 className="text-lg font-semibold text-white">Start a conversation</h4>
               <p className="text-gray-400">
-              Opposite Z.Z.P School, Kumbhar Mart, Shimpore (New), Khednagar, Tal. Karjat, Dist.Ahamednagar
+                Office No 1, Opposite Rajmudra Petrolpump, Murunji Road, Marunji, Mulshi, 411057.
               </p>
-              <p className="text-gray-400">Ahamednagar, Maharashtra</p>
+              <p className="text-gray-400">Pune, Maharashtra</p>
             </div>
 
             <div className="space-y-1 text-white">
               <p className="flex items-center gap-2">
                 <IoIosCall className="text-lg" />
-                +91-7722035103
+                +91-8850115960
               </p>
               <p className="flex items-center gap-2">
                 <IoMdMail className="text-lg" />
-                martkumbhar@gmail.com
+                info@ymlmart.com
               </p>
             </div>
           </div>
@@ -130,7 +126,7 @@ const Footer = () => {
         {/* Social Links & Copyright */}
         <div className="bg-gray-800 text-gray-400 py-2">
           <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-center md:text-left">&copy; 2024 | Kumbhar Mart Limited.</p>
+            <p className="text-center md:text-left">&copy; 2024 | Yahshua Marketing Limited.</p>
             <div className="flex gap-3 justify-center md:justify-end mt-2 md:mt-0">
               <a href="https://www.instagram.com/ymlmartofficial?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="hover:text-white">
                 <FaInstagram size={18} />

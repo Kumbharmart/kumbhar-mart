@@ -53,7 +53,7 @@ const CategoryList = () => {
     const [isDropdownVisible, setIsDropdownVisible] = useState(false); // To manage dropdown visibility
     const [lastScrollY, setLastScrollY] = useState(0); // Track the last scroll position
 
-    const categoryLoading = new Array(13).fill(null);
+    const categoryLoading = new Array(20).fill(null);
 
     const fetchCategoryProduct = async () => {
         setLoading(true);
@@ -170,68 +170,84 @@ const CategoryList = () => {
 
     return (
         <div className="container pt-5 pb-8">
-            <div className="flex items-center gap-4 justify-between overflow-x-auto bg-white p-6 rounded-lg shadow-lg">
-                {loading ? (
-                    categoryLoading.map((_, index) => (
-                        <div
-                            className="h-16 w-16 md:w-20 md:h-20 rounded-full bg-slate-200 animate-pulse"
-                            key={"categoryLoading" + index}
-                        ></div>
-                    ))
-                ) : (
-                    categoryProduct.map((product) => (
-                        <div
-                            key={product?.category || product?._id} // Use a unique key if possible
-                            className="relative group category-item"
-                            onMouseEnter={(e) => { handleMouseEnter(e, product?.category); categoryElementHovered = true; }}
-                            onMouseLeave={() => { categoryElementHovered = false; handleMouseLeave(); }}
+        {/* Dynamic Category Listing */}
+        <div className="flex items-center gap-4 justify-between overflow-x-auto bg-white px-6 rounded-lg shadow-lg">
+            {loading ? (
+                categoryLoading.map((_, index) => (
+                    <div
+                        className="h-16 w-16 md:w-20 md:h-20 rounded-full bg-slate-200 animate-pulse"
+                        key={"categoryLoading" + index}
+                    ></div>
+                ))
+            ) : (
+                categoryProduct.map((product) => (
+                    <div
+                        key={product?.category || product?._id} // Use a unique key if possible
+                        className="relative group category-item"
+                        onMouseEnter={(e) => {
+                            handleMouseEnter(e, product?.category);
+                            categoryElementHovered = true;
+                        }}
+                        onMouseLeave={() => {
+                            categoryElementHovered = false;
+                            handleMouseLeave();
+                        }}
+                    >
+                        <Link
+                            to={"/product-category?category=" + product?.category}
+                            className="cursor-pointer"
                         >
-                            <Link
-                                to={"/product-category?category=" + product?.category}
-                                className="cursor-pointer"
-                            >
-                                <div className="flex flex-col items-center">
-                                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center">
-                                        <img
-                                        src={categoryImages[product?.category.toLowerCase()] || categoryImages["default"]}
+                            <div className="flex flex-col items-center py-3">
+                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center">
+                                    <img
+                                        src={
+                                            categoryImages[product?.category.toLowerCase()] ||
+                                            categoryImages["default"]
+                                        }
                                         alt={product?.productName || "Product Image"}
-                                            className="h-full object-scale-down hover:scale-125 transition-transform"
-                                        />
-                                    </div>
-                                    <p className="text-center text-sm md:text-base capitalize mt-2">
-                                        {product?.category}
-                                    </p>
+                                        className="h-full object-scale-down hover:scale-125 transition-transform"
+                                    />
                                 </div>
-                            </Link>
-                        </div>
-                    ))
-                )}
-            </div>
-
-            {/* The dropdown, fixed to the position of the hovered category */}
-            {isDropdownVisible && (
-                <div
-                    className="fixed z-50 bg-white shadow-lg p-4 rounded-lg w-48 border border-gray-300 overflow-y-auto max-h-64 mt-2 dropdown-item"
-                    style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
-                    onMouseEnter={() => { dropdownElementHovered = true; setIsDropdownVisible(true); }}
-                    onMouseLeave={() => { dropdownElementHovered = false; handleMouseLeave(); }}
-                >
-                    {getSubcategories(hoveredCategory).length > 0 ? (
-                        getSubcategories(hoveredCategory).map((subcategory) => (
-                            <Link
-                                key={subcategory.id}
-                                to={"/product-category?" + "subcategory=" + subcategory?.value}
-                                className="block px-4 py-2 text-sm hover:bg-gray-200"
-                            >
-                                {subcategory.label}
-                            </Link>
-                        ))
-                    ) : (
-                        <p className="text-center text-sm text-gray-500">No subcategories</p>
-                    )}
-                </div>
+                                <p className="text-center text-sm md:text-base capitalize">
+                                    {product?.category}
+                                </p>
+                            </div>
+                        </Link>
+                    </div>
+                ))
             )}
         </div>
+
+        {/* Dropdown for Subcategories */}
+        {isDropdownVisible && (
+            <div
+                className="fixed z-50 bg-white shadow-lg p-4 rounded-lg w-48 border border-gray-300 overflow-y-auto max-h-64 mt-2 dropdown-item"
+                style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
+                onMouseEnter={() => {
+                    dropdownElementHovered = true;
+                    setIsDropdownVisible(true);
+                }}
+                onMouseLeave={() => {
+                    dropdownElementHovered = false;
+                    handleMouseLeave();
+                }}
+            >
+                {getSubcategories(hoveredCategory).length > 0 ? (
+                    getSubcategories(hoveredCategory).map((subcategory) => (
+                        <Link
+                            key={subcategory.id}
+                            to={"/product-category?" + "subcategory=" + subcategory?.value}
+                            className="block px-4 py-2 text-sm hover:bg-gray-200"
+                        >
+                            {subcategory.label}
+                        </Link>
+                    ))
+                ) : (
+                    <p className="text-center text-sm text-gray-500">No subcategories</p>
+                )}
+            </div>
+        )}
+    </div>
     );
 };
 

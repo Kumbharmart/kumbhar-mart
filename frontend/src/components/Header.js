@@ -88,11 +88,11 @@ const Header = () => {
   <div className="h-full container mx-auto flex items-center px-6 justify-between">
     {user?.role === ROLE.ADMIN ? (
       <div className="cursor-not-allowed">
-        <img src="kmlogo.jpg" alt="Logo" className="w-48" />
+        <img src="ymllogo.jpg" alt="Logo" className="w-48" />
       </div>
     ) : (
       <Link to="/">
-        <img src="kmlogo.jpg" alt="Logo" className="w-48" />
+        <img src="ymllogo.jpg" alt="Logo" className="w-48" />
       </Link>
     )}
 

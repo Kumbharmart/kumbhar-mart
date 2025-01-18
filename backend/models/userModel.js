@@ -1,28 +1,58 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const addressSchema = new mongoose.Schema({
-    name: String,
-    mobileNo: Number,
+    name : String,
+    mobileNo : Number,
     street: String,
     city: String,
     state: String,
     zip: String,
 });
 
+// const businessSchema = new mongoose.Schema({
+//     myPurchase: { type: Number, default: 0 },
+//     totalPurchase: { type: Number, default: 0 },
+//     totalIncentive: { type: Number, default: 0 }
+// });
+
 const refferalSchema = new mongoose.Schema({
     refferalcode: String,
     refferredbycode: String,
     myrefferals: [
-        // your schema fields
+        {
+            userId:{type:mongoose.Schema.Types.ObjectId, ref: 'user'},
+            name:{type:String}
+            // order_id: { type:mongoose.Schema.Types.ObjectId, ref: 'Order' },
+        }
+    ],
+    myrefferalorders:[
+        {
+            userId:{type:mongoose.Schema.Types.ObjectId, ref: 'user'},
+            order_id: { type:mongoose.Schema.Types.ObjectId, ref: 'Order' },
+        }
+        
+
     ]
-});
+   
+},{_id:false});
 
 const userSchema = new mongoose.Schema({
-    // your schema fields
-    mobileNo: { type: Number, required: true, unique: true },
-    role: { type: String, default: 'USER' },
-    address: addressSchema,
-    refferal: refferalSchema,
+    name : String,
+    email: {
+        type: String,
+        unique: true,
+        sparse: true, // Allows multiple null values
+    },
+          
+    mobileNo: Number,
+    address: [addressSchema],
+    password : String,
+    profilePic : String,
+    role :{
+        type: String,
+        default: "GENERAL"
+    },
+    refferal:refferalSchema,
     businessPrices: {
         myPurchase: { type: Number, default: 0 },
         totalPurchase: { type: Number, default: 0 },
@@ -30,10 +60,14 @@ const userSchema = new mongoose.Schema({
     },
     otp: String,  // Field to store the OTP
     otpExpires: Date,
-}, {
-    timestamps: true
-});
+},
+    
+    {
+    timestamps : true
+})
 
-const User = mongoose.model('User', userSchema);
 
-module.exports = { User };
+const userModel =  mongoose.model("user",userSchema)
+
+
+module.exports = userModel

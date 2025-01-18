@@ -94,7 +94,7 @@ const Login = () => {
               <div className='bg-slate-100 p-2'>
                 <input
                   type='number'
-                  placeholder='enter your mobile no'
+                  placeholder='Enter your mobile no'
                   name='mobileNo'
                   value={data.mobileNo}
                   onChange={handleOnChange}
@@ -108,7 +108,7 @@ const Login = () => {
               <div className='bg-slate-100 p-2 flex'>
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder='enter password'
+                  placeholder='Enter password'
                   value={data.password}
                   name='password'
                   onChange={handleOnChange}

@@ -16,7 +16,6 @@ const Home = () => {
     <div className='px-6 mt-5 flex justify-center items-center flex-col'>
       <CategoryList/>
       <BannerProduct/>
-      
       <Link to={"/refer"}><AdBanner/></Link>
       {/* <GroceryCart category={"groceries"} heading={"Popular's Groceries"}/> */}
       {/* <Offer/>

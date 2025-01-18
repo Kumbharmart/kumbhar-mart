@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-//PASSWORD = Q7LGdE7DFgQ9TalQ
+// PASSWORD = Q7LGdE7DFgQ9TalQ
 // shrikantj2001
 // DB_URI = mongodb+srv://shrikantj2001:QQyMHleIsFtdzq4E@cluster0.a9lke.mongodb.net/yahshuadata
 

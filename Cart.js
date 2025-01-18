@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import {useNavigate } from 'react-router-dom';
-import SummaryApi from "../common";
-import displayINRCurrency from "../helpers/displayCurrency";
+import SummaryApi from "./frontend/src/common";
+import displayINRCurrency from "./frontend/src/helpers/displayCurrency";
 import { MdCheckCircle, MdDelete } from "react-icons/md";
 import { IoIosAddCircle } from "react-icons/io";
-import Context from "../context/";
-import { useUser } from '../context/userContext'; // Import the useUser hook
+import Context from "./frontend/src/context";
+import { useUser } from './frontend/src/context/userContext'; // Import the useUser hook
 import { useCart } from '../context/CartContext';
-import { uploadAddress } from "../helpers/uploadAddress";
+import { uploadAddress } from "./frontend/src/helpers/uploadAddress";
 import axios from "axios";
-import Loader from "../components/Loader";
+import Loader from "./frontend/src/components/Loader";
 
 
 const Cart = () => {
@@ -174,40 +174,53 @@ const Cart = () => {
   };
   const fetchData = async (authToken) => {
     try {
-      let cartData;
+      let cartData = [];
   
       if (authToken) {
-        // Fetch data from the server if the user is logged in
+        // Fetch data from the server for logged-in users
         const response = await fetch(SummaryApi.addToCartProductView.url, {
           method: SummaryApi.addToCartProductView.method,
           credentials: "include",
           headers: {
-            "content-type": "application/json",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
         });
   
         const responseData = await response.json();
+  
         if (responseData.success) {
-          // cartData = responseData.data; // Assign data to cartData
+          // Filter out items with null productId
           cartData = responseData.data.filter(item => item.productId !== null);
-
-          console.log(cartData)
+          console.log("Cart data for logged-in user:", cartData);
         } else {
           console.error("Failed to fetch cart data from server");
-          cartData = []; // Default to empty array if server fetch fails
+          cartData = []; // Default to an empty array if server fetch fails
         }
       } else {
-        // Fetch data from localStorage if the user is not logged in
+        // Fetch cart data from localStorage for guest users
         const localCartData = localStorage.getItem("guestCart");
-        cartData = localCartData ? JSON.parse(localCartData) : [];
-        console.log(cartData)
+  
+        if (localCartData) {
+          try {
+            cartData = JSON.parse(localCartData).filter(item => item.productId !== null);
+          } catch (error) {
+            console.error("Error parsing local cart data:", error);
+            cartData = []; // Default to an empty array if parsing fails
+          }
+        } else {
+          cartData = []; // Default to an empty array if no local cart data
+        }
+  
+        console.log("Cart data for guest user:", cartData);
       }
   
-      setData(cartData || []); // Update state with cart data
+      // Update state with cart data
+      setData(cartData || []);
     } catch (error) {
       console.error("Error fetching cart data:", error);
     } finally {
+      // Turn off loading state
       setLoading(false);
     }
   };
@@ -394,7 +407,7 @@ const Cart = () => {
 
 
         const options = {
-          key: 'rzp_test_U4XuiM2cjeWzma',
+          key: 'rzp_live_j5FzhaF8uVrDAU',
           amount: responseData.order.amount,
           currency: responseData.order.currency,
           name: "YML Mart",
