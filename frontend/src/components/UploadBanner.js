@@ -6,20 +6,23 @@ import { useUser } from '../context/userContext'; // Import UserContext to get u
 import ROLE from '../common/role'; // Import roles
 import Context from "../context/index";
 
-const UploadBannerForm = ({     onClose,
-  onUploadSuccess }) => {
+const UploadBannerForm = ({ onClose, onUploadSuccess }) => {
   const { user } = useUser(); // Get user details from context
   const [image, setImage] = useState(null);
   const { authToken } = useContext(Context); // Get the authToken from Context
   const navigate = useNavigate(); // Initialize navigate hook
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const selectedImage = e.target.files[0];
+    if (selectedImage && !selectedImage.type.startsWith('image/')) {
+      alert('Please select a valid image file');
+      return;
+    }
+    setImage(selectedImage);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
 
     if (!image) {
       alert('Please select an image');
@@ -34,6 +37,10 @@ const UploadBannerForm = ({     onClose,
     try {
       const uploadedImage = await uploadImage(image);
 
+      if (!uploadedImage || !uploadedImage.secure_url) {
+        throw new Error('Image upload failed, no secure URL returned.');
+      }
+
       const response = await fetch(SummaryApi.uploadBanner.url, {
         method: SummaryApi.uploadBanner.method,
         credentials: 'include',
@@ -43,25 +50,28 @@ const UploadBannerForm = ({     onClose,
         },
         body: JSON.stringify({
           userId: user._id,
-          imageUrl: uploadedImage.secure_url,
+          imageUrl: uploadedImage.secure_url, // Ensure secure_url exists
         }),
       });
 
       if (response.ok) {
         alert('Banner uploaded successfully!');
-        onUploadSuccess();
+        onUploadSuccess && onUploadSuccess(); // Only call onUploadSuccess if it's provided
         onClose();
-        // Trigger a refresh on successful upload
-      } 
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message || 'Unknown error'}`);
+      }
     } catch (error) {
       console.error('Error:', error);
-      alert('Error uploading image');
+      alert(error?.message || 'Error uploading image');
     }
   };
 
   const handleCancel = () => {
     setImage(null); // Reset the selected image
     navigate(-1); // Navigate back one step
+    onClose(); // Close the form
   };
 
   return (
@@ -83,7 +93,7 @@ const UploadBannerForm = ({     onClose,
           </button>
           <button
             className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
-            onClick={onClose}// Cancel button now goes back one step
+            onClick={handleCancel} // Cancel button now goes back one step and closes the form
           >
             Cancel
           </button>

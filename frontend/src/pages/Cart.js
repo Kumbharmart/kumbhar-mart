@@ -397,7 +397,7 @@ const Cart = () => {
           key: 'rzp_test_U4XuiM2cjeWzma',
           amount: responseData.order.amount,
           currency: responseData.order.currency,
-          name: "YML Mart",
+          name: "Kumbhar Mart",
           description: "Payment for Order",
           image: "/logo.png",
           order_id: responseData.order.id,
@@ -848,20 +848,18 @@ const Cart = () => {
 
   {/* Delivery Charges */}
   <div className="flex justify-between mb-2 text-gray-700">
-    <span>Delivery Charges</span>
-    <span>₹00</span>
-    {/* <span>₹{totalPrice < 1000 ? 50 : 0}</span> */}
-  </div>
+  <span>Delivery Charges</span>
+  <span>₹{totalPrice < 1000 ? 20 : 0}</span>
+</div>
 
+{/* Total */}
+<div className="flex justify-between font-semibold text-gray-800">
+  <span>Total:</span>
+  <span className="text-md">
+    {displayINRCurrency(totalPrice + (totalPrice < 1000 ? 20 : 0))}
+  </span>
+</div>
 
-  {/* Total */}
-  <div className="flex justify-between font-semibold text-gray-800">
-    <span>Total:</span>
-    <span className="text-md">
-      
-      {displayINRCurrency( totalPrice )}
-    </span>
-  </div>
 </div>
 
 

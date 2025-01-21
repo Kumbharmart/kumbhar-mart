@@ -37,7 +37,6 @@ export const CartProvider = ({ children }) => {
     }, [authToken]);
 
     const addToCart = async (productId) => {
-      
         try {
             const response = await fetch(SummaryApi.addToCartProduct.url, {
                 method: 'POST',
@@ -58,7 +57,6 @@ export const CartProvider = ({ children }) => {
         }
     };
 
-    // Change the cartProductCount calculation based on your needs
     const cartProductCount = cart.length; // Total quantity of products
 
     return (
@@ -69,3 +67,9 @@ export const CartProvider = ({ children }) => {
 };
 
 export const useCart = () => useContext(CartContext);
+
+export const calculateTotalQty = (data) => {
+    return data
+        .filter(product => product.productId && product.productId.quantity > 0 && product.quantity > 0)
+        .reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
+};

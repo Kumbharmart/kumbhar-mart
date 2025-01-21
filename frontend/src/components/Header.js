@@ -8,23 +8,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
 import ROLE from "../common/role";
-import { useCart } from "../context/CartContext";
+import { useCart, calculateTotalQty } from "../context/CartContext"; // Import calculateTotalQty
 import ProfileIcon from "../assest/loginProfile1.png";
 import Context from "../context/index";
-import { MdAccountBalance } from "react-icons/md";
-import { MdShare } from "react-icons/md";
+import { MdAccountBalance, MdShare, MdMenu } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
-import { useSeller } from '../context/SellerContext'; 
-import { MdMenu } from "react-icons/md";
-
+import { useSeller } from '../context/SellerContext';
 
 const Header = () => {
   const { authToken } = useContext(Context); // Get the authToken from Context
-   const { seller } = useSeller(); // Get the seller data from context
-  console.log(seller)
+  const { seller } = useSeller(); // Get the seller data from context
+  console.log(seller);
 
   const user = useSelector((state) => state?.user?.user);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const searchInput = useLocation();
   const URLSearch = new URLSearchParams(searchInput?.search);
@@ -32,8 +29,12 @@ const Header = () => {
   const [search, setSearch] = useState(searchQuery);
   const [menuDisplay, setMenuDisplay] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+
   // Use cart context
-  const { cartProductCount } = useCart();
+  const { cart } = useCart(); // Get cart array from context
+
+  // Calculate total quantity of products in the cart
+  const totalQty = calculateTotalQty(cart);
 
   const dropdownRef = useRef(null); // Ref for dropdown
 
@@ -86,15 +87,15 @@ const Header = () => {
   return (
     <header className="h-16 shadow-md bg-white fixed w-full z-40">
   <div className="h-full container mx-auto flex items-center px-6 justify-between">
-    {user?.role === ROLE.ADMIN ? (
-      <div className="cursor-not-allowed">
+  <div className={user?.role === ROLE.ADMIN ? "cursor-not-allowed" : ""}>
+      {user?.role === ROLE.ADMIN ? (
         <img src="kmlogo.jpg" alt="Logo" className="w-48" />
+      ) : (
+        <Link to="/">
+          <img src="kmlogo.jpg" alt="Logo" className="w-48" />
+        </Link>
+      )}
       </div>
-    ) : (
-      <Link to="/">
-        <img src="kmlogo.jpg" alt="Logo" className="w-48" />
-      </Link>
-    )}
 
     {/* Desktop Search Bar */}
 
@@ -192,14 +193,14 @@ const Header = () => {
         <Link to="/cart" className="text-2xl relative">
           <FaShoppingCart className="text-gray-700 hover:text-sky-600 transition-colors duration-200" />
           <div className="bg-red-600 text-white w-5 h-5 text-xs rounded-full absolute -top-2 -right-2 flex items-center justify-center">
-            {cartProductCount}
+            {totalQty}
           </div>
         </Link>
       ) : (
         <Link to="/guestcart" className="text-2xl relative">
           <FaShoppingCart className="text-gray-700 hover:text-sky-600 transition-colors duration-200" />
           <div className="bg-red-600 text-white w-5 h-5 text-xs rounded-full absolute -top-2 -right-2 flex items-center justify-center">
-            {cartProductCount}
+            {totalQty}
           </div>
         </Link>
       )}
@@ -324,14 +325,14 @@ const Header = () => {
         <Link to="/cart" className="text-2xl relative">
           <FaShoppingCart className="text-gray-700 hover:text-sky-600 transition-colors duration-200" />
           <div className="bg-red-600 text-white w-5 h-5 text-xs rounded-full absolute -top-2 -right-2 flex items-center justify-center">
-            {cartProductCount}
+            {totalQty}
           </div>
         </Link>
       ) : (
         <Link to="/guestcart" className="text-2xl relative">
           <FaShoppingCart className="text-gray-700 hover:text-sky-600 transition-colors duration-200" />
           <div className="bg-red-600 text-white w-5 h-5 text-xs rounded-full absolute -top-2 -right-2 flex items-center justify-center">
-            {cartProductCount}
+            {totalQty}
           </div>
         </Link>
       )}
