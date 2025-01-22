@@ -171,7 +171,7 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         });
 
         // Title Section with logo and company info
-        doc.image('frontend/public/kmlogo.jpg', 50, 40, { width: 100 });
+        doc.image('Images/kmlogo.jpg', 50, 40, { width: 100 });
          // Add a logo
         doc.fontSize(25).text('Kumbhar Mart', { align: 'center', bold: true });
         doc.fontSize(10).text('Contact: +91-7722035103 | Email: martkumbhar@gmail.com', { align: 'center' });
@@ -270,19 +270,19 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         // Subtotal, Discount, Delivery Charges, and Total section
         doc.moveDown(1);
         doc.font('Helvetica-Bold')
-            .text('Subtotal (incl. GST):', 150, doc.y, { align: 'right', continued: true })
-            .text(`${Math.ceil(totalAmount)}`, 200, doc.y, { align: 'right' });
+            .text('Subtotal (incl. GST):', 250, doc.y, { align: 'right', continued: true })
+            .text(`${Math.ceil(totalAmount)}`, 300, doc.y, { align: 'right' });
 
-        doc.text('Discount (5%):', 150, doc.y, { align: 'right', continued: true })
-            .text(`-${Math.floor(discount)}`, 200, doc.y, { align: 'right' });
+        doc.text('Discount (5%):', 250, doc.y, { align: 'right', continued: true })
+            .text(`-${Math.floor(discount)}`, 300, doc.y, { align: 'right' });
 
-        doc.text('Delivery Charges:', 150, doc.y, { align: 'right', continued: true })
-            .text(`${deliveryCharges}`, 200, doc.y, { align: 'right' });
+        doc.text('Delivery Charges:', 250, doc.y, { align: 'right', continued: true })
+            .text(`${deliveryCharges}`, 300, doc.y, { align: 'right' });
 
         doc.moveDown(1);
         doc.fontSize(14).font('Helvetica-Bold')
-            .text('Total:', 150, doc.y, { align: 'right', continued: true })
-            .text(`${finalTotal}`, 200, doc.y, { align: 'right' });
+            .text('Total:', 250, doc.y, { align: 'right', continued: true })
+            .text(`${finalTotal}`, 300, doc.y, { align: 'right' });
 
         // Footer Section with company details
         doc.moveDown(2);

@@ -100,6 +100,67 @@ const productCategory = [
       { id: 704, label: "Bedding, Toys & Accessories", value: "bedding, toys & accessories" },
     ],
   },
+  {
+    id: 8,
+    label: "Home Care",
+    value: "Home Care",
+    subcategories: [
+      { id: 801, label: "Detergent & Cleaners", value: "detergent & cleaners" },
+      { id: 802, label: "Dishwash", value: "dishwash" },
+      { id: 803, label: "Fresheners & Repellents", value: "fresheners & repellents" },
+      { id: 804, label: "Bathrooms & Laundry Accessories", value: "bathrooms & laundry accessories" },
+      { id: 805, label: "Pooja Needs", value: "pooja needs" },
+      { id: 806, label: "Basic Electricals", value: "basic electricals" },
+      { id: 807, label: "Shoe Care", value: "shoe care" },
+      { id: 808, label: "Cleaning Tools", value: "cleaning tools" },
+    ],
+  },
+  {
+    id: 9,
+    label: "School, Office & Stationary",
+    value: "School, Office & Stationary",
+    subcategories: [
+      { id: 901, label: "Notebook & Paper Products", value: "notebook & paper products" },
+      { id: 902, label: "Writing Instruments & Accessories", value: "writing instruments & accessories" },
+      { id: 903, label: "School Supplies", value: "school supplies" },
+      { id: 904, label: "Party Accessories", value: "party accessories" },
+      { id: 905, label: "Office Supplies", value: "office supplies" },
+      { id: 906, label: "Art, Craft & Hobby", value: "art, craft & hobby" },
+      { id: 907, label: "Children's Books", value: "children's books" },
+      { id: 908, label: "School Textbooks", value: "school textbooks" },
+    ],
+  },
+  {
+    id: 10,
+    label: "Disposables",
+    value: "Disposables",
+    subcategories: [
+      { id: 1001, label: "Food Wrapping Essentials", value: "food wrapping essentials" },
+      { id: 1002, label: "Home Hygiene", value: "home hygiene" },
+      { id: 1003, label: "Plates & Cutlery", value: "plates & cutlery" },
+      { id: 1004, label: "Tissues & Napkins", value: "tissues & napkins" },
+    ],
+  },
+  {
+    id: 11,
+    label: "Gifts & Hampers",
+    value: "Gifts & Hampers",
+    subcategories: [
+      { id: 1101, label: "Tea Gifts", value: "tea gifts" },
+      { id: 1102, label: "Chocolates Gifts", value: "chocolates gifts" },
+      { id: 1103, label: "Gourmet Gifts", value: "gourmet gifts" },
+    ],
+  },
+  {
+    id: 12,
+    label: "Gifts",
+    value: "Gifts",
+    subcategories: [
+      { id: 1201, label: "Tea Gifts", value: "tea gifts" },
+      { id: 1202, label: "Chocolates Gifts", value: "chocolates gifts" },
+      { id: 1203, label: "Gourmet Gifts", value: "gourmet gifts" },
+    ],
+  },
 ];
 
 export default productCategory;

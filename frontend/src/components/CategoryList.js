@@ -4,24 +4,22 @@ import { Link } from 'react-router-dom';
 import productCategory from '../helpers/productCategory'; // Assuming productCategory is an array with subcategories for each category
 import personalCareImage from "../assest/products/Personalcare/personalcare.jpeg";
 import cookingEssentialImage from "../assest/products/cooking/cooking.jpeg";
-
-
-
-
+import defaultCategoryImage from "../assest/products/Personalcare/personalcare.jpeg"; // Fallback image
 
 const CategoryList = () => {
 
     const categoryImages = {
         "personal care": personalCareImage,
-        "cooking essential": cookingEssentialImage,  // Added Cooking Essential category image
+        "cooking essential": cookingEssentialImage,
+        // Add more categories as needed
     };
     
     const [categoryProduct, setCategoryProduct] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [hoveredCategory, setHoveredCategory] = useState(null); // To track the hovered category
-    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 }); // Position for the dropdown
-    const [isDropdownVisible, setIsDropdownVisible] = useState(false); // To manage dropdown visibility
-    const [lastScrollY, setLastScrollY] = useState(0); // Track the last scroll position
+    const [hoveredCategory, setHoveredCategory] = useState(null);
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const [lastScrollY, setLastScrollY] = useState(0);
 
     const categoryLoading = new Array(13).fill(null);
 
@@ -33,57 +31,49 @@ const CategoryList = () => {
             let products = Array.isArray(dataResponse.data) ? dataResponse.data : [];
             
             // Move 'cooking essentials' category to the first position
-            // Sort to prioritize 'Cooking Essential' at the top and place 'Personal Care' later
-products = products.sort((a, b) => {
-    const cookingPriority = 'cooking essential';
-    const personalCarePriority = 'personal care';
+            products = products.sort((a, b) => {
+                const cookingPriority = 'cooking essential';
+                const personalCarePriority = 'personal care';
 
-    if (a.category.toLowerCase() === cookingPriority) return -1; // Always at the top
-    if (b.category.toLowerCase() === cookingPriority) return 1; 
+                if (a.category.toLowerCase() === cookingPriority) return -1;
+                if (b.category.toLowerCase() === cookingPriority) return 1; 
 
-    if (a.category.toLowerCase() === personalCarePriority) return 1; // Push down 'Personal Care'
-    if (b.category.toLowerCase() === personalCarePriority) return -1;
+                if (a.category.toLowerCase() === personalCarePriority) return 1;
+                if (b.category.toLowerCase() === personalCarePriority) return -1;
 
-    return 0; // Keep other categories in their original order
-});
-
-    
+                return 0;
+            });
+            
             setCategoryProduct(products);
         } catch (error) {
             console.error("Failed to fetch category products:", error);
-            setCategoryProduct([]); // Set an empty array on error to prevent map errors
+            setCategoryProduct([]);
         } finally {
             setLoading(false);
         }
     };
-    
-    
 
     useEffect(() => {
         fetchCategoryProduct();
     }, []);
 
-    // Helper to get subcategories for a product category from productCategory.js
     const getSubcategories = (category) => {
         const categoryData = productCategory.find(
-            (cat) => cat.value.toLowerCase() === category?.toLowerCase() // Ensure both values are compared in lowercase
+            (cat) => cat.value.toLowerCase() === category?.toLowerCase()
         );
         return categoryData ? categoryData.subcategories : [];
     };
 
-    // Handle setting the position of the dropdown relative to the hovered category
     const handleMouseEnter = (event, category) => {
         const rect = event.currentTarget.getBoundingClientRect();
-        const dropdownWidth = 256; // Width of the dropdown
-        const dropdownHeight = 256; // Height of the dropdown
+        const dropdownWidth = 256;
+        const dropdownHeight = 256;
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
 
-        // Calculate default positions
         let top = rect.bottom + window.scrollY;
         let left = rect.left + window.scrollX;
 
-        // Adjust position if dropdown goes out of viewport
         if (left + dropdownWidth > viewportWidth) {
             left = viewportWidth - dropdownWidth;
         }
@@ -96,7 +86,6 @@ products = products.sort((a, b) => {
         setIsDropdownVisible(true);
     };
 
-    // Handle hiding dropdown when mouse leaves category or dropdown
     const handleMouseLeave = () => {
         setTimeout(() => {
             if (!dropdownElementHovered && !categoryElementHovered) {
@@ -109,30 +98,21 @@ products = products.sort((a, b) => {
     let dropdownElementHovered = false;
     let categoryElementHovered = false;
 
-    // Scroll event listener to show/hide the dropdown based on scroll direction
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
-
-            // If scrolling down, hide the dropdown
             if (currentScrollY > lastScrollY) {
                 setIsDropdownVisible(false);
             }
-
-            // Save the current scroll position
             setLastScrollY(currentScrollY);
         };
 
-        // Add the scroll event listener
         window.addEventListener('scroll', handleScroll);
-
-        // Clean up the scroll event listener on component unmount
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, [lastScrollY]);
 
-    // Close dropdown when the mouse is not over the dropdown or the category
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (!event.target.closest('.category-item') && !event.target.closest('.dropdown-item')) {
@@ -147,7 +127,6 @@ products = products.sort((a, b) => {
         };
     }, []);
 
-
     return (
         <div className="container pt-5 pb-8">
             <div className="flex items-center gap-4 justify-between overflow-x-auto bg-white p-6 rounded-lg shadow-lg">
@@ -161,7 +140,7 @@ products = products.sort((a, b) => {
                 ) : (
                     categoryProduct.map((product) => (
                         <div
-                            key={product?.category || product?._id} // Use a unique key if possible
+                            key={product?.category || product?._id}
                             className="relative group category-item"
                             onMouseEnter={(e) => { handleMouseEnter(e, product?.category); categoryElementHovered = true; }}
                             onMouseLeave={() => { categoryElementHovered = false; handleMouseLeave(); }}
@@ -173,8 +152,8 @@ products = products.sort((a, b) => {
                                 <div className="flex flex-col items-center">
                                     <div className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center">
                                         <img
-                                        src={categoryImages[product?.category.toLowerCase()] || categoryImages["default"]}
-                                        alt={product?.productName || "Product Image"}
+                                            src={categoryImages[product?.category.toLowerCase()] || defaultCategoryImage}
+                                            alt={product?.productName || "Product Image"}
                                             className="h-full object-scale-down hover:scale-125 transition-transform"
                                         />
                                     </div>
@@ -188,7 +167,6 @@ products = products.sort((a, b) => {
                 )}
             </div>
 
-            {/* The dropdown, fixed to the position of the hovered category */}
             {isDropdownVisible && (
                 <div
                     className="fixed z-50 bg-white shadow-lg p-4 rounded-lg w-48 border border-gray-300 overflow-y-auto max-h-64 mt-2 dropdown-item"
