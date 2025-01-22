@@ -155,7 +155,7 @@ const generateInvoiceAndUploadToS3 = async (order) => {
 
             const params = {
                 Bucket: process.env.REACT_APP_BUCKET_NAME,
-                Key: `invoices/${order.order_id}.pdf`, // Path in S3
+                Key: `invoices/${order.order_id}.pdf`,
                 Body: pdfBuffer,
                 ContentType: 'application/pdf',
             };
@@ -170,116 +170,127 @@ const generateInvoiceAndUploadToS3 = async (order) => {
             });
         });
 
-        doc.fontSize(20).text('YML MART', { align: 'center', bold: true });
+        // Title Section with logo and company info
+        doc.image('frontend/public/kmlogo.jpg', 50, 40, { width: 100 });
+         // Add a logo
+        doc.fontSize(25).text('Kumbhar Mart', { align: 'center', bold: true });
+        doc.fontSize(10).text('Contact: +91-7722035103 | Email: martkumbhar@gmail.com', { align: 'center' });
         doc.moveDown(1);
 
-// "Issued To" Section
-doc.fontSize(14).text('Issued To:', { underline: true });
-doc.fontSize(12)
-    .text(`${order.deliveryAddress.name}`)
-    .text(`${order.deliveryAddress.mobileNo}`)
-    .text(`${order.deliveryAddress.street}, ${order.deliveryAddress.city}, ${order.deliveryAddress.state} - ${order.deliveryAddress.zip}`)
-    .moveDown(2);
+        // "Issued To" Section
+        doc.fontSize(14).text('Issued To:', { underline: true });
+        doc.fontSize(12)
+            .text(`${order.deliveryAddress.name}`)
+            .text(`${order.deliveryAddress.mobileNo}`)
+            .text(`${order.deliveryAddress.street}, ${order.deliveryAddress.city}, ${order.deliveryAddress.state} - ${order.deliveryAddress.zip}`)
+            .moveDown(2);
 
-// Invoice Details Section
-doc.fontSize(14).text('Invoice Details:', { underline: true });
-doc.fontSize(12)
-    .text(`Invoice No: ${order._id}`)
-    .text(`Date: ${new Date().toLocaleDateString()}`)
-    // .text(`Due Date: ${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}`)
-    .moveDown(2);
+        // Invoice Details Section
+        doc.fontSize(14).text('Invoice Details:', { underline: true });
+        doc.fontSize(12)
+            .text(`Invoice No: ${order._id}`)
+            .text(`Date: ${new Date().toLocaleDateString()}`)
+            .moveDown(2);
 
-// Table Header
-doc.fontSize(12).font('Helvetica-Bold');
-const headerY = doc.y;
+        // Table Header with background color and bold font
+        const headerY = doc.y;
+        doc.fontSize(12).font('Helvetica-Bold');
+        doc.rect(50, headerY, 500, 20).fill('#007BFF'); // Header background color
+        doc.fillColor('#ffffff');
+        doc.text('Description', 50, headerY )
+            .text('Unit Price', 140, headerY , { align: 'center' })
+            .text('Qty', 250, headerY , { align: 'center' })
+            .text('GST%', 360, headerY , { align: 'center' })
+            .text('GST Amount', 460, headerY + 5, { align: 'center' })
+            .text('Total', 560, headerY , { align: 'right' });
 
-doc.text('Description', 50, headerY)
-    .text('Unit Price', 120, headerY, { align: 'center' })
-    .text('Qty', 220, headerY, { align: 'center' })
-    .text('GST%', 320, headerY, { align: 'center' })
-    .text('', 350, headerY, { align: 'center' })
-    .text('Total', 460, headerY, { align: 'right' });
+        doc.moveTo(50, headerY + 10).lineTo(600, headerY + 10).stroke(); // Line below header
+        doc.y = headerY + 25;
+        doc.font('Helvetica').fontSize(10);
+        const headerYz = doc.y;
 
-// Draw a line below the header
-doc.moveTo(50, headerY + 20).lineTo(550, headerY + 20).stroke();
-doc.y = headerY + 25;
-doc.font('Helvetica').fontSize(10);
-const headerYz = doc.y;
-let totalAmount = 0;
+        let totalAmount = 0;
+        const productDetailsMap = await Promise.all(
+            order.products.map(async (product) => {
+                const productDetails = await productModel.findById(product.productId);
+                return {
+                    productId: product.productId,
+                    mrpPrice: productDetails?.price || 0,
+                    gst: productDetails?.gst || 0,
+                    gstAmount: productDetails?.gstAmount || 0,
+                };
+            })
+        );
 
-const productDetailsMap = await Promise.all(
-    order.products.map(async (product) => {
-        const productDetails = await productModel.findById(product.productId);
-        return {
-            productId: product.productId,
-            mrpPrice: productDetails?.price || 0,
-            gst: productDetails?.gst || 0,
-            gstAmount: productDetails?.gstAmount || 0,
-        };
-    })
-);
+        const productDetailsLookup = productDetailsMap.reduce((acc, curr) => {
+            acc[curr.productId.toString()] = {
+                mrpPrice: curr.mrpPrice,
+                gst: curr.gst,
+                gstAmount: curr.gstAmount
+            };
+            return acc;
+        }, {});
 
-const productDetailsLookup = productDetailsMap.reduce((acc, curr) => {
-    acc[curr.productId.toString()] = {
-        mrpPrice: curr.mrpPrice,
-        gst: curr.gst,
-        gstAmount: curr.gstAmount
-    };
-    return acc;
-}, {});
+        let currentY = headerYz; // Start from the initial position
 
+        // Product rows with alternating row colors
+        order.products.forEach((product, index) => {
+            const productData = productDetailsLookup[product.productId.toString()] || {};
+            const mrpPrice = productData.mrpPrice || 0;
+            const gst = productData.gst || 0;
+            const gstAmount = productData.gstAmount || 0;
 
-let currentY = headerYz; // Start from the initial position
+            const productTotal = mrpPrice * product.quantity;
+            totalAmount += productTotal;
 
-order.products.forEach((product, index) => {
-    const productData = productDetailsLookup[product.productId.toString()] || {};
-    const mrpPrice = productData.mrpPrice || 0;
-    const gst = productData.gst || 0;
-    const gstAmount = productData.gstAmount || 0;
+            // Alternating row color
+            const rowColor = index % 2 === 0 ? '#f1f1f1' : '#ffffff';
+            doc.rect(50, currentY - 2, 500, 18).fill(rowColor); // Row background color
 
-    const productTotal = mrpPrice * product.quantity;
-    totalAmount += productTotal;
+            // Print product details in a row
+            doc.fillColor('#000000')
+                .text(`${index + 1}. ${product.name}`, 50, currentY)
+                .text(`${mrpPrice.toFixed(2)}`, 120, currentY, { align: 'center' })
+                .text(`${product.quantity}`, 220, currentY, { align: 'center' })
+                .text(`${gst}%`, 320, currentY, { align: 'center' })
+                .text(`${gstAmount.toFixed(2)}`, 350, currentY, { align: 'center' })
+                .text(`${productTotal.toFixed(2)}`, 460, currentY, { align: 'right' });
 
-    // Print product details in a row
-    doc.text(`${index + 1}. ${product.name}`, 50, currentY)
-        .text(`${mrpPrice.toFixed(2)}`, 120, currentY, { align: 'center' })
-        .text(`${product.quantity}`, 220, currentY, { align: 'center' })
-        .text(`${gst}%`, 300, currentY, { align: 'center' }) 
-        .text(`(${gstAmount})`, 350, currentY, { align: 'center' })
-        .text(`${productTotal.toFixed(2)}`, 460, currentY, { align: 'right' });
+            doc.moveTo(50, currentY + 10).lineTo(550, currentY + 10).stroke(); // Line below product row
 
-    // Draw a line below the product row
-    doc.moveTo(50, currentY + 10).lineTo(550, currentY + 10).stroke();
+            currentY += 20; // Adjust row height as needed
+        });
 
-    // Increment currentY for the next product row
-    currentY += 20; // Adjust row height as needed
-});
+        // Calculate delivery charges
+        const deliveryCharges = totalAmount > 1000 ? 0 : 20;
+        const discount = totalAmount * 0.05; // 5% discount
+        const discountedAmount = totalAmount - discount + deliveryCharges;
+        const finalTotal = Math.ceil(discountedAmount);
 
-// Subtotal, Discount, and Final Total calculations remain unchanged
-const discount = totalAmount * 0.05; // 5% discount
-const discountedAmount = totalAmount - discount;
-const finalTotal = Math.ceil(discountedAmount);
+        // Subtotal, Discount, Delivery Charges, and Total section
+        doc.moveDown(1);
+        doc.font('Helvetica-Bold')
+            .text('Subtotal (incl. GST):', 150, doc.y, { align: 'right', continued: true })
+            .text(`${Math.ceil(totalAmount)}`, 200, doc.y, { align: 'right' });
 
-// Subtotal, Discount, and Final Total section
-doc.moveDown(1);
-doc.font('Helvetica-Bold');
-doc.text('Subtotal (including all GST):', 300, doc.y, { align: 'right', continued: true })
-   .text(`${Math.ceil(totalAmount)}`, 350, doc.y, { align: 'right' });
+        doc.text('Discount (5%):', 150, doc.y, { align: 'right', continued: true })
+            .text(`-${Math.floor(discount)}`, 200, doc.y, { align: 'right' });
 
-doc.text('Discount (5%):', 300, doc.y, { align: 'right', continued: true })
-   .text(`-${Math.floor(discount)}`, 350, doc.y, { align: 'right' });
+        doc.text('Delivery Charges:', 150, doc.y, { align: 'right', continued: true })
+            .text(`${deliveryCharges}`, 200, doc.y, { align: 'right' });
 
-doc.moveDown(1);
-doc.fontSize(14).font('Helvetica-Bold')
-   .text('Total:', 300, doc.y, { align: 'right', continued: true })
-   .text(`${finalTotal}`, 350, doc.y, { align: 'right' });
+        doc.moveDown(1);
+        doc.fontSize(14).font('Helvetica-Bold')
+            .text('Total:', 150, doc.y, { align: 'right', continued: true })
+            .text(`${finalTotal}`, 200, doc.y, { align: 'right' });
 
-// Finalize the PDF
-doc.end();
-        
-        
-        
+        // Footer Section with company details
+        doc.moveDown(2);
+        doc.fontSize(10).text('Kumbhar Mart | Opposite Z.Z.P School, Shimpore (New), Khednagar | martkumbhar@gmail.com', { align: 'center' });
+
+        // Finalize the PDF
+        doc.end();
     });
+    
 };
-
 module.exports = { createOrder, handlePaymentSuccess };

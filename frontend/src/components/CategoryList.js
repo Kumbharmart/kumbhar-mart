@@ -2,18 +2,9 @@ import React, { useEffect, useState } from 'react';
 import SummaryApi from '../common';
 import { Link } from 'react-router-dom';
 import productCategory from '../helpers/productCategory'; // Assuming productCategory is an array with subcategories for each category
-import personalCareImage from '../assest/CategoryImgs/Personal Care.jpg';
-import homeCareImage from '../assest/CategoryImgs/Beauty.jpg';
-import medicinesImage from '../assest/CategoryImgs/Beauty.jpg';
-import fruitsImage from '../assest/CategoryImgs/Beauty.jpg';
-import beautyImage from '../assest/CategoryImgs/Beauty.jpg';
-import stationaryImage from '../assest/CategoryImgs/Stationary.jpg';
-import electronicsImage from '../assest/CategoryImgs/Electronics.jpg';
-import homeDecorImage from '../assest/CategoryImgs/Home Decor.jpg';
-import groceriesImage from '../assest/CategoryImgs/Groceries.jpg';
-import gifthampersImage from '../assest/CategoryImgs/Gifts & Hampers.jpg';
-import kitchenwareImage from '../assest/CategoryImgs/Kitchenware.jpg';
-import toysandgamesImage from '../assest/CategoryImgs/toys and games.jpg';
+import personalCareImage from "../assest/products/Personalcare/personalcare.jpeg";
+import cookingEssentialImage from "../assest/products/cooking/cooking.jpeg";
+
 
 
 
@@ -22,22 +13,9 @@ const CategoryList = () => {
 
     const categoryImages = {
         "personal care": personalCareImage,
-        "home care": homeCareImage,
-        "medicines": medicinesImage,
-        "fruits": fruitsImage,
-        "beauty": beautyImage,
-        "stationary": stationaryImage,
-        "electronics": electronicsImage,
-        "home decor": homeDecorImage,
-        "groceries": groceriesImage,
-        "gifts, hampers": gifthampersImage,
-        "kitchenware": kitchenwareImage,
-        "toys, games": toysandgamesImage,
-
-
-
-        
+        "cooking essential": cookingEssentialImage,  // Added Cooking Essential category image
     };
+    
     const [categoryProduct, setCategoryProduct] = useState([]);
     const [loading, setLoading] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null); // To track the hovered category
@@ -53,13 +31,22 @@ const CategoryList = () => {
             const response = await fetch(SummaryApi.categoryProduct.url);
             const dataResponse = await response.json();
             let products = Array.isArray(dataResponse.data) ? dataResponse.data : [];
-    
-            // Move 'grocery' category to the first position
-            products = products.sort((a, b) => {
-                if (a.category.toLowerCase() === 'groceries') return -1;
-                if (b.category.toLowerCase() === 'groceries') return 1;
-                return 0;
-            });
+            
+            // Move 'cooking essentials' category to the first position
+            // Sort to prioritize 'Cooking Essential' at the top and place 'Personal Care' later
+products = products.sort((a, b) => {
+    const cookingPriority = 'cooking essential';
+    const personalCarePriority = 'personal care';
+
+    if (a.category.toLowerCase() === cookingPriority) return -1; // Always at the top
+    if (b.category.toLowerCase() === cookingPriority) return 1; 
+
+    if (a.category.toLowerCase() === personalCarePriority) return 1; // Push down 'Personal Care'
+    if (b.category.toLowerCase() === personalCarePriority) return -1;
+
+    return 0; // Keep other categories in their original order
+});
+
     
             setCategoryProduct(products);
         } catch (error) {
@@ -69,6 +56,7 @@ const CategoryList = () => {
             setLoading(false);
         }
     };
+    
     
 
     useEffect(() => {
