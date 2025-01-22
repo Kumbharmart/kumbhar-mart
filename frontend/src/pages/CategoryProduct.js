@@ -216,7 +216,7 @@ const CategoryProduct = () => {
 
                   {/* Expand and select subcategory */}
                   {/* Uncomment if subcategories are needed */}
-                  {/* 
+                  
                   {selectCategory[category.value] || Object.keys(selectSubcategory).some(sub => category.subcategories.some(s => s.value === sub)) ? (
                     category.subcategories?.sort((a, b) => a.label.localeCompare(b.label)).map((subcategory, subIndex) => (
                       <div className="ml-5" key={subIndex}>
@@ -234,7 +234,7 @@ const CategoryProduct = () => {
                       </div>
                     ))
                   ) : null} 
-                  */}
+                 
                 </div>
               ))}
           </form>

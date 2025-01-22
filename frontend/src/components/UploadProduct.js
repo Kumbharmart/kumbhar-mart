@@ -90,6 +90,18 @@ const UploadProduct = ({
     setSubSubcategories([]); // Clear sub-subcategories
   };
 
+  const handleSubcategoryChange = (e) => {
+    const selectedSubcategory = e.target.value;
+    const selected = subcategories.find((subcat) => subcat.value === selectedSubcategory);
+    setData((prev) => ({
+      ...prev,
+      subcategory: selectedSubcategory,
+      subSubcategory: "", // Reset sub-subcategory
+    }));
+    // Safely set sub-subcategories if they exist
+    setSubSubcategories(selected?.subcategories || []);
+  };
+
   // Configure AWS
   console.log(process.env.REACT_APP_ACCESS_KEY, process.env.REACT_APP_SECRET_ACCESS_KEY, process.env.REACT_APP_BUCKET_REGION)
   AWS.config.update({
@@ -224,6 +236,25 @@ const UploadProduct = ({
             ))}
           </select>
 
+          {subcategories.length > 0 && (
+  <>
+    <label htmlFor="subcategory" className="mt-3">Subcategory :</label>
+    <select
+      required
+      value={data.subcategory}
+      name="subcategory"
+      onChange={handleSubcategoryChange}
+      className="p-2 bg-slate-100 border rounded"
+    >
+      <option value={""}>Select Subcategory</option>
+      {subcategories.map((subcat, index) => (
+        <option value={subcat.value} key={subcat.value + index}>
+          {subcat.label}
+        </option>
+      ))}
+    </select>
+  </>
+)}
           <label htmlFor='productImage' className='mt-3'>Product Image :</label>
           <label htmlFor='uploadImageInput'>
             <div className='p-2 bg-slate-100 border rounded h-32 w-full flex justify-center items-center cursor-pointer'>
