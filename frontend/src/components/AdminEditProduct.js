@@ -44,7 +44,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
 
         if (priceValue > 0 && discount >= 0) {
           const sellingPriceValue = priceValue - (priceValue * (discount / 100));
-          updatedData.sellingPrice = Math.ceil(sellingPriceValue);
+          updatedData.sellingPrice = (sellingPriceValue).toFixed(2);
         }
       }
 
@@ -55,7 +55,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
   
         if (priceValue > 0 && gstPercentage >= 0) {
           const gstvalue = priceValue * (gstPercentage / 100); // GST Amount
-          updatedData.gstAmount = Math.ceil(gstvalue); // Rounded GST amount
+          updatedData.gstAmount =(gstvalue).toFixed(2); // Rounded GST amount
         }
       }
 
@@ -369,12 +369,11 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
             name="quantity"
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded"
-            required
           />
 
           {/* soldby Section */}
           <label htmlFor="soldBy" className="mt-3 block">
-            Sold By:
+          Description:
           </label>
           <textarea
             id="soldBy"

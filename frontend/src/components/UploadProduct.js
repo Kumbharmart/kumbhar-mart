@@ -69,7 +69,7 @@ const UploadProduct = ({
   
         if (priceValue > 0 && gstPercentage >= 0) {
           const gstvalue = priceValue * (gstPercentage / 100); // GST Amount
-          updatedData.gstAmount = Math.ceil(gstvalue); // Rounded GST amount
+          updatedData.gstAmount = (gstvalue).toFixed(2); // Rounded GST amount
         }
       }
       return updatedData;
@@ -380,11 +380,10 @@ const UploadProduct = ({
             value={data.quantity}
             onChange={handleOnChange}
             className='p-2 bg-slate-100 border rounded'
-            required
           />
 
           <label htmlFor="soldBy" className="mt-3 block">
-            Sold By:
+            Description:
           </label>
           <textarea
             id="soldBy"
