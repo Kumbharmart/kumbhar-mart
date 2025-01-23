@@ -58,7 +58,7 @@ const UploadProduct = ({
         
         if (priceValue > 0 && discount >= 0) {
           const sellingPriceValue = priceValue - (margin * (discount / 100));
-          updatedData.sellingPrice = Math.ceil(sellingPriceValue);
+          updatedData.sellingPrice = (sellingPriceValue).toFixed(2);
         }
       }
   
