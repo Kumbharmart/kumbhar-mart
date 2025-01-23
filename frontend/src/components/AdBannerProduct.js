@@ -26,11 +26,11 @@ const BannerProduct = () => {
     return (
         <div className="relative mx-auto mt-4 sm:mt-10 rounded-lg w-full max-w-screen-xl overflow-hidden h-full">
             <div className="relative">
-                {/* Render the first banner image only */}
-                {bannerImages.length > 0 && (
+                {/* Render the first banner image only if it exists */}
+                {bannerImages.length > 0 && bannerImages[0] && (
                     <div className="w-full h-full">
                         <img
-                            src={bannerImages[1].imageUrl}
+                            src={bannerImages[0].imageUrl}
                             className="w-full h-full object-cover rounded-md"
                             alt="Banner"
                         />
