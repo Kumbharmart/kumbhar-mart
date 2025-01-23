@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { FaInstagram, FaLinkedin, FaFacebook } from "react-icons/fa";
 import { IoIosCall, IoMdMail } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
-import yml from '../assest/banner/yml.png';
-import kmlogo from '../assest/banner/kmlogo.jpg';
+import footerlogo from "../assest/logoImages/name1.png";
 
 // Scroll to top component with smooth scroll
 const ScrollToTop = () => {
@@ -33,7 +32,7 @@ const Footer = () => {
             <div className="text-center">
               <a href="/">
                       <img
-                  src={kmlogo}
+                  src={footerlogo}
                   alt="Logo"
                   className="mx-auto w-28 h-10"
                   style={{ borderRadius: '5px' }} // Adjust the value as needed
@@ -106,9 +105,9 @@ const Footer = () => {
             <div className="mb-4 lg:mb-0">
               <h4 className="text-lg font-semibold text-white">Start a conversation</h4>
               <p className="text-gray-400">
-              Opposite Z.Z.P School, Kumbhar Mart, Shimpore (New), Khednagar, Tal. Karjat, Dist.Ahamednagar
+              Kumbhart Mart, Shimpore ( New ), Khednagar, Karjat, Ahilyanagar, Maharashtra, 414403
               </p>
-              <p className="text-gray-400">Ahamednagar, Maharashtra</p>
+              <p className="text-gray-400">Ahilyanagar, Maharashtra</p>
             </div>
 
             <div className="space-y-1 text-white">

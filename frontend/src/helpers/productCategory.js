@@ -151,16 +151,7 @@ const productCategory = [
       { id: 1103, label: "Gourmet Gifts", value: "gourmet gifts" },
     ],
   },
-  {
-    id: 12,
-    label: "Gifts",
-    value: "Gifts",
-    subcategories: [
-      { id: 1201, label: "Tea Gifts", value: "tea gifts" },
-      { id: 1202, label: "Chocolates Gifts", value: "chocolates gifts" },
-      { id: 1203, label: "Gourmet Gifts", value: "gourmet gifts" },
-    ],
-  },
+ 
 ];
 
 export default productCategory;
