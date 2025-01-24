@@ -3,7 +3,7 @@ const productModel = require("../../models/productModel");
 
 async function UploadProductController(req, res) {
     try {
-      const { productName, brandName, category, subcategory, productImage, price, sellingPrice, quantity, soldBy, percentOff, gst, gstAmount,margin, sellerId } = req.body;
+      const { productName, brandName, category, subcategory, productImage, price, sellingPrice, quantity, soldBy, percentOff, gst, gstAmount,margin, sellerId,productprice, hsncode, description } = req.body;
   
   
       const productData = {
@@ -13,14 +13,17 @@ async function UploadProductController(req, res) {
         subcategory,
         productImage,
         price,
+        productprice,
         sellingPrice,
         quantity,
         soldBy,
         percentOff,
+        hsncode,
         gst,
         gstAmount,
         margin,
         sellerId,
+        description
       };
   
       console.log("Product data to save:", productData);

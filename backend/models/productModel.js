@@ -9,9 +9,11 @@ const productSchema = mongoose.Schema(
     productImage: [],
     description: String,
     price: Number,
+    productprice: Number,
     percentOff : Number,
     sellingPrice: Number,
     quantity: Number,
+    hsncode: String,
     gst: Number, // GST percentage
     gstAmount: Number, // Calculated GST amount
     margin: Number,

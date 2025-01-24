@@ -23,13 +23,15 @@ const UploadProduct = ({
     subcategory: "",
     productImage: [],
     price: "",
+    productprice: "",
     sellingPrice: "",
     quantity: "",
-    soldBy: "",
     percentOff: "5",
+    hsncode: "",
     gst: "",
     gstAmount: "",
     margin: "",
+    description: "",
     sellerId: seller ? seller._id : null, // Default to null if no seller
   });
   console.log("Product Data Sent from Frontend: ", data);
@@ -51,8 +53,8 @@ const UploadProduct = ({
       };
   
       // Recalculate sellingPrice if price or percentOff changes
-      if (updatedData.price && updatedData.percentOff && updatedData.margin) {
-        const priceValue = parseFloat(updatedData.price);
+      if (updatedData.productprice && updatedData.percentOff && updatedData.margin) {
+        const priceValue = parseFloat(updatedData.productprice);
         const discount = parseFloat(updatedData.percentOff);
         const margin = parseFloat(updatedData.margin)
         
@@ -63,8 +65,8 @@ const UploadProduct = ({
       }
   
       // Recalculate gstAmount if sellingPrice or gst changes
-      if (updatedData.price && updatedData.gst) {
-        const priceValue = parseFloat(updatedData.price);
+      if (updatedData.productprice && updatedData.gst) {
+        const priceValue = parseFloat(updatedData.productprice);
         const gstPercentage = parseFloat(updatedData.gst);
   
         if (priceValue > 0 && gstPercentage >= 0) {
@@ -293,7 +295,7 @@ const UploadProduct = ({
             )}
           </div>
 
-          <label htmlFor='price' className='mt-3'>MRP Price :</label>
+        <label htmlFor='price' className='mt-3'>MRP Price :</label>
         <input
           type='number'
           id='price'
@@ -303,6 +305,18 @@ const UploadProduct = ({
           onChange={handleOnChange}
           className='p-2 bg-slate-100 border rounded'
           required
+          onWheel={(e) => e.target.blur()} // Prevents scroll behavior
+        />
+
+        <label htmlFor='price' className='mt-3'>Product Price :</label>
+        <input
+          type='number'
+          id='productprice'
+          placeholder='Enter prosuct price'
+          value={data.productprice}
+          name='productprice'
+          onChange={handleOnChange}
+          className='p-2 bg-slate-100 border rounded'
           onWheel={(e) => e.target.blur()} // Prevents scroll behavior
         />
           <label htmlFor='margin' className='mt-3'>Margin Amount :</label>
@@ -343,6 +357,17 @@ const UploadProduct = ({
             disabled
           />
 
+          <label htmlFor='hsncode' className='mt-3'>HSN Code :</label>
+          <input
+           type='text'
+            id='hsncode'
+            placeholder='Enter HSN Code here '
+            value={data.hsncode}
+            name='hsncode'
+            onChange={handleOnChange}
+            className='p-2 bg-slate-100 border rounded'
+          />
+
           <label htmlFor="gst" className="mt-3">GST Percentage (%):</label>
           <select
             id="gst"
@@ -381,14 +406,15 @@ const UploadProduct = ({
             className='p-2 bg-slate-100 border rounded'
           />
 
-          <label htmlFor="soldBy" className="mt-3 block">
+          <label htmlFor="description" className="mt-3 block">
             Description:
           </label>
           <textarea
-            id="soldBy"
-            placeholder="Enter Sold by"
-            value={data.soldBy}
-            name="soldBy"
+            type='text'
+            id="description"
+            placeholder="Enter description"
+            value={data.description}
+            name="description"
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded w-full h-10 overflow-y-auto"
           ></textarea>

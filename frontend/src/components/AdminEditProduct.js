@@ -16,10 +16,18 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
     productName: productData?.productName,
     brandName: productData?.brandName,
     category: productData?.category,
+    subcategory : productData?.subcategory,
     productImage: productData?.productImage || [],
     description: productData?.description,
     price: productData?.price,
+    productprice: productData?.productprice,
     sellingPrice: productData?.sellingPrice,
+    quantity: productData?.quantity,
+    percentOff: productData?. percentOff,
+    hsncode: productData?.hsncode,
+    gst: productData?.gst,
+    gstAmount: productData?.gstAmount,
+    margin: productData?.margin,
 
     soldBy: productData?.soldBy,
     _id: productData?._id,
@@ -38,8 +46,8 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
       };
 
       // Recalculate sellingPrice if price or percentOff changes
-      if (updatedData.price && updatedData.percentOff && updatedData.margin) {
-        const priceValue = parseFloat(updatedData.price);
+      if (updatedData.productprice && updatedData.percentOff && updatedData.margin) {
+        const priceValue = parseFloat(updatedData.productprice);
         const discount = parseFloat(updatedData.percentOff);
         const margin = parseFloat(updatedData.margin)
 
@@ -50,8 +58,8 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
       }
 
       // Recalculate gstAmount if sellingPrice or gst changes
-      if (updatedData.price && updatedData.gst) {
-        const priceValue = parseFloat(updatedData.price);
+      if (updatedData.productprice && updatedData.gst) {
+        const priceValue = parseFloat(updatedData.productprice);
         const gstPercentage = parseFloat(updatedData.gst);
   
         if (priceValue > 0 && gstPercentage >= 0) {
@@ -302,8 +310,19 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
             name='price'
             onChange={handleOnChange}
             className='p-2 bg-slate-100 border rounded'
-        
           />
+
+        <label htmlFor='price' className='mt-3'>Product Price :</label>
+        <input
+          type='number'
+          id='productprice'
+          placeholder='Enter prosuct price'
+          value={data.productprice}
+          name='productprice'
+          onChange={handleOnChange}
+          className='p-2 bg-slate-100 border rounded'
+          onWheel={(e) => e.target.blur()} // Prevents scroll behavior
+        />
 
           <label htmlFor='margin' className='mt-3'>Margin Amount :</label>
            <input
@@ -339,6 +358,17 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
             name="sellingPrice"
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded"
+          />
+
+          <label htmlFor='hsncode' className='mt-3'>HSN Code :</label>
+          <input
+           type='text'
+            id='hsncode'
+            placeholder='Enter HSN Code here '
+            value={data.hsncode}
+            name='hsncode'
+            onChange={handleOnChange}
+            className='p-2 bg-slate-100 border rounded'
           />
 
           <label htmlFor="gst" className="mt-3">GST Percentage (%):</label>

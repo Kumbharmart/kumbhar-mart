@@ -75,7 +75,7 @@ const VerticalCard = ({ loading, data = [] }) => {
                                 {/* Display the discount percentage if applicable */}
                                 {discount > 0 && (
                                     <span className="absolute top-2 left-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded-lg">
-                                        5% OFF
+                                        {discount}% OFF
                                     </span>
                                 )}
                             </div>
