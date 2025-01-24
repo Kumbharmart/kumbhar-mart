@@ -216,7 +216,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
             name="brandName"
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded"
-            required
+          
           />
 
           <label htmlFor="category" className="mt-3">
@@ -302,7 +302,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
             name='price'
             onChange={handleOnChange}
             className='p-2 bg-slate-100 border rounded'
-            required
+        
           />
 
           <label htmlFor='margin' className='mt-3'>Margin Amount :</label>
@@ -314,7 +314,6 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
              name='margin'
              onChange={handleOnChange}
              className='p-2 bg-slate-100 border rounded'
-             required
              onWheel={(e) => e.target.blur()} // Prevents scroll behavior
            />
 
@@ -327,7 +326,6 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
             name="percentOff"
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded"
-            required
           />
 
           <label htmlFor="sellingPrice" className="mt-3">
@@ -341,7 +339,6 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
             name="sellingPrice"
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded"
-            required
           />
 
           <label htmlFor="gst" className="mt-3">GST Percentage (%):</label>
@@ -351,7 +348,6 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
             value={data.gst}
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded"
-            required
           >
             <option value="" disabled>Select GST percentage</option>
             <option value="0">0%</option>

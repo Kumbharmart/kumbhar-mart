@@ -216,7 +216,7 @@ const UploadProduct = ({
             name='brandName'
             onChange={handleOnChange}
             className='p-2 bg-slate-100 border rounded'
-            required
+          
           />
 
           {/* Category Dropdown */}
@@ -350,7 +350,6 @@ const UploadProduct = ({
             value={data.gst}
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded"
-            required
           >
             <option value="" disabled>Select GST percentage</option>
             <option value="0">0%</option>
