@@ -16,7 +16,7 @@ require('dotenv').config();
 const fs = require('fs');
 
 app.use(cors({
-    origin: ['http://kumbharmart.com', 'http://localhost:3000'],
+    origin: ['https://kumbharmart.com', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Allow cookies and other credentials
