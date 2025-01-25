@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import SummaryApi from '../common';
 import { Link } from 'react-router-dom';
-import personalCareImage from '../assest/Images/Personal Care/8.jpeg';
-import homeCareImage from '../assest/Images/Home Care/5.jpeg';
-import medicinesImage from '../assest/Images/Medicines/7.jpeg';
-import fruitsImage from '../assest/Images/fruits/3.jpeg';
-import beautyImage from '../assest/CategoryImgs/Beauty.jpg';
-import stationaryImage from '../assest/Images/Stationary/10.jpeg';
-import electronicsImage from '../assest/Images/Electronics/2.jpeg';
-import homeDecorImage from '../assest/Images/Kitchen/11.jpeg';
-import groceriesImage from '../assest/Images/Groceries/4.png';
-import fashion from '../assest/CategoryImgs/fashion.jpg'
+import personalCareImage from "../assest/CategoryImgs/Personal Care.png";
+import cookingEssentialImage from "../assest/CategoryImgs/Cooking Essential.png";
+import BeautyCareImage from "../assest/CategoryImgs/Beauty.png";
+import BiscuitsDrinksPackagedFoodsImage from "../assest/CategoryImgs/Biscuits, Drinks & Packaged Foods.png";
+import DairyBakeryImage from "../assest/CategoryImgs/Dairy & Bakery.png";
+import DisposablesImage from "../assest/CategoryImgs/Disposables.png";
+import FruitsVegetablesImage from "../assest/CategoryImgs/Fruits & Vegetables.png";
+import  GiftsHampersImage from "../assest/CategoryImgs/Gifts & Hampers.png";
+import HomeCareImage from "../assest/CategoryImgs/Home Care.png";
+import MomBabyCareImage from "../assest/CategoryImgs/Mom & Baby Care.png";
+import SchoolOfficeImage from "../assest/CategoryImgs/School, Office & Stationary.png";
+import defaultCategoryImage from    "../assest/CategoryImgs/Personal Care.png";
 
 const categoryImages = {
-    "personal care": personalCareImage,
-    "home care": homeCareImage,
-    "medicines": medicinesImage,
-    "fruits": fruitsImage,
-    "beauty": beautyImage,
-    "stationary": stationaryImage,
-    "electronics": electronicsImage,
-    "home decor": homeDecorImage,
-    "groceries": groceriesImage,
-    "fashion": fashion
+     "personal care": personalCareImage,
+           "cooking essential": cookingEssentialImage,
+           "beauty care": BeautyCareImage,
+           "biscuits, drinks, packaged foods": BiscuitsDrinksPackagedFoodsImage,
+           "dairy, bakery": DairyBakeryImage,
+           "disposables": DisposablesImage,
+           "fruits, vegetables": FruitsVegetablesImage,
+           "gifts, hampers": GiftsHampersImage,
+           "home care": HomeCareImage,
+           "mom, baby care": MomBabyCareImage,
+           "school, office, stationary": SchoolOfficeImage,
 };
 
 const CategoryList = () => {

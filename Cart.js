@@ -407,10 +407,10 @@ const Cart = () => {
 
 
         const options = {
-          key: 'rzp_live_j5FzhaF8uVrDAU',
+          key: 'rzp_test_U4XuiM2cjeWzma',
           amount: responseData.order.amount,
           currency: responseData.order.currency,
-          name: "YML Mart",
+          name: "Kumbhar Mart",
           description: "Payment for Order",
           image: "/logo.png",
           order_id: responseData.order.id,

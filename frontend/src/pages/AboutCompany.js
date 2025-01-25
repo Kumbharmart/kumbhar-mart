@@ -54,7 +54,7 @@ const AboutCompany = () => {
                   </a>
                 </span>
               </div>
-          <p class="leading-relaxed max-w-2xl mx-auto text-base sm:text-lg">At YML Mart, our mission is to redefine your online shopping experience by offering a wide range of high-quality products at unbeatable prices. As a newly launched e-commerce platform, we're committed to bringing you the latest trends and essential items across categories like electronics, fashion, home goods, and more. Our user-friendly website, fast delivery service, and dedicated customer support team ensure that your shopping journey is smooth and enjoyable.</p>
+          <p class="leading-relaxed max-w-2xl mx-auto text-base sm:text-lg">At Kumbharc Mart, our mission is to redefine your online shopping experience by offering a wide range of high-quality products at unbeatable prices. As a newly launched e-commerce platform, we're committed to bringing you the latest trends and essential items across categories like electronics, fashion, home goods, and more. Our user-friendly website, fast delivery service, and dedicated customer support team ensure that your shopping journey is smooth and enjoyable.</p>
         </div>
 
         {/* <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5"></div> */}

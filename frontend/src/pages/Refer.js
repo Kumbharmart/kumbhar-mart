@@ -45,14 +45,14 @@ const ReferCard = () => {
 
   const generateMessage = (platform) => {
     const referralCode = userData?.refferal?.refferalcode;
-    const baseMessage = `Check out YML Mart for amazing deals! Use my referral code ${referralCode} to get an extra 5% off on every order. Visit: https://ymlmart.com`;
+    const baseMessage = `Check out Kumbhar Mart for amazing deals! Use my referral code ${referralCode} to get an extra 5% off on every order. Visit: https://kumbharmart.com`;
 
     if (platform === 'whatsapp') {
-      return `https://wa.me/?text=${encodeURIComponent(baseMessage)}`;
+      return `https://wa.me/?te${encodeURIComponent(baseMessage)}`;
     } else if (platform === 'instagram') {
-      return `https://www.instagram.com?text=${encodeURIComponent(baseMessage)}`;
+      return `https://www.instagram.cotex=${encodeURIComponent(baseMessage)}`;
     } else if (platform === 'facebook') {
-      return `https://www.facebook.com/sharer/sharer.php?u=https://ymlmart.com&quote=${encodeURIComponent(baseMessage)}`;
+      return `https://www.facebook.com/sharer/sharer.php?u=https://ymt.com&quote=${encodeURIComponent(baseMessage)}`;
     }
   };
 

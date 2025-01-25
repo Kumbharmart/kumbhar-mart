@@ -35,7 +35,8 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
   const [fullScreenImage, setFullScreenImage] = useState("");
   const { authToken } = useContext(Context); // Get the authToken from Context
-
+   const [subcategories, setSubcategories] = useState([]);
+   const [subSubcategories, setSubSubcategories] = useState([]);
   const handleOnChange = (e) => {
     const { name, value } = e.target;
 
@@ -118,6 +119,18 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
       ...prev,
       productImage: [...newProductImage],
     }));
+  };
+
+  const handleSubcategoryChange = (e) => {
+    const selectedSubcategory = e.target.value;
+    const selected = subcategories.find((subcat) => subcat.value === selectedSubcategory);
+    setData((prev) => ({
+      ...prev,
+      subcategory: selectedSubcategory,
+      subSubcategory: "", // Reset sub-subcategory
+    }));
+    // Safely set sub-subcategories if they exist
+    setSubSubcategories(selected?.subcategories || []);
   };
 
   {
@@ -246,6 +259,26 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
               );
             })}
           </select>
+
+          {subcategories.length > 0 && (
+  <>
+    <label htmlFor="subcategory" className="mt-3">Subcategory :</label>
+    <select
+      required
+      value={data.subcategory}
+      name="subcategory"
+      onChange={handleSubcategoryChange}
+      className="p-2 bg-slate-100 border rounded"
+    >
+      <option value={""}>Select Subcategory</option>
+      {subcategories.map((subcat, index) => (
+        <option value={subcat.value} key={subcat.value + index}>
+          {subcat.label}
+        </option>
+      ))}
+    </select>
+  </>
+)}
 
           <label htmlFor="productImage" className="mt-3">
             Product Image :

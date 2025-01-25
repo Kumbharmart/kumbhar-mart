@@ -5,7 +5,7 @@ const TermsAndConditions = () => {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Terms & Conditions</h1>
       <p className="mb-4">
-        These terms and conditions apply to the YML Mart app (hereinafter
+        These terms and conditions apply to the Kumbhar Mart app (hereinafter
         referred to as the "Application") for mobile devices, developed by
         Yahshua Marketing Limited (hereinafter referred to as the "Service
         Provider") as a free service.

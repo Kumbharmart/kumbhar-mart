@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
           Privacy Policy
         </h1>
         <p className="text-gray-700 mb-6">
-          This privacy policy is applicable to the YML Mart app (hereinafter
+          This privacy policy is applicable to the Kumbhar Mart app (hereinafter
           referred to as "Application") for mobile devices, which was developed
           by Yahshua Marketing Limited (hereinafter referred to as "Service
           Provider") as a Free service. This service is provided "AS IS".

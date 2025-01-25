@@ -17,15 +17,15 @@ const Home = () => {
       <CategoryList/>
       <BannerProduct/>
       <Link to={"/refer"}><AdBanner/></Link>
-      {/* <GroceryCart category={"groceries"} heading={"Popular's Groceries"}/> */}
+      {/* <GroceryCart category={"personal care"} heading={"Personal Care"}/> */}
       {/* <Offer/>
       <SaleBanner/>
       <CardPage/> */}
 
-      {/* <GroceryCart category={"medicines"} heading={"Medicines"}/>
+     {/* <GroceryCart category={"cooking essential"} heading={"Cooking Essential"}/>
       <GroceryCart category={"fruits"} heading={"Fruits & Vegetables"}/> */}
-      {/* <Column category={"personal care"} heading={"Personal Care"}/>
-      <Column category={"home decor"} heading={"Home Decor"}/>
+     <Column category={"cooking essential"} heading={"cooking essential"}/>
+       {/* <Column category={"home decor"} heading={"Home Decor"}/>
       <Column category={"gifts, hampers"} heading={"Gifts, Hampers"}/>
       <Column category={"beauty"} heading={"Beauty"}/>
       <Column category={"stationary"} heading={"Stationary"}/> */}

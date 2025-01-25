@@ -15,7 +15,7 @@ const SellerHome = () => {
         backgroundPosition: 'center',
         height: '20vh' // adjust height as needed
       }}
-    >        <h1 className="text-4xl font-bold text-white">Grow Your Business with YML Mart!</h1>
+    >        <h1 className="text-4xl font-bold text-white">Grow Your Business with Kumbhar Mart!</h1>
         <p className="text-lg text-white mt-4">
           Join our platform to reach millions of customers and grow your business with ease.
         </p>
