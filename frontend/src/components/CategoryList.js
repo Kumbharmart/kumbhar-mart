@@ -2,18 +2,34 @@ import React, { useEffect, useState } from 'react';
 import SummaryApi from '../common';
 import { Link } from 'react-router-dom';
 import productCategory from '../helpers/productCategory'; // Assuming productCategory is an array with subcategories for each category
-import personalCareImage from "../assest/products/Personalcare/personalcare.jpeg";
-import cookingEssentialImage from "../assest/products/cooking/cooking.jpeg";
-import defaultCategoryImage from "../assest/products/Personalcare/personalcare.jpeg"; // Fallback image
+import personalCareImage from "../assest/CategoryImgs/Personal Care.png";
+import cookingEssentialImage from "../assest/CategoryImgs/Cooking Essential.png";
+import BeautyCareImage from "../assest/CategoryImgs/Beauty.png";
+import BiscuitsDrinksPackagedFoodsImage from "../assest/CategoryImgs/Biscuits, Drinks & Packaged Foods.png";
+import DairyBakeryImage from "../assest/CategoryImgs/Dairy & Bakery.png";
+import DisposablesImage from "../assest/CategoryImgs/Disposables.png";
+import FruitsVegetablesImage from "../assest/CategoryImgs/Fruits & Vegetables.png";
+import  GiftsHampersImage from "../assest/CategoryImgs/Gifts & Hampers.png";
+import HomeCareImage from "../assest/CategoryImgs/Home Care.png";
+import MomBabyCareImage from "../assest/CategoryImgs/Mom & Baby Care.png";
+import SchoolOfficeImage from "../assest/CategoryImgs/School, Office & Stationary.png";
+import defaultCategoryImage from    "../assest/CategoryImgs/Personal Care.png"; // Fallback image
 
 const CategoryList = () => {
-
+    // Mapping category names to corresponding images
     const categoryImages = {
         "personal care": personalCareImage,
         "cooking essential": cookingEssentialImage,
-        // Add more categories as needed
+        "beauty care": BeautyCareImage,
+        "biscuits, drinks & packaged foods": BiscuitsDrinksPackagedFoodsImage,
+        "dairy & bakery": DairyBakeryImage,
+        "disposables": DisposablesImage,
+        "fruits & vegetables": FruitsVegetablesImage,
+        "gifts & hampers": GiftsHampersImage,
+        "home care": HomeCareImage,
+        "mom & baby care": MomBabyCareImage,
+        "school, office & stationary": SchoolOfficeImage,
     };
-    
     const [categoryProduct, setCategoryProduct] = useState([]);
     const [loading, setLoading] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null);

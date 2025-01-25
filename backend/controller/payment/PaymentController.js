@@ -26,11 +26,13 @@ const s3 = new AWS.S3();
 // Create Razorpay Order
 const createOrder = async (req, res) => {
     const { amount, currency, receipt, userId, products, deliveryAddress } = req.body;
+    const deliveryCharges = amount > 1000 ? 0 : 20;
+    const totalAmount = amount + deliveryCharges;
 
     try {
         // Razorpay order options
         const options = {
-            amount:  Math.ceil(amount * 100), // Amount in paisa (Razorpay requires amount in smallest currency unit)
+            amount:  Math.ceil(totalAmount * 100), // Amount in paisa (Razorpay requires amount in smallest currency unit)
             currency: currency || "INR",
             receipt: receipt || `receipt_${Date.now()}`,
         };
@@ -172,7 +174,6 @@ const generateInvoiceAndUploadToS3 = async (order) => {
 
         // Title Section with logo and company info
         doc.image('Images/kmlogo.jpg', 50, 40, { width: 100 });
-         // Add a logo
         doc.fontSize(25).text('Kumbhar Mart', { align: 'center', bold: true });
         doc.fontSize(10).text('Contact: +91-7722035103 | Email: martkumbhar@gmail.com', { align: 'center' });
         doc.moveDown(1);
@@ -197,14 +198,13 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         doc.fontSize(12).font('Helvetica-Bold');
         doc.rect(50, headerY, 500, 20).fill('#007BFF'); // Header background color
         doc.fillColor('#ffffff');
-        doc.text('Description', 50, headerY )
-            .text('Unit Price', 140, headerY , { align: 'center' })
-            .text('Qty', 250, headerY , { align: 'center' })
-            .text('GST%', 360, headerY , { align: 'center' })
-            .text('GST Amount', 460, headerY + 5, { align: 'center' })
-            .text('Total', 560, headerY , { align: 'right' });
+        doc.text('Description', 55, headerY + 5)
+            .text('Unit Price', 200, headerY + 5, { align: 'center' })
+            .text('Qty', 300, headerY + 5, { align: 'center' })
+            .text('GST%', 400, headerY + 5, { align: 'center' })
+            .text('Total', 500, headerY + 5, { align: 'right' });
 
-        doc.moveTo(50, headerY + 10).lineTo(600, headerY + 10).stroke(); // Line below header
+        doc.moveTo(50, headerY + 20).lineTo(550, headerY + 20).stroke(); // Line below header
         doc.y = headerY + 25;
         doc.font('Helvetica').fontSize(10);
         const headerYz = doc.y;
@@ -215,9 +215,8 @@ const generateInvoiceAndUploadToS3 = async (order) => {
                 const productDetails = await productModel.findById(product.productId);
                 return {
                     productId: product.productId,
-                    mrpPrice: productDetails?.price || 0,
+                    mrpPrice: productDetails?.sellingPrice || 0,
                     gst: productDetails?.gst || 0,
-                    gstAmount: productDetails?.gstAmount || 0,
                 };
             })
         );
@@ -226,7 +225,6 @@ const generateInvoiceAndUploadToS3 = async (order) => {
             acc[curr.productId.toString()] = {
                 mrpPrice: curr.mrpPrice,
                 gst: curr.gst,
-                gstAmount: curr.gstAmount
             };
             return acc;
         }, {});
@@ -238,10 +236,10 @@ const generateInvoiceAndUploadToS3 = async (order) => {
             const productData = productDetailsLookup[product.productId.toString()] || {};
             const mrpPrice = productData.mrpPrice || 0;
             const gst = productData.gst || 0;
-            const gstAmount = productData.gstAmount || 0;
 
             const productTotal = mrpPrice * product.quantity;
-            totalAmount += productTotal;
+            const gstAmount = (productTotal * gst) / 100;
+            totalAmount += productTotal + gstAmount;
 
             // Alternating row color
             const rowColor = index % 2 === 0 ? '#f1f1f1' : '#ffffff';
@@ -249,14 +247,13 @@ const generateInvoiceAndUploadToS3 = async (order) => {
 
             // Print product details in a row
             doc.fillColor('#000000')
-                .text(`${index + 1}. ${product.name}`, 50, currentY)
-                .text(`${mrpPrice.toFixed(2)}`, 120, currentY, { align: 'center' })
-                .text(`${product.quantity}`, 220, currentY, { align: 'center' })
-                .text(`${gst}%`, 320, currentY, { align: 'center' })
-                .text(`${gstAmount.toFixed(2)}`, 350, currentY, { align: 'center' })
-                .text(`${productTotal.toFixed(2)}`, 460, currentY, { align: 'right' });
+                .text(`${index + 1}. ${product.name}`, 55, currentY)
+                .text(`${mrpPrice.toFixed(2)}`, 200, currentY, { align: 'center' })
+                .text(`${product.quantity}`, 300, currentY, { align: 'center' })
+                .text(`${gst}%`, 400, currentY, { align: 'center' })
+                .text(`${(productTotal + gstAmount).toFixed(2)}`, 500, currentY, { align: 'right' });
 
-            doc.moveTo(50, currentY + 10).lineTo(550, currentY + 10).stroke(); // Line below product row
+            doc.moveTo(50, currentY + 18).lineTo(550, currentY + 18).stroke(); // Line below product row
 
             currentY += 20; // Adjust row height as needed
         });
@@ -267,22 +264,25 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         const discountedAmount = totalAmount - discount + deliveryCharges;
         const finalTotal = Math.ceil(discountedAmount);
 
+      
         // Subtotal, Discount, Delivery Charges, and Total section
-        doc.moveDown(1);
-        doc.font('Helvetica-Bold')
-            .text('Subtotal (incl. GST):', 250, doc.y, { align: 'right', continued: true })
-            .text(`${Math.ceil(totalAmount)}`, 300, doc.y, { align: 'right' });
+doc.moveDown(1);
+doc.font('Helvetica-Bold')
+    .text('Subtotal:', 300, doc.y, { align: 'right', continued: true })
+    .text(`${Math.ceil(totalAmount).toFixed(2)}`, 350, doc.y, { align: 'right' });
 
-        doc.text('Discount (5%):', 250, doc.y, { align: 'right', continued: true })
-            .text(`-${Math.floor(discount)}`, 300, doc.y, { align: 'right' });
+doc.moveDown(0.5);
+doc.text('Discount (5%):', 300, doc.y, { align: 'right', continued: true })
+    .text(`-${Math.floor(discount).toFixed(2)}`, 350, doc.y, { align: 'right' });
 
-        doc.text('Delivery Charges:', 250, doc.y, { align: 'right', continued: true })
-            .text(`${deliveryCharges}`, 300, doc.y, { align: 'right' });
+doc.moveDown(0.5);
+doc.text('Delivery Charges:', 300, doc.y, { align: 'right', continued: true })
+    .text(`${deliveryCharges.toFixed(2)}`, 350, doc.y, { align: 'right' });
 
-        doc.moveDown(1);
-        doc.fontSize(14).font('Helvetica-Bold')
-            .text('Total:', 250, doc.y, { align: 'right', continued: true })
-            .text(`${finalTotal}`, 300, doc.y, { align: 'right' });
+doc.moveDown(1);
+doc.fontSize(14).font('Helvetica-Bold')
+    .text('Total:', 300, doc.y, { align: 'right', continued: true })
+    .text(`${finalTotal.toFixed(2)}`, 350, doc.y, { align: 'right' });
 
         // Footer Section with company details
         doc.moveDown(2);
@@ -291,6 +291,5 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         // Finalize the PDF
         doc.end();
     });
-    
 };
 module.exports = { createOrder, handlePaymentSuccess };
