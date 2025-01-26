@@ -24,10 +24,10 @@ const Home = () => {
 
      {/* <GroceryCart category={"cooking essential"} heading={"Cooking Essential"}/>
       <GroceryCart category={"fruits"} heading={"Fruits & Vegetables"}/> */}
-     <Column category={"cooking essential"} heading={"cooking essential"}/>
-       {/* <Column category={"home decor"} heading={"Home Decor"}/>
-      <Column category={"gifts, hampers"} heading={"Gifts, Hampers"}/>
-      <Column category={"beauty"} heading={"Beauty"}/>
+     <Column category={"cooking essential"} heading={"Cooking Essential"}/>
+       <Column category={"biscuits, drinks, packaged foods"} heading={"Biscuits, Drinks, Packaged Foods"}/>
+      <Column category={"home care"} heading={"Home Care"}/>
+       {/*<Column category={"beauty"} heading={"Beauty"}/>
       <Column category={"stationary"} heading={"Stationary"}/> */}
       {/* <GroceryCart category={"home care"} heading={"Home Care"}/> */}
       

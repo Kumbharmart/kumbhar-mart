@@ -37,7 +37,7 @@ async function userSignUpController(req, res) {
       }
 
       const { name, password, mobileNo, refferredbycode } = req.body;
-      const defaultReferredByCode = refferredbycode || "NXH058";
+      const defaultReferredByCode = refferredbycode || "UVQ421";
 
       // Check if the user already exists
       const existingUser = await userModel.findOne({ mobileNo });

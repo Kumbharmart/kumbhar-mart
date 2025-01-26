@@ -116,10 +116,10 @@ const PrivacyPolicy = () => {
           <p className="text-gray-700">
             For any privacy-related concerns, please reach out to us at{" "}
             <a
-              href="mailto:info@ymlmart.com"
+              href="mailto:martkumbhar@gmail.com"
               className="text-blue-600 underline"
             >
-              info@ymlmart.com
+             martkumbhar@gmail.com
             </a>
             .
           </p>

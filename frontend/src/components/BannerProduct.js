@@ -10,70 +10,81 @@ import Loader from './Loader';
 
 const BannerProduct = () => {
     const [bannerImages, setBannerImages] = useState([]);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetch(SummaryApi.allBanner.url)
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 if (data.success && data.data) {
-                    console.log(data)
                     const bannersArray = Object.values(data.data);
                     setBannerImages(bannersArray);
                 } else {
                     console.error('Unexpected data format:', data);
                 }
-                setLoading(false); // Set loading to false once data is fetched
+                setLoading(false);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error fetching banner images:', error);
-                setLoading(false); // Set loading to false even on error
+                setLoading(false);
             });
     }, []);
 
     return (
-        <div className='container rounded relative'>
-            <div className='h-56 md:h-72 w-full relative' style={{ height: '250px' }}>
-                
+        <div className="container mx-auto rounded relative">
+            <div className="h-56 md:h-72 w-full relative">
                 {loading ? (
-                    // Loader component
-                    <Loader></Loader>
+                    <Loader />
                 ) : (
                     <>
                         {/* Desktop and tablet version */}
-                        <div className='hidden md:block h-full w-full relative'>
+                        <div className="hidden md:block h-full w-full relative">
                             <Swiper
                                 slidesPerView={3}
                                 spaceBetween={20}
                                 loop={true}
                                 pagination={{ clickable: true }}
-                                autoplay={{ delay: 3000, disableOnInteraction: false }} // Adjust delay as needed
+                                autoplay={{ delay: 3000, disableOnInteraction: false }}
                                 modules={[Pagination, Autoplay]}
-                                className='h-full w-full'
-                                effect='coverflow'
-                            > w-full
+                                className="h-full w-full"
+                                effect="coverflow"
+                            >
                                 {bannerImages.map((banner, index) => (
-                                    <SwiperSlide key={banner._id || index} className='flex justify-center items-center'>
-                                        <img src={banner.imageUrl} className='w-full h-full object-cover rounded-md' alt={`Banner ${index}`} />
+                                    <SwiperSlide
+                                        key={banner._id || index}
+                                        className="flex justify-center items-center"
+                                    >
+                                        <img
+                                            src={banner.imageUrl}
+                                            className="w-full h-full object-contain rounded-md"
+                                            alt={`Banner ${index}`}
+                                        />
                                     </SwiperSlide>
                                 ))}
                             </Swiper>
                         </div>
 
                         {/* Mobile version */}
-                        <div className='md:hidden h-full w-full relative'>
+                        <div className="md:hidden h-full w-full relative">
                             <Swiper
                                 slidesPerView={1}
                                 spaceBetween={10}
                                 loop={true}
                                 pagination={{ clickable: true }}
-                                autoplay={{ delay: 3000, disableOnInteraction: false }} // Adjust delay as needed
+                                autoplay={{ delay: 3000, disableOnInteraction: false }}
                                 modules={[Pagination, Autoplay]}
-                                className='h-full'
+                                className="h-full"
                             >
                                 {bannerImages.map((banner, index) => (
-                                    <SwiperSlide key={banner._id || index} className='flex justify-center items-center'>
-                                        <img src={banner.imageUrl} className='w-full h-full object-cover rounded-md' alt={`Banner ${index}`} />
+                                    <SwiperSlide
+                                        key={banner._id || index}
+                                        className="flex justify-center items-center"
+                                    >
+                                        <img
+                                            src={banner.imageUrl}
+                                            className="w-full h-full object-contain rounded-md"
+                                            alt={`Banner ${index}`}
+                                        />
                                     </SwiperSlide>
                                 ))}
                             </Swiper>

@@ -15,7 +15,7 @@ const CancellationRefundPolicy = () => {
             Refund Policy
           </h2>
           <p className="text-gray-700">
-            At YMLMart, we strive to ensure customer satisfaction with every
+            At Kumbhar Mart, we strive to ensure customer satisfaction with every
             purchase. However, we do not provide refunds for any products once
             they are delivered. If you encounter any issues with your order,
             such as receiving a damaged product or an incorrect item, we offer
@@ -40,7 +40,7 @@ const CancellationRefundPolicy = () => {
           </ul>
           <p className="text-gray-700 mt-2">
             To initiate a replacement request, customers must contact our
-            support team at <strong>info@ymlmart.com</strong> within{" "}
+            support team at <strong>martkumbhar@gmail.com</strong> within{" "}
             <strong>2 days</strong> of receiving the order. Proof of the
             issue, such as photos or videos, may be required to process your
             request.
@@ -74,11 +74,11 @@ const CancellationRefundPolicy = () => {
             Orders can only be canceled if the cancellation request is made
             before the order is shipped. Once an order is dispatched, it cannot
             be canceled. To request a cancellation, please contact our support
-            team immediately at <strong>info@ymlmart.com</strong>.
+            team immediately at <strong>martkumbhar@gmail.com</strong>.
           </p>
         </section>
         <p className="text-gray-700">
-          By purchasing from YMLMart, you agree to our Cancellation/Refund
+          By purchasing from Kumbhar Mart, you agree to our Cancellation/Refund
           Policy. For further inquiries or assistance, feel free to reach out
           to our support team.
         </p>

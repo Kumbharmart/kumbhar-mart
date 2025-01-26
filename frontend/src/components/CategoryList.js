@@ -143,6 +143,11 @@ const CategoryList = () => {
         };
     }, []);
 
+    const truncateCategoryName = (name) => {
+        const words = name.split(" ");
+        return words.length > 2 ? `${words.slice(0, 2).join(" ")}...` : name;
+    };
+
     return (
         <div className="container pt-5 pb-8">
             <div className="flex items-center gap-4 justify-between overflow-x-auto bg-white p-6 rounded-lg shadow-lg">
@@ -173,8 +178,8 @@ const CategoryList = () => {
                                             className="h-full object-scale-down hover:scale-125 transition-transform"
                                         />
                                     </div>
-                                    <p className="text-center text-sm md:text-base capitalize mt-2">
-                                        {product?.category}
+                                     <p className="text-center text-sm md:text-base capitalize mt-2">
+                                        {truncateCategoryName(product?.category)}
                                     </p>
                                 </div>
                             </Link>

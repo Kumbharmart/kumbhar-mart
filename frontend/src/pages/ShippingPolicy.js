@@ -15,7 +15,7 @@ const ShippingPolicy = () => {
             Shipping Process
           </h2>
           <p className="text-gray-700">
-            At YMLMart, we ensure that all orders are delivered directly to your
+            At Kumbhar Mart, we ensure that all orders are delivered directly to your
             doorstep for a seamless shopping experience. Please note that cash
             on delivery (COD) is currently not available.
           </p>
@@ -66,7 +66,7 @@ const ShippingPolicy = () => {
           </h2>
           <p className="text-gray-700">
             If your package is damaged or lost during transit, please contact
-            our support team at <strong>info@ymlmart.com</strong> within{" "}
+            our support team at <strong>martkumbhar@gmail.com</strong> within{" "}
             <strong>2 days</strong> from the delivery date. Our team will
             assist you in resolving the issue promptly.
           </p>

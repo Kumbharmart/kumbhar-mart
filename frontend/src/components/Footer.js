@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FaInstagram, FaLinkedin, FaFacebook } from "react-icons/fa";
 import { IoIosCall, IoMdMail } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
-import footerlogo from "../assest/logoImages/name1.png";
+import footerlogo from "../assest/logoImages/3_processed.png";
 
 // Scroll to top component with smooth scroll
 const ScrollToTop = () => {
@@ -40,13 +40,13 @@ const Footer = () => {
               </a>
               <h2 className="mt-3 text-lg font-bold text-white">Download our app</h2>
               <div className="flex justify-center items-center gap-3 mt-3">
-  <a href="https://play.google.com/">
-    <img src="Google-play.png" alt="Google Play" className="w-28 h-19" />
-  </a>
-  <a href="https://www.apple.com/in/app-store/">
-    <img src="App-store.png" alt="App Store" className="w-28 " />
-  </a>
-</div>
+                <a href="https://play.google.com/">
+                  <img src="Google-play.png" alt="Google Play" className="w-28 h-19" />
+                </a>
+                <a href="https://www.apple.com/in/app-store/">
+                  <img src="App-store.png" alt="App Store" className="w-28 " />
+                </a>
+              </div>
 
             </div>
 
@@ -128,14 +128,8 @@ const Footer = () => {
           <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
             <p className="text-center md:text-left">&copy; 2024 | Kumbhar Mart .</p>
             <div className="flex gap-3 justify-center md:justify-end mt-2 md:mt-0">
-              <a href="https://www.instagram.com/ymlmartofficial?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="hover:text-white">
+              <a href="https://www.instagram.com/kumbharmart?igsh=anUxOWpseDhlMGty" target="_blank" rel="noopener noreferrer" className="hover:text-white">
                 <FaInstagram size={18} />
-              </a>
-              <a href="https://www.linkedin.com/company/yahshua-marketing-limited/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                <FaLinkedin size={18} />
-              </a>
-              <a href="https://www.facebook.com/search/top?q=yahshua%20marketing%20limited" target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                <FaFacebook size={18} />
               </a>
             </div>
             <div className="flex gap-3 justify-center md:justify-end mt-2 md:mt-0">

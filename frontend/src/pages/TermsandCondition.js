@@ -137,16 +137,16 @@ const TermsAndConditions = () => {
         <p>
           <strong>Email:</strong>{" "}
           <a
-            href="mailto:info@ymlmart.com"
+            href="mailto:martkumbhar@gmail.com"
             className="text-blue-500 underline"
           >
-            info@ymlmart.com
+            martkumbhar@gmail.com
           </a>
         </p>
       </section>
 
       <p className="text-sm text-gray-600 mt-6">
-        <em>Effective Date: October 4, 2024</em>
+        <em>Effective Date: Feb 1, 2024</em>
       </p>
     </div>
   );
