@@ -10,7 +10,7 @@ const PrivacyPolicy = () => {
         <p className="text-gray-700 mb-6">
           This privacy policy is applicable to the Kumbhar Mart app (hereinafter
           referred to as "Application") for mobile devices, which was developed
-          by Yahshua Marketing Limited (hereinafter referred to as "Service
+          by Kumbhar Mart (hereinafter referred to as "Service
           Provider") as a Free service. This service is provided "AS IS".
         </p>
 
@@ -73,7 +73,7 @@ const PrivacyPolicy = () => {
             User Provided Data is retained as long as you use the Application.
             Automatically Collected Data is retained for up to 24 months, after
             which it is stored in aggregate. For deletion requests, contact
-            yahshuamarketing@gmail.com.
+            martkumbhar@gmail.com
           </p>
         </section>
 
@@ -84,7 +84,7 @@ const PrivacyPolicy = () => {
           <p className="text-gray-700">
             The Application does not knowingly collect data from children under
             the age of 13. If such data is discovered, it will be deleted
-            promptly. Contact yahshuamarketing@gmail.com if you have concerns.
+            promptly. Contact martkumbhar@gmail.com if you have concerns.
           </p>
         </section>
 

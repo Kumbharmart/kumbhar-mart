@@ -165,23 +165,8 @@ const Header = () => {
                   className="py-2 text-lg text-white bg-red-600 hover:bg-red-700 transition-colors duration-300"
                   onClick={toggleMobileMenu}
                 >
-                   Customer Login
+                  Login
                 </Link>
-                  <Link
-                    to={"/admin-login"}
-                    className="hidden lg:inline-block px-4 py-2 text-sm text-white bg-red-700 rounded-full hover:bg-red-800 transition-colors duration-200"
-                    onClick={toggleMobileMenu}
-                  >
-                    Admin Login
-                  </Link>
-              
-                  <Link
-                    to={seller ? "/sellerdashboard" : "/sellerhome"}
-                    className="hidden lg:inline-block px-4 py-2 text-sm text-white bg-green-600 rounded-full hover:bg-green-700 transition-colors duration-200"
-                    onClick={toggleMobileMenu}
-                  >
-                    Seller Login
-                  </Link>
                   </div>
                
               )}
@@ -207,22 +192,6 @@ const Header = () => {
     </div>
 
     <div className="hidden lg:flex items-center ml-auto gap-4">
-      {user?.role !== ROLE.ADMIN && user?.role !== ROLE.SUPER_ADMIN && (
-        <Link
-          to={"/admin-login"}
-          className="hidden lg:inline-block px-4 py-2 text-sm text-white bg-red-700 rounded-full hover:bg-red-800 transition-colors duration-200"
-        >
-          Admin Login
-        </Link>
-      )}
-      {user?.role !== ROLE.ADMIN && user?.role !== ROLE.SUPER_ADMIN && (
-        <Link
-          to={seller ? "/sellerdashboard" : "/sellerhome"}
-          className="hidden lg:inline-block px-4 py-2 text-sm text-white bg-green-600 rounded-full hover:bg-green-700 transition-colors duration-200"
-        >
-          Seller Login
-        </Link>
-      )}
 
       {/* Desktop Menu */}
       <div className="hidden lg:flex items-center">
@@ -306,7 +275,7 @@ const Header = () => {
       to="/login"
       className="px-4 py-2 rounded-full text-sm text-white bg-sky-600 hover:bg-sky-700 transition-colors duration-200"
     >
-      Customer Login
+      Login
     </Link>
   )}
 

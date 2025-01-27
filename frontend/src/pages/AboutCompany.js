@@ -7,7 +7,7 @@ const AboutCompany = () => {
         <div class="container px-5 py-12 mx-auto">
         <div class="text-center ">
       <h2 class="text-sm title-font text-gray-500 tracking-widest">Want to know about us?</h2>
-      <h1 class="text-gray-900 text-2xl sm:text-3xl title-font font-medium mb-4">About YML </h1>
+      <h1 class="text-gray-900 text-2xl sm:text-3xl title-font font-medium mb-4">About Kumbhar Mart </h1>
         </div>
 
     <div class="lg:w-4/5 mx-auto flex flex-wrap items-center">
@@ -16,7 +16,7 @@ const AboutCompany = () => {
         <div class="text-center lg:text-left">
           
           <h2 class="text-sm title-font text-gray-500 tracking-widest">Your E-Commerce Partner</h2>
-          <h1 class="text-gray-900 text-2xl sm:text-3xl title-font font-medium mb-4">YAHSHUA MARKETING LIMITED</h1>
+          <h1 class="text-gray-900 text-2xl sm:text-3xl title-font font-medium mb-4">KUMBHAR MART</h1>
           <div class="flex mb-4">
                 <span class="flex items-center">
                   <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-sky-600" viewBox="0 0 24 24">

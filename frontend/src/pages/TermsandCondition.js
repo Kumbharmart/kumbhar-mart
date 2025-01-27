@@ -7,7 +7,7 @@ const TermsAndConditions = () => {
       <p className="mb-4">
         These terms and conditions apply to the Kumbhar Mart app (hereinafter
         referred to as the "Application") for mobile devices, developed by
-        Yahshua Marketing Limited (hereinafter referred to as the "Service
+        Kumbhar Mart (hereinafter referred to as the "Service
         Provider") as a free service.
       </p>
       <p className="mb-4">

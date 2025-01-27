@@ -70,11 +70,11 @@ const ContactUs = () => {
                 <div className="flex-grow">
                   <div className="flex items-center mb-2">
                     <IoIosCall size={22} className="mr-2" />
-                    <p className="leading-relaxed text-base">+91 - 8888888888</p>
+                    <p className="leading-relaxed text-base">+91-7722035103</p>
                   </div>
                   <div className="flex items-center">
                     <IoMdMail size={22} className="mr-2" />
-                    <p className="leading-relaxed text-base">yahshuasoftware@gmail.com</p>
+                    <p className="leading-relaxed text-base">martkumbhar@gmail.com</p>
                   </div>
                 </div>
               </div>
