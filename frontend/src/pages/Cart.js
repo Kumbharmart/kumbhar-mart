@@ -21,7 +21,8 @@ const Cart = () => {
   const { updateCartProductCount } = useCart();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
-
+  const [isTakeFromShop, setIsTakeFromShop] = useState(false);
+  const [deliveryCharges, setDeliveryCharges] = useState(20); // Default charges
   const [hasAddress, setHasAddress] = useState(false);
   const [MRPAmount, setMRPFinalAmount] = useState(0);
   const [discountPrice, setDiscountPrice] = useState(0);
@@ -42,7 +43,12 @@ const Cart = () => {
     state: "Maharashtra",  // Prefill with "Maharashtra"
     zip: "",
   });
+  const handleTakeFromShop = () => {
+    setIsTakeFromShop((prev) => !prev);
 
+    // Update delivery charges dynamically
+    setDeliveryCharges((prev) => (!isTakeFromShop ? 0 : totalPrice < 1000 ? 20 : 0));
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -383,6 +389,7 @@ const Cart = () => {
             products: validProducts,
             userId: data[0].userId,
             deliveryAddress: finalAddress,
+            isTakeFromShop: isTakeFromShop,
           }),
         });
 
@@ -515,194 +522,206 @@ const Cart = () => {
     
     </div>
 
-    {/* Delivery Address */}
-    <div className="mb-6 p-6 border-b border-gray-200">
-
-    <div className="flex items-center gap-2 mb-3">
-        <h3 className="text-xl font-semibold text-gray-800">Delivery Address</h3>
-        <MdCheckCircle className="text-green-500 text-xl" />
-        
-      </div>
-    {selectedAddress ? (
-        <div className="text-gray-700 flex gap-10">
-          <p>
-          {selectedAddress?.name }, {selectedAddress?.mobileNo}, <br />
-            {selectedAddress?.street}, {selectedAddress?.city}, <br />
-            {selectedAddress?.state}, <strong>{selectedAddress?.zip}</strong>
-          </p>
-          </div>
-      ) : (
-        <div>
-        <button
-          onClick={handleAddAddress}
-          className="bg-sky-600 text-white py-1 px-3 rounded-lg ml-3"
-        >
-          Add Address
-        </button>
-        <p className="text-red-500">No address provided.</p>
-        </div>
-      )}
-      
-      {showAddressForm && (
-  <form className="grid gap-4 mt-4 max-w-lg " onSubmit={handleSubmit}>
-    {/* Name and Mobile Number */}
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      <input
-        type="text"
-        name="name"
-        placeholder="Name"
-        value={address.name}
-        onChange={(e) => setAddress((prev) => ({ ...prev, name: e.target.value }))}
-        className="border p-2 rounded-lg"
-        required
-      />
-      <input
-        type="text"
-        name="mobileNo"
-        placeholder="Mobile Number"
-        value={address.mobileNo}
-        onChange={(e) => setAddress((prev) => ({ ...prev, mobileNo: e.target.value }))}
-        className="border p-2 rounded-lg"
-        required
-      />
-    </div>
-
-    {/* Street and City */}
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      <div>
-        <input
-          type="text"
-          name="street"
-          placeholder="Street"
-          value={address.street}
-          className="border p-2 rounded-lg w-full"
-          required
-          onChange={handleStreetChange}
-        />
-        {streetSuggestions.length > 0 && (
-          <ul className="border border-gray-300 p-2 rounded-lg bg-white">
-            {streetSuggestions.map((suggestion, idx) => (
-              <li
-                key={idx}
-                className="p-1 hover:bg-gray-100 cursor-pointer"
-                onClick={() => {
-                  setAddress((prev) => ({ ...prev, street: suggestion }));
-                  setStreetSuggestions([]); // Close dropdown
-                }}
-              >
-                {suggestion}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      <div>
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={address.city}
-          onChange={handleCityChange}
-          className="border p-2 rounded-lg w-full"
-          required
-          readOnly
-        />
-        {citySuggestions.length > 0 && (
-          <ul className="border border-gray-300 p-2 rounded-lg bg-white">
-            {citySuggestions.map((suggestion, idx) => (
-              <li
-                key={idx}
-                className="p-1 hover:bg-gray-100 cursor-pointer"
-                onClick={() => {
-                  setAddress((prev) => ({ ...prev, city: suggestion }));
-                  setCitySuggestions([]); // Close dropdown
-                }}
-              >
-                {suggestion}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
-
-    {/* State and ZIP Code */}
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-  <input
-    type="text"
-    name="state"
-    placeholder="State"
-    value={address.state}
-    className="border p-2 rounded-lg h-full"
-    required
-  />
-  <div className="flex flex-col">
-    <input
-      type="number"
-      name="zip"
-      value={address.zip}
-      onChange={handlePincodeChange}
-      placeholder="Enter Pincode"
-      className="border p-2 rounded-lg h-full"
-      required
-    />
-    
+   {/* Delivery Address */}
+<div className="mb-6 p-6 border-b border-gray-200">
+  <div className="flex items-center gap-2 mb-3">
+    <h3 className="text-xl font-semibold text-gray-800">Delivery Address</h3>
+    <MdCheckCircle className="text-green-500 text-xl" />
   </div>
-  
-</div>
-{errorMessage && (
-      <p className="text-red-500 text-sm p-2 ml-64  h-full">
-        {errorMessage}
+
+  {selectedAddress ? (
+    <div className="text-gray-700 flex gap-10">
+      <p>
+        {selectedAddress?.name}, {selectedAddress?.mobileNo}, <br />
+        {selectedAddress?.street}, {selectedAddress?.city}, <br />
+        {selectedAddress?.state}, <strong>{selectedAddress?.zip}</strong>
       </p>
-    )}
+    </div>
+  ) : (
+    <div>
+      <button
+        onClick={handleAddAddress}
+        className="bg-sky-600 text-white py-1 px-3 rounded-lg ml-3"
+      >
+        Add Address
+      </button>
+      <p className="text-red-500">No address provided.</p>
+    </div>
+  )}
 
-
-
-
-    <button className="bg-green-600 text-white py-2 px-4 rounded-lg w-[300px]"  >
-      Add New Address
+  {/* Take From Shop Button */}
+  <div className="mt-4">
+    <button
+      className={`py-2 px-4 rounded-lg ${
+        isTakeFromShop
+          ? "bg-green-600 text-white"
+          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+      }`}
+      onClick={handleTakeFromShop}
+    >
+      Take From Shop
     </button>
-  </form>
-)}
+  </div>
 
+  {showAddressForm && (
+    <form className="grid gap-4 mt-4 max-w-lg" onSubmit={handleSubmit}>
+      {/* Name and Mobile Number */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={address.name}
+          onChange={(e) =>
+            setAddress((prev) => ({ ...prev, name: e.target.value }))
+          }
+          className="border p-2 rounded-lg"
+          required
+        />
+        <input
+          type="text"
+          name="mobileNo"
+          placeholder="Mobile Number"
+          value={address.mobileNo}
+          onChange={(e) =>
+            setAddress((prev) => ({ ...prev, mobileNo: e.target.value }))
+          }
+          className="border p-2 rounded-lg"
+          required
+        />
+      </div>
 
-      {showAllAddresses && (
-        <div className="mt-4">
-          {user?.address?.length > 0 ? (
-            user?.address.map((addr, index) => (
-              <div key={index} className="p-4 mb-4 border rounded-lg bg-gray-100">
-                <p className="text-gray-700">
-                {addr?.name}, {addr?.mobileNo}, <br />
-                  {addr?.street}, {addr?.city}, <br />
-                  {addr?.state} - <strong>{addr?.zip}</strong>
-                </p>
-                <div className="flex items-center">
-                <button
-                  className=" text-green-500 hover:text-green-700"
-                  onClick={() => handleSelectAddress(addr)}
+      {/* Street and City */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <input
+            type="text"
+            name="street"
+            placeholder="Street"
+            value={address.street}
+            className="border p-2 rounded-lg w-full"
+            required
+            onChange={handleStreetChange}
+          />
+          {streetSuggestions.length > 0 && (
+            <ul className="border border-gray-300 p-2 rounded-lg bg-white">
+              {streetSuggestions.map((suggestion, idx) => (
+                <li
+                  key={idx}
+                  className="p-1 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    setAddress((prev) => ({ ...prev, street: suggestion }));
+                    setStreetSuggestions([]); // Close dropdown
+                  }}
                 >
-                  Select
-                </button>
-                <div
-                            className=" text-red-500 cursor-pointer p-2 hover:text-white hover:bg-red-600 hover:rounded-full"
-                            onClick={() => deleteAddress(addr._id, user._id)}
-                          >
-                            <MdDelete fontSize={18} />
-                          </div>
-                </div>
-                
-              </div>
-            ))
-          ) : (
-            <p className="text-red-500">No addresses available.</p>
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
           )}
         </div>
-      )}
-              
 
-      
+        <div>
+          <input
+            type="text"
+            name="city"
+            placeholder="City"
+            value={address.city}
+            onChange={handleCityChange}
+            className="border p-2 rounded-lg w-full"
+            required
+            readOnly
+          />
+          {citySuggestions.length > 0 && (
+            <ul className="border border-gray-300 p-2 rounded-lg bg-white">
+              {citySuggestions.map((suggestion, idx) => (
+                <li
+                  key={idx}
+                  className="p-1 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    setAddress((prev) => ({ ...prev, city: suggestion }));
+                    setCitySuggestions([]); // Close dropdown
+                  }}
+                >
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
+
+      {/* State and ZIP Code */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <input
+          type="text"
+          name="state"
+          placeholder="State"
+          value={address.state}
+          className="border p-2 rounded-lg h-full"
+          required
+        />
+        <div className="flex flex-col">
+          <input
+            type="number"
+            name="zip"
+            value={address.zip}
+            onChange={handlePincodeChange}
+            placeholder="Enter Pincode"
+            className="border p-2 rounded-lg h-full"
+            required
+          />
+        </div>
+      </div>
+
+      {errorMessage && (
+        <p className="text-red-500 text-sm p-2 ml-64 h-full">{errorMessage}</p>
+      )}
+
+      <button
+        className="bg-green-600 text-white py-2 px-4 rounded-lg w-[300px]"
+      >
+        Add New Address
+      </button>
+    </form>
+  )}
+
+  {showAllAddresses && (
+    <div className="mt-4">
+      {user?.address?.length > 0 ? (
+        user?.address.map((addr, index) => (
+          <div
+            key={index}
+            className="p-4 mb-4 border rounded-lg bg-gray-100"
+          >
+            <p className="text-gray-700">
+              {addr?.name}, {addr?.mobileNo}, <br />
+              {addr?.street}, {addr?.city}, <br />
+              {addr?.state} - <strong>{addr?.zip}</strong>
+            </p>
+            <div className="flex items-center">
+              <button
+                className="text-green-500 hover:text-green-700"
+                onClick={() => handleSelectAddress(addr)}
+              >
+                Select
+              </button>
+              <div
+                className="text-red-500 cursor-pointer p-2 hover:text-white hover:bg-red-600 hover:rounded-full"
+                onClick={() => deleteAddress(addr._id, user._id)}
+              >
+                <MdDelete fontSize={18} />
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-red-500">No addresses available.</p>
+      )}
+    </div>
+  )}
+</div>
+
     {/* Payment Section */}
     <div className="p-6">
       <h3 className="text-xl font-semibold mb-4 text-gray-800">Payment</h3>
@@ -846,19 +865,22 @@ const Cart = () => {
   <span>{displayINRCurrency(totalPrice)}</span>
   </div>
 
-  {/* Delivery Charges */}
-  <div className="flex justify-between mb-2 text-gray-700">
-  <span>Delivery Charges</span>
-  <span>₹{totalPrice < 1000 ? 20 : 0}</span>
-</div>
+ {/* Delivery Charges */}
+ <div className="flex justify-between mb-2 text-gray-700">
+        <span>Delivery Charges</span>
+        <span>₹{deliveryCharges}</span>
+      </div>
 
 {/* Total */}
 <div className="flex justify-between font-semibold text-gray-800">
   <span>Total:</span>
   <span className="text-md">
-    {displayINRCurrency(totalPrice + (totalPrice < 1000 ? 20 : 0))}
+    {displayINRCurrency(
+      totalPrice + (isTakeFromShop ? 0 : totalPrice < 1000 ? 20 : 0)
+    )}
   </span>
 </div>
+
 
 </div>
 
