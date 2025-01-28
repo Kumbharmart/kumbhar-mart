@@ -13,7 +13,6 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET_KEY,
 });
 
-// Configure AWS S3
 AWS.config.update({
     accessKeyId: process.env.REACT_APP_ACCESS_KEY,
     secretAccessKey: process.env.REACT_APP_SECRET_ACCESS_KEY,
@@ -22,20 +21,41 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-// Create Razorpay Order
-// Create Razorpay Order
 const createOrder = async (req, res) => {
-    const { amount, currency, receipt, userId, products, deliveryAddress } = req.body;
-    const deliveryCharges = amount > 1000 ? 0 : 20;
-    const totalAmount = amount + deliveryCharges;
+    const { 
+        amount, 
+        currency, 
+        receipt, 
+        userId, 
+        products, 
+        deliveryAddress, 
+        isTakeFromShop 
+    } = req.body;
+    
 
+    // Calculate delivery charges based on "Take From Shop" and order amount
+    let deliveryCharges = 0;
+    if (!isTakeFromShop) {
+        // Only apply delivery charges if not "Take From Shop"
+        if (amount < 1000) {
+            deliveryCharges = 20; // Apply delivery charges for orders below 500
+        }
+    }
+    // Calculate the total amount including delivery charges
+    const totalAmount = amount + deliveryCharges;
     try {
         // Razorpay order options
         const options = {
-            amount:  Math.ceil(totalAmount * 100), // Amount in paisa (Razorpay requires amount in smallest currency unit)
+            amount: Math.ceil(totalAmount * 100), // Convert to paisa (smallest unit of currency)
             currency: currency || "INR",
             receipt: receipt || `receipt_${Date.now()}`,
         };
+// Configure AWS S3
+
+
+// Create Razorpay Order
+// Create Razorpay Order
+
 
         // Create Razorpay order
         const razorpayOrder = await razorpay.orders.create(options);
@@ -63,7 +83,7 @@ const createOrder = async (req, res) => {
         res.status(200).json({
             success: true,
             order: razorpayOrder,
-            finalAmount:  Math.ceil(amount), // Return the original amount as final amount
+            finalAmount:  Math.ceil(totalAmount), // Return the original amount as final amount
         });
     } catch (error) {
         console.error("Error creating Razorpay order", error);
@@ -173,7 +193,7 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         });
 
         // Title Section with logo and company info
-        doc.image('Images/kmlogo.jpg', 50, 40, { width: 100 });
+        doc.image('Images/kmlogo.jpg', 50, 40, { width: 100 , align: 'center'});
         doc.fontSize(25).text('Kumbhar Mart', { align: 'center', bold: true });
         doc.fontSize(10).text('Contact: +91-7722035103 | Email: martkumbhar@gmail.com', { align: 'center' });
         doc.moveDown(1);
@@ -239,7 +259,7 @@ const generateInvoiceAndUploadToS3 = async (order) => {
 
             const productTotal = mrpPrice * product.quantity;
             const gstAmount = (productTotal * gst) / 100;
-            totalAmount += productTotal + gstAmount;
+            totalAmount += productTotal ;
 
             // Alternating row color
             const rowColor = index % 2 === 0 ? '#f1f1f1' : '#ffffff';
@@ -251,7 +271,7 @@ const generateInvoiceAndUploadToS3 = async (order) => {
                 .text(`${mrpPrice.toFixed(2)}`, 200, currentY, { align: 'center' })
                 .text(`${product.quantity}`, 300, currentY, { align: 'center' })
                 .text(`${gst}%`, 400, currentY, { align: 'center' })
-                .text(`${(productTotal + gstAmount).toFixed(2)}`, 500, currentY, { align: 'right' });
+                .text(`${(productTotal).toFixed(2)}`, 500, currentY, { align: 'right' });
 
             doc.moveTo(50, currentY + 18).lineTo(550, currentY + 18).stroke(); // Line below product row
 
@@ -259,30 +279,25 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         });
 
         // Calculate delivery charges
-        const deliveryCharges = totalAmount > 1000 ? 0 : 20;
+        const deliveryCharges = order.deliveryAddress.isTakeFromShop ? 0 : (totalAmount < 1000 ? 20 : 0);
         const discount = totalAmount * 0.05; // 5% discount
-        const discountedAmount = totalAmount - discount + deliveryCharges;
-        const finalTotal = Math.ceil(discountedAmount);
-
+        const discountedAmount = totalAmount + deliveryCharges;
+        const finalTotal = (discountedAmount);
       
         // Subtotal, Discount, Delivery Charges, and Total section
 doc.moveDown(1);
 doc.font('Helvetica-Bold')
-    .text('Subtotal:', 300, doc.y, { align: 'right', continued: true })
-    .text(`${Math.ceil(totalAmount).toFixed(2)}`, 350, doc.y, { align: 'right' });
+    .text('Subtotal:', 250, doc.y, { align: 'right', continued: true })
+    .text(`${totalAmount}`, 300, doc.y, { align: 'right' });
 
 doc.moveDown(0.5);
-doc.text('Discount (5%):', 300, doc.y, { align: 'right', continued: true })
-    .text(`-${Math.floor(discount).toFixed(2)}`, 350, doc.y, { align: 'right' });
-
-doc.moveDown(0.5);
-doc.text('Delivery Charges:', 300, doc.y, { align: 'right', continued: true })
-    .text(`${deliveryCharges.toFixed(2)}`, 350, doc.y, { align: 'right' });
+doc.text('Delivery Charges:', 250, doc.y, { align: 'right', continued: true })
+    .text(`${deliveryCharges.toFixed(2)}`, 300, doc.y, { align: 'right' });
 
 doc.moveDown(1);
 doc.fontSize(14).font('Helvetica-Bold')
-    .text('Total:', 300, doc.y, { align: 'right', continued: true })
-    .text(`${finalTotal.toFixed(2)}`, 350, doc.y, { align: 'right' });
+    .text('Total:', 250, doc.y, { align: 'right', continued: true })
+    .text(`${finalTotal.toFixed(2)}`, 300, doc.y, { align: 'right' });
 
         // Footer Section with company details
         doc.moveDown(2);
