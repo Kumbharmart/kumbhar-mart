@@ -127,7 +127,7 @@ const BusinessProfile = () => {
     }
   };
 
-  const isBusinessPriceLow = userData?.data?.businessPrices?.myPurchase < 5000;
+  const isBusinessPriceLow = getCurrentMonthBusinessData(userData?.data?.businessPrices)?.myPurchase || 0 < 5000;
 
   return (
     <div className="relative">
@@ -209,7 +209,7 @@ const BusinessProfile = () => {
                 {/* Heading for low purchase */}
                 {isBusinessPriceLow && (
                     <div className="p-4 mb-4 text-sm text-red-600 bg-red-100 rounded-lg">
-                        You need to purchase more than ₹5000 to activate KYC and Transaction options for your business.
+                        You need to purchase more than ₹5000 to activate your reseller virtual E-commerce platform , Complete your KYC and Transaction options for your business.
                     </div>
                 )}
 
