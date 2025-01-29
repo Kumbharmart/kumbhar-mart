@@ -9,12 +9,6 @@ const addressSchema = new mongoose.Schema({
     zip: String,
 });
 
-// const businessSchema = new mongoose.Schema({
-//     myPurchase: { type: Number, default: 0 },
-//     totalPurchase: { type: Number, default: 0 },
-//     totalIncentive: { type: Number, default: 0 }
-// });
-
 const refferalSchema = new mongoose.Schema({
     refferalcode: String,
     refferredbycode: String,
@@ -30,8 +24,6 @@ const refferalSchema = new mongoose.Schema({
             userId:{type:mongoose.Schema.Types.ObjectId, ref: 'user'},
             order_id: { type:mongoose.Schema.Types.ObjectId, ref: 'Order' },
         }
-        
-
     ]
    
 },{_id:false});
@@ -42,8 +34,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
         sparse: true, // Allows multiple null values
-    },
-          
+    },       
     mobileNo: Number,
     address: [addressSchema],
     password : String,
@@ -53,11 +44,15 @@ const userSchema = new mongoose.Schema({
         default: "GENERAL"
     },
     refferal:refferalSchema,
-    businessPrices: {
-        myPurchase: { type: Number, default: 0 },
-        totalPurchase: { type: Number, default: 0 },
-        totalIncentive: { type: Number, default: 0 }
-    },
+    businessPrices: [
+        {
+            month: { type: String }, 
+            myPurchase: { type: Number, default: 0 },
+            totalPurchase: { type: Number, default: 0 },
+            totalIncentive: { type: Number, default: 0 },
+            status: { type: String, default: 'pending' }
+        }
+    ],
     otp: String,  // Field to store the OTP
     otpExpires: Date,
 },

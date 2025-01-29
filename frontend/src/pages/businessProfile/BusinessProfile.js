@@ -68,6 +68,16 @@ const BusinessProfile = () => {
     }
   };
 
+  const getCurrentMonthBusinessData = (businessPrices) => {
+    if (!businessPrices || businessPrices.length === 0) {
+        return {};  // Return an empty object if no data is available
+    }
+
+    const currentMonth = moment().format('YYYY-MM'); // e.g., "January"
+    return businessPrices.find(price => price.month === currentMonth) || {};
+};
+
+
   const renderContent = () => {
     switch (activeSection) {
       case 'Business':
@@ -90,18 +100,20 @@ const BusinessProfile = () => {
                     </tr>
                   </thead>
                   <tbody>
-                  {usersData.map((referral, index) => (
-                    <tr key={referral._id || index} className="border-b hover:bg-gray-50 border-gray-200">
-                      <td className="py-3 px-4 text-gray-700">{index + 1}</td>
-                      <td className="py-3 px-4 text-gray-700">{referral.name || 'N/A'}</td>
-                      <td className="py-3 px-4 text-gray-700">{referral.mobileNo || 'N/A'}</td>
-                      <td className="py-3 px-4 text-gray-700">₹{referral.businessPrices?.myPurchase || 0}</td>
-                      <td className="py-3 px-4 text-gray-700">
-                        ₹{Math.floor((referral.businessPrices?.myPurchase || 0) * 0.05)}
-                      </td>
-                    </tr>
-                  ))}
-
+                    {usersData.map((referral, index) => {
+                      const currentMonthData = getCurrentMonthBusinessData(referral.businessPrices);
+                      return (
+                        <tr key={referral._id || index} className="border-b hover:bg-gray-50 border-gray-200">
+                          <td className="py-3 px-4 text-gray-700">{index + 1}</td>
+                          <td className="py-3 px-4 text-gray-700">{referral.name || 'N/A'}</td>
+                          <td className="py-3 px-4 text-gray-700">{referral.mobileNo || 'N/A'}</td>
+                          <td className="py-3 px-4 text-gray-700">₹{currentMonthData.myPurchase || 0}</td>
+                          <td className="py-3 px-4 text-gray-700">
+                            ₹{Math.floor((currentMonthData.myPurchase || 0) * 0.05)}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -119,7 +131,7 @@ const BusinessProfile = () => {
 
   return (
     <div className="relative">
-    <div className="relative max-w-6xl mx-auto mt-10 p-6 bg-gray-50 rounded-lg shadow-lg flex flex-col md:flex-row">
+      <div className="relative max-w-6xl mx-auto mt-10 p-6 bg-gray-50 rounded-lg shadow-lg flex flex-col md:flex-row">
         {/* Mobile sidebar toggle button */}
         <button
             onClick={toggleSidebar}
@@ -140,10 +152,8 @@ const BusinessProfile = () => {
                 style={{ minHeight: '100%' }}
             >
                 <div className="flex items-center mb-6 flex-col">
-             
-                        <FaRegCircleUser size={40} className="text-gray-500" />
-                        <h2 className="text-lg font-semibold pt-2">{userData?.data.name}</h2>
-                    
+                    <FaRegCircleUser size={40} className="text-gray-500" />
+                    <h2 className="text-lg font-semibold pt-2">{userData?.data.name}</h2>
                 </div>
                 <nav className="space-y-4">
                     <button
@@ -206,27 +216,25 @@ const BusinessProfile = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                     <div className="p-4 bg-white shadow-lg rounded-lg">
                         <h3 className="text-lg font-semibold text-gray-600">Self Purchasing</h3>
-                        <p className="text-2xl">₹{userData?.data?.businessPrices?.myPurchase}</p>
+                        <p className="text-2xl">₹{getCurrentMonthBusinessData(userData?.data?.businessPrices)?.myPurchase || 0}</p>
                     </div>
                     <div className="p-4 bg-white shadow-lg rounded-lg">
                         <h3 className="text-lg font-semibold text-gray-600">Team Purchasing</h3>
-                        <p className="text-2xl">₹{userData?.data?.businessPrices?.totalPurchase}</p>
+                        <p className="text-2xl">₹{getCurrentMonthBusinessData(userData?.data?.businessPrices)?.totalPurchase || 0}</p>
                     </div>
                     <div className="p-4 bg-white shadow-lg rounded-lg">
                         <h3 className="text-lg font-semibold text-gray-600">Business Incentive</h3>
                         <p className="text-2xl">
-                            ₹{Number(userData?.data?.businessPrices?.totalIncentive || 0).toFixed(2)}
+                            ₹{Number(getCurrentMonthBusinessData(userData?.data?.businessPrices)?.totalIncentive || 0).toFixed(2)}
                         </p>
                     </div>
                 </div>
                 {renderContent()}
             </div>
         </div>
+      </div>
     </div>
-</div>
-
   );
-  
 };
 
 export default BusinessProfile;

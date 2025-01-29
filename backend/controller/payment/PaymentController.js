@@ -6,7 +6,7 @@ const Seller = require("../../models/sellerModel");
 const PDFDocument = require('pdfkit');
 const AWS = require('aws-sdk');
 require('dotenv').config();
-
+const moment = require('moment');
 // Initialize Razorpay
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY,
@@ -96,42 +96,74 @@ const createOrder = async (req, res) => {
 // Handle Payment Success
 const handlePaymentSuccess = async (req, res) => {
     const { order_id, payment_id, signature, userId } = req.body;
+    const currentMonth = moment().format('YYYY-MM');
 
     try {
-        const order = await Order.findOne({ order_id })
-            .populate('userId')
-            .populate('products.productId');
-
-        if (!order) {
-            return res.status(404).json({ success: false, message: "Order not found" });
-        }
+        const order = await Order.findOne({ order_id }).populate('userId').populate('products.productId');
+        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
 
         order.payment_id = payment_id;
         order.signature = signature;
         order.status = 'paid';
 
-        for (const item of order.products) {
-            await userModel.findByIdAndUpdate(order.userId._id, { 
-                $inc: { "businessPrices.myPurchase": order.amount } 
+        const user = await userModel.findById(userId);
+        if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+        // Update user's businessPrices
+        let userMonthEntry = user.businessPrices.find(entry => entry.month === currentMonth);
+        if (userMonthEntry) {
+            userMonthEntry.myPurchase += order.amount;
+        } else {
+            user.businessPrices.push({
+                month: currentMonth,
+                myPurchase: order.amount,
+                totalPurchase: 0,
+                totalIncentive: 0,
+                status: 'pending'
             });
+        }
+        await user.save();
 
+        // Update products and seller revenue
+        for (const item of order.products) {
             const product = await productModel.findById(item.productId);
-            if (product) {
-                if (product.quantity >= item.quantity) {
-                    product.quantity -= item.quantity;
-                    await product.save();
+            if (product && product.quantity >= item.quantity) {
+                product.quantity -= item.quantity;
+                await product.save();
 
-                    const sellerRevenue = Math.ceil(product.sellingPrice * 0.5);
+                const sellerRevenue = Math.ceil(product.sellingPrice * 0.5);
+                await Seller.findByIdAndUpdate(product.sellerId, {
+                    $inc: { "businessPrices.$[elem].totalRevenue": sellerRevenue }
+                });
+            } else {
+                return res.status(400).json({
+                    success: false,
+                    message: `Not enough stock for product: ${product?.productName || 'Unknown'}`
+                });
+            }
+        }
 
-                    await Seller.findByIdAndUpdate(product.sellerId, {
-                        $inc: { totalRevenue: sellerRevenue }
-                    });
+        // Handle referral system
+        if (user.refferal?.refferredbycode) {
+            const referrer = await userModel.findOne({ 'refferal.refferalcode': user.refferal.refferredbycode });
+            if (referrer) {
+                const totalIncentive = Math.floor(0.05 * order.amount);
+                let referrerMonthEntry = referrer.businessPrices.find(entry => entry.month === currentMonth);
+
+                if (referrerMonthEntry) {
+                    referrerMonthEntry.totalPurchase += order.amount;
+                    referrerMonthEntry.totalIncentive += totalIncentive;
                 } else {
-                    return res.status(400).json({
-                        success: false,
-                        message: `Not enough stock for product: ${product.productName}`,
+                    referrer.businessPrices.push({
+                        month: currentMonth,
+                        myPurchase: 0,
+                        totalPurchase: order.amount,
+                        totalIncentive: totalIncentive,
+                        status: 'pending'
                     });
                 }
+                referrer.refferal.myrefferalorders.push({ userId: user._id, order_id: order._id });
+                await referrer.save();
             }
         }
 
@@ -139,24 +171,6 @@ const handlePaymentSuccess = async (req, res) => {
         const invoiceUrl = await generateInvoiceAndUploadToS3(order);
         order.invoicePath = invoiceUrl;
         await order.save();
-
-        const user = await userModel.findById(userId);
-        if (user && user.refferal.refferredbycode) {
-            const referrer = await userModel.findOne({ 'refferal.refferalcode': user.refferal.refferredbycode });
-            if (referrer) {
-                // Increment totalPurchase and calculate 5% incentive
-                const totalIncentive =  Math.floor(0.05 * order.amount);
-
-                referrer.businessPrices.totalPurchase += order.amount; // Update totalPurchase
-                referrer.businessPrices.totalIncentive += totalIncentive; // Update totalIncentive
-                referrer.refferal.myrefferalorders.push({
-                    userId: user._id,
-                    order_id: order._id,
-                });
-
-                await referrer.save(); // Save the updated referrer details
-            }
-        }
 
         res.status(200).json({ success: true, message: "Payment successful, order updated", invoiceUrl });
     } catch (error) {

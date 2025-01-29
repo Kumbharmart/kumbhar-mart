@@ -401,7 +401,7 @@ const Cart = () => {
 
 
         const options = {
-          key: 'rzp_test_U4XuiM2cjeWzma',
+          key: 'rzp_test_WUtHzFCrju3HHH',
           amount: responseData.order.amount,
           currency: responseData.order.currency,
           name: "Kumbhar Mart",

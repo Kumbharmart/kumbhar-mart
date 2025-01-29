@@ -1,5 +1,5 @@
-const backendDomin = process.env.REACT_APP_API_URL
-//  const backendDomin = process.env.REACT_APP_LOCALHOST_URI;
+// const backendDomin = process.env.REACT_APP_API_URL
+ const backendDomin = process.env.REACT_APP_LOCALHOST_URI;
 
 const SummaryApi = {
     signUP: {
@@ -216,10 +216,6 @@ const SummaryApi = {
     getmykyc: {
         url: `${backendDomin}/api/user-kyc/:userId`,
         method: 'get'
-    },
-    reset: {
-        url: `${backendDomin}/api/reset`,
-        method: "post"
     },
 };
 

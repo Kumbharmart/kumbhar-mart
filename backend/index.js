@@ -4,12 +4,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const connectDB = require('./config/db');
-const router = require('./routes'); // Correctly importing the router from Routes
-const multer = require('multer');
+const router = require('./routes'); 
 const app = express();
-const path = require('path');
-const cron = require('node-cron'); // Importing node-cron
-const User = require('./models/userModel');
 
 require('dotenv').config();
 
@@ -43,16 +39,6 @@ connectDB().then(() => {
     app.listen(PORT, () => {
         console.log("Connected to DB");
         console.log(`Server is running on port ${PORT}`);
-    });
-
-
-    cron.schedule('0 0 1 * *', async () => {
-        try {
-            await User.updateMany({}, { 'businessPrices.totalPurchase': 0 });
-            console.log('Total purchase values reset to 0 for all users.');
-        } catch (error) {
-            console.error('Error resetting total purchases:', error);
-        }
     });
     
 });
