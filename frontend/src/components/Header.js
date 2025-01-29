@@ -88,18 +88,14 @@ const Header = () => {
     <header className="h-16 shadow-md bg-white fixed w-full z-40">
   <div className="h-full container mx-auto flex items-center px-6 justify-between">
   <div className={user?.role === ROLE.ADMIN ? "cursor-not-allowed" : ""}>
-      {user?.role === ROLE.ADMIN ? (
-        <img src="kmlogo.svg" alt="Logo" className="w-48" />
-      ) : (
         <Link to="/">
           <img src="kmlogo.svg" alt="Logo" className="w-64" />
         </Link>
-      )}
       </div>
 
     {/* Desktop Search Bar */}
 
-    {user?.role !== ROLE.ADMIN && (
+   
     <div className="hidden lg:flex items-center w-full max-w-md border border-gray-300 rounded-md pl-4 focus-within:shadow-md ml-10">
       <input
         type="text"
@@ -112,7 +108,7 @@ const Header = () => {
         <GrSearch />
       </button>
     </div>
-    )}
+   
 
     {/* Mobile Menu Icon */}
     <div className="lg:hidden flex items-center">
@@ -196,7 +192,7 @@ const Header = () => {
       {/* Desktop Menu */}
       <div className="hidden lg:flex items-center">
   <div className="relative" ref={dropdownRef}>
-    {user?._id && user?.role !== ROLE.ADMIN && (
+    {user?._id &&(
       <div
         className="text-3xl cursor-pointer flex items-center justify-center"
         onClick={() => setMenuDisplay((prev) => !prev)}
@@ -279,14 +275,6 @@ const Header = () => {
     </Link>
   )}
 
-  {user?.role == ROLE.ADMIN && (
-    <button
-      onClick={handleLogout}
-      className="px-4 py-2 rounded-full text-sm text-white bg-red-600 hover:bg-red-700 transition-colors duration-200"
-    >
-      Logout
-    </button>
-  )}
 </div>
 
 
