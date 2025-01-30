@@ -65,6 +65,10 @@ const SummaryApi = {
         url: `${backendDomin}/api/all-user`,
         method: 'get'
     },
+    updateStatus: {
+        url: `${backendDomin}/api/update-status`,
+        method: 'PATCH'
+    },
     referralOrders: {
         url: `${backendDomin}/api/referralOrders`,
         method: 'get'

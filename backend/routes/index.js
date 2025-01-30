@@ -69,7 +69,10 @@ router.post('/rating/saveRating', ratingController.saveRating);
 router.get('/rating/:itemId', ratingController.getRating);
 
 // Admin Panel Routes
-router.get("/all-user", require('../controller/user/allUsers'));
+const { allUsers } = require("../controller/user/allUsers");
+const updateUserStatus = require("../controller/user/updateStatus");
+router.get("/all-user", allUsers); // ✅ Fetch all users
+router.patch("/update-status", updateUserStatus); // ✅ Update status
 router.post("/update-user", require('../middleware/authToken'), require('../controller/user/updateUser'));
 router.delete("/delete-user/:userId", require('../middleware/authToken'), require('../controller/user/deleteUser'));
 

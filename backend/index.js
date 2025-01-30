@@ -13,7 +13,7 @@ const fs = require('fs');
 
 app.use(cors({
     origin: ['https://kumbharmart.com', 'http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS','PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Allow cookies and other credentials
 }));
