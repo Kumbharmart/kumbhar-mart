@@ -105,9 +105,9 @@ const Footer = () => {
             <div className="mb-4 lg:mb-0">
               <h4 className="text-lg font-semibold text-white">Start a conversation</h4>
               <p className="text-gray-400">
-              Kumbhart Mart, Shimpore ( New ), Khednagar, Karjat, Ahilyanagar, Maharashtra, 414403
+              Kumbhart Mart, Shimpore ( New ), Khednagar, Karjat, 
               </p>
-              <p className="text-gray-400">Ahilyanagar, Maharashtra</p>
+              <p className="text-gray-400">Ahilyanagar, Maharashtra, 414403</p>
             </div>
 
             <div className="space-y-1 text-white">

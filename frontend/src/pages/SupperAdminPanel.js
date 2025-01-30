@@ -39,8 +39,7 @@ const SuperAdminPanel = () => {
                         <Link to={"all-banners"} className='px-2 py-1 hover:bg-slate-100'>Banner List</Link> 
                         <Link to={"all-adbanners"} className='px-2 py-1 hover:bg-slate-100'>Ad Banner List</Link> 
                         <Link to={"all-kyc"} className='px-2 py-1 hover:bg-slate-100'>KYC List</Link>
-                        <Link to={"add-category"} className='px-2 py-1 hover:bg-slate-100'>Add Category</Link>
-
+                        <Link to={"financial"} className='px-2 py-1 hover:bg-slate-100'>Finance</Link>
                     </nav>
                 </div>
             </aside>

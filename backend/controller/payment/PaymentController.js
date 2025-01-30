@@ -91,8 +91,6 @@ const createOrder = async (req, res) => {
     }
 };
 
-
-
 // Handle Payment Success
 const handlePaymentSuccess = async (req, res) => {
     const { order_id, payment_id, signature, userId } = req.body;
@@ -321,4 +319,5 @@ doc.fontSize(14).font('Helvetica-Bold')
         doc.end();
     });
 };
+
 module.exports = { createOrder, handlePaymentSuccess };

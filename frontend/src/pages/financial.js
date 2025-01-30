@@ -135,9 +135,9 @@ const Financial = () => {
                                         <td>{userIndex + 1}</td>
                                         <td>{user.name}</td>
                                         <td>{price.month}</td>
-                                        <td>{price.myPurchase}</td>
-                                        <td>{price.totalPurchase}</td>
-                                        <td>{price.totalIncentive}</td>
+                                        <td>{price.myPurchase?.toFixed(2)}</td>
+                                        <td>{price.totalPurchase?.toFixed(2)}</td>
+                                        <td>{price.totalIncentive?.toFixed(2)}</td>
                                         <td>
                                             <select
                                                 className="border p-1 rounded"

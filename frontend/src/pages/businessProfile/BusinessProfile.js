@@ -127,7 +127,8 @@ const BusinessProfile = () => {
     }
   };
 
-  const isBusinessPriceLow = getCurrentMonthBusinessData(userData?.data?.businessPrices)?.myPurchase || 0 < 5000;
+  const isBusinessPriceLow = (getCurrentMonthBusinessData(userData?.data?.businessPrices)?.myPurchase || 0) < 5000;
+
 
   return (
     <div className="relative">
