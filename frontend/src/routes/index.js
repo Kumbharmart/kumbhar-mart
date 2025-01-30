@@ -25,6 +25,7 @@ import AllUsers from '../pages/AllUsers' // Import the All Users component
 import BusinessProfile from '../pages/businessProfile/BusinessProfile'
 import AllAdBanners from '../pages/AllAdBanners'
 import AllBanners from '../pages/AllBanners'
+import Financial from '../pages/financial'
 import BuyNow from "../pages/buyNow"
 import AllKyc from '../pages/AllKyc'
 //become a sellers routes
@@ -162,6 +163,10 @@ const router = createBrowserRouter([
                     {
                         path : "all-adbanners", // Move the All Users route here
                         element : <AllAdBanners/>
+                    },
+                    {
+                        path:"financial",
+                        element: <Financial/>
                     },
                 ]
             },

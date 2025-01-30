@@ -72,6 +72,14 @@ const AdminPanel = () => {
                     >
                         Ad Banners
                     </NavLink>
+                    <NavLink
+                        to={"financial"}
+                        className={({ isActive }) =>
+                            `block px-2 py-1 hover:bg-slate-100 ${isActive ? 'bg-slate-200 font-semibold' : ''}`
+                        }
+                    >
+                        Financial
+                    </NavLink>
                 </nav>
             </aside>
             <main className='flex-1 p-2'>
