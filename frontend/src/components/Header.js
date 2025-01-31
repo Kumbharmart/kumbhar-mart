@@ -14,6 +14,7 @@ import Context from "../context/index";
 import { MdAccountBalance, MdShare, MdMenu } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
 import { useSeller } from '../context/SellerContext';
+import kmlogo from '../assest/logoImages/name1.png';
 
 const Header = () => {
   const { authToken } = useContext(Context); // Get the authToken from Context
@@ -89,9 +90,10 @@ const Header = () => {
   <div className="h-full container mx-auto flex items-center px-6 justify-between">
   <div className={user?.role === ROLE.ADMIN ? "cursor-not-allowed" : ""}>
         <Link to="/">
-          <img src="kmlogo.svg" alt="Logo" className="w-64" />
+          <img src='kmlogo.svg' alt="Logo" className="w-64" />
         </Link>
       </div>
+
 
     {/* Desktop Search Bar */}
 
@@ -210,10 +212,14 @@ const Header = () => {
       <div className="absolute bg-white right-0 mt-3 p-2 shadow-lg rounded z-10 transition-transform duration-300 ease-out origin-top">
         <nav>
           {user?.role === ROLE.SUPER_ADMIN && (
+            
             <Link
+            
               to="/super-admin-panel/all-users"
+              
               className="flex whitespace-nowrap hover:bg-slate-100 p-2 items-center"
               onClick={() => setMenuDisplay(false)}
+              
             >
               <ImProfile className="mr-2" />
               Super Admin Panel

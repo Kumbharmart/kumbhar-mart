@@ -12,7 +12,7 @@ import  GiftsHampersImage from "../assest/CategoryImgs/Gifts & Hampers.png";
 import HomeCareImage from "../assest/CategoryImgs/Home Care.png";
 import MomBabyCareImage from "../assest/CategoryImgs/Mom & Baby Care.png";
 import SchoolOfficeImage from "../assest/CategoryImgs/School, Office & Stationary.png";
-import defaultCategoryImage from    "../assest/CategoryImgs/Personal Care.png";
+
 
 const categoryImages = {
      "personal care": personalCareImage,
@@ -21,7 +21,7 @@ const categoryImages = {
            "biscuits, drinks, packaged foods": BiscuitsDrinksPackagedFoodsImage,
            "dairy, bakery": DairyBakeryImage,
            "disposables": DisposablesImage,
-           "fruits, vegetables": FruitsVegetablesImage,
+           "fruits & vegetables": FruitsVegetablesImage,
            "gifts, hampers": GiftsHampersImage,
            "home care": HomeCareImage,
            "mom, baby care": MomBabyCareImage,

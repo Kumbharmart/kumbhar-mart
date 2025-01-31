@@ -164,6 +164,11 @@ const router = createBrowserRouter([
                         path : "all-adbanners", // Move the All Users route here
                         element : <AllAdBanners/>
                     },
+                    {
+                        path : "financial",
+                        element : <Financial/>
+                    },
+                   
                 ]
             },
             {

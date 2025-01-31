@@ -36,7 +36,7 @@ const productCategory = [
   {
     id: 3,
     label: "Fruits & Vegetables",
-    value: "fruits, vegetables",
+    value: "fruits & vegetables",
     subcategories: [
       { id: 301, label: "Fresh Fruits", value: "fresh fruits" },
       { id: 302, label: "Basic Vegetables", value: "basic vegetables" },
