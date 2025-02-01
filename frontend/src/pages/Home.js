@@ -27,10 +27,15 @@ const Home = () => {
      <Column category={"cooking essential"} heading={"Cooking Essential"}/>
        <Column category={"biscuits, drinks, packaged foods"} heading={"Biscuits, Drinks, Packaged Foods"}/>
       <Column category={"home care"} heading={"Home Care"}/>
-       {/*<Column category={"beauty"} heading={"Beauty"}/>
-      <Column category={"stationary"} heading={"Stationary"}/> */}
-      {/* <GroceryCart category={"home care"} heading={"Home Care"}/> */}
-      
+      <Column category={"personal care"} heading={"Personal Care"}/>
+      <Column category={"beauty"} heading={"Beauty"}/>
+      <Column category={"dairy,bakery"} heading={"Dairy, Bakery"}/>
+      <Column category={"disposables"} heading={"Disposables"}/>
+      <Column category={"fruits, vegetables"} heading={"Fruits, Vegetables"}/>
+      {/* <Column category={"gifts, hampers"} heading={"gifts, hampers"}/> */}
+      <Column category={"home care"} heading={"Home Care"}/>
+      <Column category={"mom, baby care"} heading={"Mom, Baby Care"}/>
+      {/* <Column category={"school, office, stationary"} heading={"school, office, stationary"}/>   */}
     </div>
   )
 }
