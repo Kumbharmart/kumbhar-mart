@@ -41,12 +41,6 @@ const SignUp = () => {
 
   const validate = () => {
     const newErrors = {};
-
-    // if (!data.email) {
-    //   newErrors.email = "Email is required";
-    // } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-    //   newErrors.email = "Enter a valid email address";
-    // }
     if (!data.mobileNo) {
       newErrors.mobileNo = "Mobile number is required";
     } else if (!/^\d{10}$/.test(data.mobileNo)) {
@@ -84,7 +78,6 @@ const SignUp = () => {
       }
     };
     
-  
     const verifyOtp = async () => {
       if (!otp) {
         toast.error("Please enter the OTP");
