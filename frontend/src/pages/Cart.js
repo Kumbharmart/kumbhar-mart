@@ -528,8 +528,14 @@ const Cart = () => {
     <h3 className="text-xl font-semibold text-gray-800">Delivery Address</h3>
     <MdCheckCircle className="text-green-500 text-xl" />
   </div>
-
-  {selectedAddress ? (
+  {isTakeFromShop ? (
+    // Display Shop Address
+    <p className="text-gray-700 font-semibold">
+      <strong>Shop Address:</strong>Opposite Z.P.P School, Kumbhar Mart, 
+      Shimpore (New), Karjat, Ahilyanagar, Maharashtra, 414403
+    </p>
+  ) 
+  :selectedAddress ? (
     <div className="text-gray-700 flex gap-10">
       <p>
         {selectedAddress?.name}, {selectedAddress?.mobileNo}, <br />
