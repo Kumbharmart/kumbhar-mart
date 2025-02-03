@@ -6,19 +6,14 @@ import Context from '../context/index';
 
 const VerticalCard = ({ loading, data = [] }) => {
     const loadingList = new Array(13).fill(null);
-    const { authToken } = useContext(Context); // Get the authToken from Context
+    const { authToken } = useContext(Context);
 
     const handleAddToCart = async (e, id) => {
-        const isLoggedIn = !!authToken; // Check if the user is logged in
+        e.stopPropagation();
+        const isLoggedIn = !!authToken;
         if (isLoggedIn) {
-            // If logged in, use the existing backend flow
-            e.stopPropagation();
-
             await addToCart(e, id, authToken);
-            // fetchUserAddToCart && fetchUserAddToCart();
-
         } else {
-            // If not logged in, store the cart in localStorage
             const localCart = JSON.parse(localStorage.getItem("guestCart")) || [];
             const isProductInCart = localCart.some(item => item.productId === id);
     
@@ -32,15 +27,15 @@ const VerticalCard = ({ loading, data = [] }) => {
         }
     };
     
-
-    // Function to calculate percentage discount
     const calculateDiscount = (price, sellingPrice) => {
         if (price && sellingPrice) {
-            const discount = ((price - sellingPrice) / price) * 100;
-            return Math.round(discount); // Round the value to the nearest integer
+            return Math.round(((price - sellingPrice) / price) * 100);
         }
         return 0;
     };
+
+    const availableProducts = data.filter(product => product.quantity > 0);
+    const outOfStockProducts = data.filter(product => product.quantity === 0);
 
     return (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-center md:justify-between overflow-x-auto transition-all ">
@@ -56,15 +51,14 @@ const VerticalCard = ({ loading, data = [] }) => {
                     </div>
                 ))
             ) : (
-                data.map((product, index) => {
+                [...availableProducts, ...outOfStockProducts].map((product, index) => {
                     const discount = calculateDiscount(product?.price, product?.sellingPrice);
-
                     return (
                         <Link
                             key={index}
                             to={`/product/${product?._id}`}
-                            className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
-                            style={{ minWidth: '160px', maxWidth: '180px' }} // Adjust card width for smaller screens
+                            className={`bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ${product.quantity === 0 ? 'opacity-50' : ''}`}
+                            style={{ minWidth: '160px', maxWidth: '180px' }}
                         >
                             <div className="relative bg-slate-100 h-36 p-4 flex justify-center items-center">
                                 <img
@@ -72,10 +66,14 @@ const VerticalCard = ({ loading, data = [] }) => {
                                     className="object-contain h-full w-full transition-transform duration-300 hover:scale-105"
                                     alt={product?.productName}
                                 />
-                                {/* Display the discount percentage if applicable */}
                                 {discount > 0 && (
                                     <span className="absolute top-2 left-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded-lg">
                                         {discount}% OFF
+                                    </span>
+                                )}
+                                {product.quantity === 0 && (
+                                    <span className="absolute top-2 right-2 bg-red-200 text-red-700 text-xs px-2 py-1 rounded-lg">
+                                        Out of Stock
                                     </span>
                                 )}
                             </div>
@@ -101,7 +99,7 @@ const VerticalCard = ({ loading, data = [] }) => {
                                         </button>
                                     ) : (
                                         <span className="text-xs text-red-500 bg-red-100 px-3 py-1 rounded-full border border-red-500 font-semibold">
-                                            Out of Stock
+                                            Sold Out
                                         </span>
                                     )}
                                 </div>

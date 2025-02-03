@@ -62,7 +62,15 @@ const CategoryProduct = () => {
     });
 
     const dataResponse = await response.json();
-    setData(dataResponse?.data || []);
+    let sortedData = dataResponse?.data || [];
+
+    sortedData = sortedData.sort((a, b) => {
+      if (!a.inStock && b.inStock) return 1;
+      if (a.inStock && !b.inStock) return -1;
+      return 0;
+    });
+
+    setData(sortedData);
     setLoading(false);
   };
 
@@ -152,6 +160,7 @@ const CategoryProduct = () => {
     const { value } = e.target;
     setSortBy(value);
   };
+  
 
   return (
     <div className="container mx-auto p-4">
