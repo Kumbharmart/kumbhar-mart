@@ -127,7 +127,7 @@ const BusinessProfile = () => {
     }
   };
 
-  const isBusinessPriceLow = (getCurrentMonthBusinessData(userData?.data?.businessPrices)?.myPurchase || 0) < 5000;
+  const isBusinessPriceLow = (getCurrentMonthBusinessData(userData?.data?.businessPrices)?.myPurchase || 0) < 0;
 
 
   return (
@@ -208,11 +208,11 @@ const BusinessProfile = () => {
             {/* Main content */}
             <div className="md:w-3/4 md:ml-4 flex-grow p-4">
                 {/* Heading for low purchase */}
-                {isBusinessPriceLow && (
+               {/* {isBusinessPriceLow && (
                     <div className="p-4 mb-4 text-sm text-red-600 bg-red-100 rounded-lg">
                         You need to purchase more than ₹5000 to activate your reseller virtual E-commerce platform , Complete your KYC and Transaction options for your business.
                     </div>
-                )}
+                )}*/}
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                     <div className="p-4 bg-white shadow-lg rounded-lg">
