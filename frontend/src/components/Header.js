@@ -30,6 +30,7 @@ const Header = () => {
   const [search, setSearch] = useState(searchQuery);
   const [menuDisplay, setMenuDisplay] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [mobileSearch, setMobileSearch] = useState(false);
 
   // Use cart context
   const { cart } = useCart(); // Get cart array from context
@@ -84,6 +85,9 @@ const Header = () => {
   const toggleMobileMenu = () => {
     setMobileMenu((prev) => !prev);
   };
+  const toggleMobileSearch = () => {
+    setMobileSearch((prev) => !prev);
+  };
 
   return (
     <header className="h-16 shadow-md bg-white fixed w-full z-40">
@@ -110,16 +114,38 @@ const Header = () => {
         <GrSearch />
       </button>
     </div>
-   
 
-    {/* Mobile Menu Icon */}
-    <div className="lg:hidden flex items-center">
-      <button
-        onClick={() => setMobileMenu((prev) => !prev)}
-        className="text-3xl"
-      >
-        <MdMenu />
-      </button>
+     {/* Mobile Menu Icon */}
+     <div className="lg:hidden flex items-center">
+          <button
+            onClick={toggleMobileSearch}
+            className="text-3xl mr-4"
+          >
+            <GrSearch />
+          </button>
+          <button
+            onClick={toggleMobileMenu}
+            className="text-3xl"
+          >
+            <MdMenu />
+          </button>
+          {/* Mobile Search Bar */}
+          {mobileSearch && (
+            <div className="lg:hidden fixed top-16 left-0 w-full bg-white shadow-lg z-50 p-4">
+              <div className="flex items-center w-full border border-gray-300 rounded-md pl-4 focus-within:shadow-md">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="w-full py-2 outline-none text-gray-700 placeholder-gray-500"
+                  onChange={handleSearch}
+                  value={search}
+                />
+                <button className="text-lg h-10 w-10 bg-sky-600 flex items-center justify-center rounded-r text-white hover:bg-sky-700 transition-colors duration-200">
+                  <GrSearch />
+                </button>
+              </div>
+            </div>
+             )}
        {/* Mobile Menu */}
        {mobileMenu && (
           <div className="lg:hidden fixed top-16 left-0 w-full bg-white shadow-lg z-50">
