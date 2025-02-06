@@ -9,7 +9,7 @@ import BiscuitsDrinksPackagedFoodsImage from "../assest/CategoryImgs/Biscuits, D
 import DairyBakeryImage from "../assest/CategoryImgs/Dairy & Bakery.png";
 import DisposablesImage from "../assest/CategoryImgs/Disposables.png";
 import FruitsVegetablesImage from "../assest/CategoryImgs/Fruits & Vegetables.png";
-import  GiftsHampersImage from "../assest/CategoryImgs/Gifts & Hampers.png";
+import GiftsHampersImage from "../assest/CategoryImgs/Gifts & Hampers.png";
 import HomeCareImage from "../assest/CategoryImgs/Home Care.png";
 import MomBabyCareImage from "../assest/CategoryImgs/Mom & Baby Care.png";
 import SchoolOfficeImage from "../assest/CategoryImgs/School, Office & Stationary.png";
@@ -24,7 +24,7 @@ const CategoryList = () => {
         "biscuits, drinks, packaged foods": BiscuitsDrinksPackagedFoodsImage,
         "dairy,bakery": DairyBakeryImage,
         "disposables": DisposablesImage,
-        "fruits & vegetables": FruitsVegetablesImage,
+        "fruits , vegetables": FruitsVegetablesImage,
         "gifts, hampers": GiftsHampersImage,
         "home care": HomeCareImage,
         "mom, baby care": MomBabyCareImage,

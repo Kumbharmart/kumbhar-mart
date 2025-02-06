@@ -32,8 +32,7 @@ const createOrder = async (req, res) => {
         isTakeFromShop 
     } = req.body;
     
-
-    // Calculate delivery charges based on "Take From Shop" and order amount
+   
     let deliveryCharges = 0;
     if (!isTakeFromShop) {
         // Only apply delivery charges if not "Take From Shop"

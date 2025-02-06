@@ -401,12 +401,12 @@ const Cart = () => {
 
 
         const options = {
-          key: 'rzp_test_WUtHzFCrju3HHH',
+          key: 'rzp_test_U4XuiM2cjeWzma',
           amount: responseData.order.amount,
           currency: responseData.order.currency,
           name: "Kumbhar Mart",
           description: "Payment for Order",
-          image: "/logo.png",
+          image: "/kmlogo.png",
           order_id: responseData.order.id,
           handler: async function (response) {
             const paymentResponse = await fetch(SummaryApi.payment_Success.url, {
@@ -528,14 +528,8 @@ const Cart = () => {
     <h3 className="text-xl font-semibold text-gray-800">Delivery Address</h3>
     <MdCheckCircle className="text-green-500 text-xl" />
   </div>
-  {isTakeFromShop ? (
-    // Display Shop Address
-    <p className="text-gray-700 font-semibold">
-      <strong>Shop Address:</strong>Opposite Z.P.P School, Kumbhar Mart, 
-      Shimpore (New), Karjat, Ahilyanagar, Maharashtra, 414403
-    </p>
-  ) 
-  :selectedAddress ? (
+
+  {selectedAddress ? (
     <div className="text-gray-700 flex gap-10">
       <p>
         {selectedAddress?.name}, {selectedAddress?.mobileNo}, <br />

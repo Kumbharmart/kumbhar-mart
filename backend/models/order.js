@@ -31,7 +31,8 @@ const orderSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user'}, // Assuming you have a User model
     invoicePath:{type:String},
     deliveryStatus:{type: String, default:'Ordered'},
-    deliveryAddress:deliveryAddressSchema
+    deliveryAddress:  deliveryAddressSchema, 
+    isTakeFromShop:{ type: Boolean, default: false }  // Added field for isTakeFromShop
     
 });
 
