@@ -389,7 +389,8 @@ const Cart = () => {
             products: validProducts,
             userId: data[0].userId,
             deliveryAddress: finalAddress,
-            isTakeFromShop: isTakeFromShop,
+            isTakeFromShop:isTakeFromShop,
+           
           }),
         });
 
@@ -528,8 +529,16 @@ const Cart = () => {
     <h3 className="text-xl font-semibold text-gray-800">Delivery Address</h3>
     <MdCheckCircle className="text-green-500 text-xl" />
   </div>
-
-  {selectedAddress ? (
+   {isTakeFromShop ? (
+    <div className="text-gray-700">
+      <p>
+        <strong>Shop Address:</strong> <br />
+        Opposite Z.P.P School, Kumbhar Mart, Shimpore (New), Karjat, <br />
+        Ahilyanagar, Maharashtra, <strong>414403</strong>
+      </p>
+    </div>
+  ) :
+  selectedAddress ? (
     <div className="text-gray-700 flex gap-10">
       <p>
         {selectedAddress?.name}, {selectedAddress?.mobileNo}, <br />

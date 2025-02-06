@@ -64,7 +64,7 @@ const createOrder = async (req, res) => {
             order_id: razorpayOrder.id,
             products: products.map(product => ({
                 productId: product.productId._id,
-                name: product.productId.productName,
+                name: product.productId.productName.replace(/[^a-zA-Z0-9 ]/g, ""),
                 quantity: product.quantity,
                 price: product.productId.sellingPrice,
                 image: product.productId.productImage,
@@ -74,6 +74,7 @@ const createOrder = async (req, res) => {
             receipt: razorpayOrder.receipt,
             userId: userId,
             deliveryAddress: deliveryAddress,
+            isTakeFromShop:isTakeFromShop,
         });
 
         await newOrder.save();
@@ -290,7 +291,7 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         });
 
         // Calculate delivery charges
-        const deliveryCharges = order.deliveryAddress.isTakeFromShop ? 0 : (totalAmount < 1000 ? 20 : 0);
+        const deliveryCharges = order.isTakeFromShop ? 0 : (totalAmount < 1000 ? 20 : 0);
         const discount = totalAmount * 0.05; // 5% discount
         const discountedAmount = totalAmount + deliveryCharges;
         const finalTotal = (discountedAmount);
