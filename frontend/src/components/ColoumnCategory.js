@@ -89,7 +89,7 @@ const Column = ({ category, heading }) => {
         try {
             const categoryProduct = await fetchCategoryWiseProduct(category);
             const filteredProducts = Array.isArray(categoryProduct?.data)
-                ? categoryProduct.data.filter(product => product.quantity > 2).slice(0, 12)
+                ? categoryProduct.data.filter(product => product.quantity > 0).slice(0, 12)
                 : [];
             setData(filteredProducts);
         } catch (error) {

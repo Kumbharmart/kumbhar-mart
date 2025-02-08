@@ -22,6 +22,26 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 const createOrder = async (req, res) => {
+    const { 
+        amount, 
+        currency, 
+        receipt, 
+        userId, 
+        products, 
+        deliveryAddress, 
+        isTakeFromShop 
+    } = req.body;
+    
+   
+    let deliveryCharges = 0;
+    if (!isTakeFromShop) {
+        // Only apply delivery charges if not "Take From Shop"
+        if (amount < 1000) {
+            deliveryCharges = 20; // Apply delivery charges for orders below 500
+        }
+    }
+    // Calculate the total amount including delivery charges
+    const totalAmount = amount + deliveryCharges;
     try {
         const { amount, currency = "INR", userId, products, deliveryAddress, isTakeFromShop } = req.body;
 
@@ -43,7 +63,7 @@ const createOrder = async (req, res) => {
             order_id: razorpayOrder.id,
             products: products.map(product => ({
                 productId: product.productId._id,
-                name: product.productId.productName,
+                name: product.productId.productName.replace(/[^a-zA-Z0-9 ]/g, ""),
                 quantity: product.quantity,
                 price: product.productId.sellingPrice,
                 image: product.productId.productImage,
@@ -51,9 +71,9 @@ const createOrder = async (req, res) => {
             amount: razorpayOrder.amount / 100,
             currency: razorpayOrder.currency,
             receipt: razorpayOrder.receipt,
-            userId,
-            deliveryAddress,
-            isTakeFromShop,
+            userId: userId,
+            deliveryAddress: deliveryAddress,
+            isTakeFromShop:isTakeFromShop,
         });
 
         await newOrder.save();
@@ -279,7 +299,7 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         });
 
         // Calculate delivery charges
-        const deliveryCharges = order.deliveryAddress.isTakeFromShop ? 0 : (totalAmount < 1000 ? 20 : 0);
+        const deliveryCharges = order.isTakeFromShop ? 0 : (totalAmount < 1000 ? 20 : 0);
         const discount = totalAmount * 0.05; // 5% discount
         const discountedAmount = totalAmount + deliveryCharges;
         const finalTotal = (discountedAmount);
