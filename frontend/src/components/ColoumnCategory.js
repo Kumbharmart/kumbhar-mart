@@ -88,7 +88,10 @@ const Column = ({ category, heading }) => {
         setLoading(true);
         try {
             const categoryProduct = await fetchCategoryWiseProduct(category);
-            setData(Array.isArray(categoryProduct?.data) ? categoryProduct.data.slice(0, 12) : []);
+            const filteredProducts = Array.isArray(categoryProduct?.data)
+                ? categoryProduct.data.filter(product => product.quantity > 0).slice(0, 12)
+                : [];
+            setData(filteredProducts);
         } catch (error) {
             console.error('Failed to fetch category-wise products:', error);
             setData([]);
@@ -96,6 +99,7 @@ const Column = ({ category, heading }) => {
             setLoading(false);
         }
     };
+    
 
     useEffect(() => {
         fetchData();
@@ -140,41 +144,53 @@ const Column = ({ category, heading }) => {
                 ) : (
                     data.map((product, index) => (
                         <Link
-                            key={index}
-                            to={`/product/${product?._id}`}
-                            className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
-                            style={{ minWidth: '150px' }} // Keep it responsive
-                        >
-                            <div className="h-32 px-2 pt-2 flex justify-center items-center">
-                                <img
-                                    src={product.productImage[0]}
-                                    className="object-contain h-full w-full transition-transform duration-300 hover:scale-105"
-                                    alt={product?.productName}
-                                />
+                        key={index}
+                        to={`/product/${product?._id}`}
+                        className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                        style={{ minWidth: '160px', maxWidth: '180px' }} // Adjust card width for smaller screens
+                    >
+                        <div className="relative bg-slate-100 h-36 p-4 flex justify-center items-center">
+                            <img
+                                src={product.productImage[0]}
+                                className="object-contain h-full w-full transition-transform duration-300 hover:scale-105"
+                                alt={product?.productName}
+                            />
+                         {product?.price > product?.sellingPrice && calculateDiscountPercentage(product.price, product.sellingPrice) > 0 && (
+                            <span className="absolute top-2 left-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded-lg">
+                                {calculateDiscountPercentage(product.price, product.sellingPrice)}% OFF
+                            </span>
+                        )}
+
+                        </div>
+                        <div className="p-3 space-y-2">
+                            <h3 className="text-xs md:text-sm font-semibold text-gray-800 truncate">
+                                {product?.productName}
+                            </h3>
+                            <div className="flex items-center justify-between">
+                                <p className="text-green-700 text-sm font-semibold">
+                                    {displayINRCurrency(product?.sellingPrice)}
+                                </p>
+                                <p className="text-slate-400 text-xs line-through">
+                                    {displayINRCurrency(product?.price)}
+                                </p>
                             </div>
-                            <div className="px-4 py-3 space-y-1">
-                                <h3 className="text-sm font-semibold text-gray-800 truncate">{product?.productName}</h3>
-                                <div className="flex items-center justify-between pb-1">
-                                    <p className="text-gray-800 text-base font-semibold">
-                                        {displayINRCurrency(product?.sellingPrice)}
-                                    </p>
-                                    <p className="text-slate-400 text-xs line-through">
-                                        {displayINRCurrency(product?.price)}
-                                    </p>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-xs text-green-600 font-semibold bg-green-100 px-2 py-1 rounded">
-                                        {calculateDiscountPercentage(product?.price, product?.sellingPrice)}% Off
-                                    </span>
+                            <div className="flex justify-center pt-2">
+                                {product?.quantity > 0 ? (
                                     <button
-                                        className="bg-white text-gray-800 text-xs font-bold border-2 border-gray-200 px-3 py-1 rounded-full transition-colors duration-300 hover:bg-blue-100"
-                                        onClick={(e) => handleAddToCart(e, product?._id)}
-                                    >
-                                        Add
-                                    </button>
-                                </div>
+                                    className="bg-white text-black text-xs font-bold border-2 border-black-200 px-3 py-1 rounded-full w-full transition-colors duration-300 hover:bg-green-100 hover:text-green-600"
+                                    onClick={(e) => handleAddToCart(e, product?._id)}
+                                >
+                                    Add
+                                </button>
+                                
+                                ) : (
+                                    <span className="text-xs text-red-500 bg-red-100 px-3 py-1 rounded-full border border-red-500 font-semibold">
+                                        Out of Stock
+                                    </span>
+                                )}
                             </div>
-                        </Link>
+                        </div>
+                    </Link>
                     ))
                 )}
             </div>

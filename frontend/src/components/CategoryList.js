@@ -24,7 +24,7 @@ const CategoryList = () => {
         "biscuits, drinks, packaged foods": BiscuitsDrinksPackagedFoodsImage,
         "dairy,bakery": DairyBakeryImage,
         "disposables": DisposablesImage,
-        "fruits , vegetables": FruitsVegetablesImage,
+        "fruits, vegetables": FruitsVegetablesImage,
         "gifts, hampers": GiftsHampersImage,
         "home care": HomeCareImage,
         "mom, baby care": MomBabyCareImage,
