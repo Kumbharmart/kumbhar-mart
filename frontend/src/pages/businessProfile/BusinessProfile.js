@@ -109,7 +109,7 @@ const BusinessProfile = () => {
                           <td className="py-3 px-4 text-gray-700">{referral.mobileNo || 'N/A'}</td>
                           <td className="py-3 px-4 text-gray-700">₹{currentMonthData.myPurchase || 0}</td>
                           <td className="py-3 px-4 text-gray-700">
-                            ₹{Math.floor((currentMonthData.myPurchase || 0) * 0.05)}
+                            ₹{((currentMonthData.myPurchase || 0) * 0.05).toFixed(2)}
                           </td>
                         </tr>
                       );
@@ -127,7 +127,7 @@ const BusinessProfile = () => {
     }
   };
 
-  const isBusinessPriceLow = (getCurrentMonthBusinessData(userData?.data?.businessPrices)?.myPurchase || 0) < 5000;
+  const isBusinessPriceLow = (getCurrentMonthBusinessData(userData?.data?.businessPrices)?.myPurchase || 0) < 0;
 
 
   return (
@@ -208,14 +208,14 @@ const BusinessProfile = () => {
             {/* Main content */}
             <div className="md:w-3/4 md:ml-4 flex-grow p-4">
                 {/* Heading for low purchase */}
-                {isBusinessPriceLow && (
+               {/* {isBusinessPriceLow && (
                     <div className="p-4 mb-4 text-sm text-red-600 bg-red-100 rounded-lg">
                         You need to purchase more than ₹5000 to activate your reseller virtual E-commerce platform , Complete your KYC and Transaction options for your business.
                     </div>
-                )}
+                )}*/}
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                    <div className="p-4 bg-white shadow-lg rounded-lg">
+                    <div className="p-4 bg-white shadow-lg rounded-lg w-full max-w-xs mx-auto">
                         <h3 className="text-lg font-semibold text-gray-600">Self Purchasing</h3>
                         <p className="text-2xl">₹{getCurrentMonthBusinessData(userData?.data?.businessPrices)?.myPurchase || 0}</p>
                     </div>

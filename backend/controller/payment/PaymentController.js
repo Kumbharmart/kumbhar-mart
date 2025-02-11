@@ -43,23 +43,22 @@ const createOrder = async (req, res) => {
     // Calculate the total amount including delivery charges
     const totalAmount = amount + deliveryCharges;
     try {
-        // Razorpay order options
+        const { amount, currency = "INR", userId, products, deliveryAddress, isTakeFromShop } = req.body;
+
+        // Calculate Delivery Charges
+        let deliveryCharges = !isTakeFromShop && amount < 1000 ? 20 : 0;
+        const totalAmount = amount + deliveryCharges;
+
+        // Create Razorpay Order
         const options = {
-            amount: Math.ceil(totalAmount * 100), // Convert to paisa (smallest unit of currency)
-            currency: currency || "INR",
-            receipt: receipt || `receipt_${Date.now()}`,
+            amount: Math.ceil(totalAmount * 100), // Convert to paisa
+            currency,
+            receipt: `receipt_${Date.now()}`,
         };
-// Configure AWS S3
 
-
-// Create Razorpay Order
-// Create Razorpay Order
-
-
-        // Create Razorpay order
         const razorpayOrder = await razorpay.orders.create(options);
 
-        // Create new order in database
+        // Create and Save Order in Database
         const newOrder = new Order({
             order_id: razorpayOrder.id,
             products: products.map(product => ({
@@ -69,7 +68,7 @@ const createOrder = async (req, res) => {
                 price: product.productId.sellingPrice,
                 image: product.productId.productImage,
             })),
-            amount: razorpayOrder.amount / 100, // Convert back to main currency unit
+            amount: razorpayOrder.amount / 100,
             currency: razorpayOrder.currency,
             receipt: razorpayOrder.receipt,
             userId: userId,
@@ -79,35 +78,36 @@ const createOrder = async (req, res) => {
 
         await newOrder.save();
 
-        // Return success response
         res.status(200).json({
             success: true,
             order: razorpayOrder,
-            finalAmount:  Math.ceil(totalAmount), // Return the original amount as final amount
+            finalAmount: Math.ceil(totalAmount),
         });
+
     } catch (error) {
         console.error("Error creating Razorpay order", error);
         res.status(500).json({ success: false, message: "Server Error", error });
     }
 };
 
-// Handle Payment Success
 const handlePaymentSuccess = async (req, res) => {
-    const { order_id, payment_id, signature, userId } = req.body;
-    const currentMonth = moment().format('YYYY-MM');
-
     try {
+        const { order_id, payment_id, signature, userId } = req.body;
+        const currentMonth = moment().format('YYYY-MM');
+
+        // Find Order
         const order = await Order.findOne({ order_id }).populate('userId').populate('products.productId');
         if (!order) return res.status(404).json({ success: false, message: "Order not found" });
 
         order.payment_id = payment_id;
         order.signature = signature;
         order.status = 'paid';
+        await order.save();
 
+        // Update User's Business Prices
         const user = await userModel.findById(userId);
-        if (!user) return res.status(404).json({ success: false, message: "User not found" });
+        if (!user) return res.status(404).json({ success: false, message: "User  not found" });
 
-        // Update user's businessPrices
         let userMonthEntry = user.businessPrices.find(entry => entry.month === currentMonth);
         if (userMonthEntry) {
             userMonthEntry.myPurchase += order.amount;
@@ -122,13 +122,14 @@ const handlePaymentSuccess = async (req, res) => {
         }
         await user.save();
 
-        // Update products and seller revenue
+        // Update Product Stock and Seller Revenue
         for (const item of order.products) {
             const product = await productModel.findById(item.productId);
             if (product && product.quantity >= item.quantity) {
                 product.quantity -= item.quantity;
                 await product.save();
 
+                // Update Seller Revenue
                 const sellerRevenue = Math.ceil(product.sellingPrice * 0.5);
                 await Seller.findByIdAndUpdate(product.sellerId, {
                     $inc: { "businessPrices.$[elem].totalRevenue": sellerRevenue }
@@ -141,13 +142,19 @@ const handlePaymentSuccess = async (req, res) => {
             }
         }
 
-        // Handle referral system
+        // Referral System
         if (user.refferal?.refferredbycode) {
             const referrer = await userModel.findOne({ 'refferal.refferalcode': user.refferal.refferredbycode });
             if (referrer) {
-                const totalIncentive = Math.floor(0.05 * order.amount);
-                let referrerMonthEntry = referrer.businessPrices.find(entry => entry.month === currentMonth);
+                let totalIncentive = 0;
+                for (const item of order.products) {
+                    const product = await productModel.findById(item.productId);
+                    if (product) {
+                        totalIncentive += Math.floor(0.05 * product.margin * item.quantity); // 5% of margin
+                    }
+                }
 
+                let referrerMonthEntry = referrer.businessPrices.find(entry => entry.month === currentMonth);
                 if (referrerMonthEntry) {
                     referrerMonthEntry.totalPurchase += order.amount;
                     referrerMonthEntry.totalIncentive += totalIncentive;
@@ -156,7 +163,7 @@ const handlePaymentSuccess = async (req, res) => {
                         month: currentMonth,
                         myPurchase: 0,
                         totalPurchase: order.amount,
-                        totalIncentive: totalIncentive,
+                        totalIncentive,
                         status: 'pending'
                     });
                 }
@@ -165,7 +172,7 @@ const handlePaymentSuccess = async (req, res) => {
             }
         }
 
-        // Generate and upload invoice
+        // Generate and Upload Invoice
         const invoiceUrl = await generateInvoiceAndUploadToS3(order);
         order.invoicePath = invoiceUrl;
         await order.save();
@@ -176,6 +183,7 @@ const handlePaymentSuccess = async (req, res) => {
         res.status(500).json({ success: false, message: "Server Error", error });
     }
 };
+
 
 // Generate Invoice and Upload to S3
 const generateInvoiceAndUploadToS3 = async (order) => {
