@@ -100,7 +100,7 @@ const SellerLogin = () => {
 
           {/* Terms and Privacy */}
           <p className="text-sm mt-4">
-            By continuing, I agree to YMLMart’s{" "}
+            By continuing, I agree to Kumbhar Mart’s{" "}
             <a href="#" className="text-blue-600 underline">
               Terms & Conditions
             </a>{" "}

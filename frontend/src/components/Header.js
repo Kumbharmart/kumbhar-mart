@@ -214,9 +214,16 @@ const Header = () => {
         </Link>
       )}
     </div>
-
+   
     <div className="hidden lg:flex items-center ml-auto gap-4">
-
+    {user?.role !== ROLE.ADMIN && user?.role !== ROLE.SUPER_ADMIN && (
+        <Link
+          to={seller ? "/sellerdashboard" : "/sellerhome"}
+          className="hidden lg:inline-block px-4 py-2 text-sm text-white bg-green-600 rounded-full hover:bg-green-700 transition-colors duration-200"
+        >
+          Seller Login
+        </Link>
+      )}
       {/* Desktop Menu */}
       <div className="hidden lg:flex items-center">
   <div className="relative" ref={dropdownRef}>
@@ -305,6 +312,7 @@ const Header = () => {
     >
       Login
     </Link>
+    
   )}
 
 </div>

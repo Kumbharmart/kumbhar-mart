@@ -47,7 +47,7 @@ const Cart = () => {
     setIsTakeFromShop((prev) => !prev);
 
     // Update delivery charges dynamically
-    setDeliveryCharges((prev) => (!isTakeFromShop ? 0 : totalPrice < 1000 ? 20 : 0));
+    setDeliveryCharges((prev) => (!isTakeFromShop ? 0 : totalPrice < 100 ? 10 : 0));
   };
 
   // Handle form submission
@@ -885,7 +885,7 @@ const Cart = () => {
   <span>Total:</span>
   <span className="text-md">
     {displayINRCurrency(
-      totalPrice + (isTakeFromShop ? 0 : totalPrice < 1000 ? 20 : 0)
+      totalPrice + (isTakeFromShop ? 0 : totalPrice < 100 ? 10 : 0)
     )}
   </span>
 </div>

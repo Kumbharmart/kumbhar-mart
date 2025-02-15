@@ -33,7 +33,7 @@ import GuestCart from '../pages/GuestCart'
 
 import SellerLogin from "../pages/SellerLoginScreens/SignInScreen"
 import SellerLoginn from "../pages/SellerLoginScreens/SellerLogin"
-import Sellerdashboard from '../pages/Dashboards/SellerDashboard'
+import Sellerdashboard from "../pages/Dashboards/SellerDashboard"
 import SellerHome from "../pages/SellerLoginScreens/SellerHome"
 
 // Pages
@@ -171,17 +171,7 @@ const router = createBrowserRouter([
                    
                 ]
             },
-            {
-                path : "seller-panel",
-                element : <SellerPanel/>,
-                children : [
-                    {
-                        path : "all-products",
-                        element : <AllProducts/>
-                    },
-                    
-                ]
-            },
+            
             {
                 path : "super-admin-panel", // Add the Super Admin Panel route
                 element : <SuperAdminPanel/>,
