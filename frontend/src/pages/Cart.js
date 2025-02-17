@@ -22,7 +22,7 @@ const Cart = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isTakeFromShop, setIsTakeFromShop] = useState(false);
-  const [deliveryCharges, setDeliveryCharges] = useState(10); // Default charges
+  const [deliveryCharges, setDeliveryCharges] = useState(0); // Default charges
   const [hasAddress, setHasAddress] = useState(false);
   const [MRPAmount, setMRPFinalAmount] = useState(0);
   const [discountPrice, setDiscountPrice] = useState(0);
@@ -47,7 +47,7 @@ const Cart = () => {
     setIsTakeFromShop((prev) => !prev);
 
     // Update delivery charges dynamically
-    setDeliveryCharges((prev) => (!isTakeFromShop ? 0 : totalPrice < 100 ? 10 : 0));
+    setDeliveryCharges((prev) => (!isTakeFromShop ? 0 : totalPrice < 0 ? 10 : 0));
   };
 
   // Handle form submission
@@ -885,7 +885,7 @@ const Cart = () => {
   <span>Total:</span>
   <span className="text-md">
     {displayINRCurrency(
-      totalPrice + (isTakeFromShop ? 0 : totalPrice < 100 ? 10 : 0)
+      totalPrice + (isTakeFromShop ? 0 : totalPrice < 0 ? 10 : 0)
     )}
   </span>
 </div>

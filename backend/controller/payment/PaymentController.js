@@ -36,7 +36,7 @@ const createOrder = async (req, res) => {
     let deliveryCharges = 0;
     if (!isTakeFromShop) {
         // Only apply delivery charges if not "Take From Shop"
-        if (amount < 100) {
+        if (amount < 0) {
             deliveryCharges = 10; // Apply delivery charges for orders below 500
         }
     }
@@ -46,7 +46,7 @@ const createOrder = async (req, res) => {
         const { amount, currency = "INR", userId, products, deliveryAddress, isTakeFromShop } = req.body;
 
         // Calculate Delivery Charges
-        let deliveryCharges = !isTakeFromShop && amount < 100 ? 10 : 0;
+        let deliveryCharges = !isTakeFromShop && amount < 0 ? 10 : 0;
         const totalAmount = amount + deliveryCharges;
 
         // Create Razorpay Order
@@ -299,7 +299,7 @@ const generateInvoiceAndUploadToS3 = async (order) => {
         });
 
         // Calculate delivery charges
-        const deliveryCharges = order.isTakeFromShop ? 0 : (totalAmount < 100 ? 10 : 0);
+        const deliveryCharges = order.isTakeFromShop ? 0 : (totalAmount < 0 ? 10 : 0);
         const discount = totalAmount * 0.05; // 5% discount
         const discountedAmount = totalAmount + deliveryCharges;
         const finalTotal = (discountedAmount);
