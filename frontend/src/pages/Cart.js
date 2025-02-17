@@ -22,7 +22,7 @@ const Cart = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isTakeFromShop, setIsTakeFromShop] = useState(false);
-  const [deliveryCharges, setDeliveryCharges] = useState(20); // Default charges
+  const [deliveryCharges, setDeliveryCharges] = useState(10); // Default charges
   const [hasAddress, setHasAddress] = useState(false);
   const [MRPAmount, setMRPFinalAmount] = useState(0);
   const [discountPrice, setDiscountPrice] = useState(0);
