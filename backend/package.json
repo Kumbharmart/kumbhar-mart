@@ -37,6 +37,7 @@
     "otp-generator": "^4.0.1",
     "pdfkit": "^0.15.2",
     "razorpay": "^2.9.4",
-    "react-cron": "^0.0.1"
+    "react-cron": "^0.0.1",
+    "twilio": "^5.4.4"
   }
 }

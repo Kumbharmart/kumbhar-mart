@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import SummaryApi from '../../common';
 import { toast } from 'react-toastify';
 
-
 import PhoneInput from 'react-phone-input-2'; // Assuming you're using react-phone-input-2
 import { Slide } from "react-toastify";
 
@@ -12,7 +11,6 @@ const SellerLogin = () => {
   const [otp, setOtp] = useState("");
   const [formData, setFormData] = useState({
     email: "",
-    gstin: "",
     password: "", // Include password in initial state
   });
 
@@ -27,49 +25,50 @@ const SellerLogin = () => {
     const payload = {
       email: formData.email,
       password: formData.password,
-      gstin: formData.gstin,
-  };    console.log(SummaryApi.sellerSignIn.url)
+    };    
+
+    console.log("Form Data Submitted:", payload);
+    console.log(SummaryApi.sellerSignIn.url);
+
     try {
       const response = await fetch(SummaryApi.sellerSignIn.url, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload), // Convert the payload to a JSON string
-
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload), // Convert the payload to a JSON string
       });
-  
+
       const data = await response.json(); // Parse the JSON if response is OK
 
       if (response.ok) {
         toast.success(data.message); // Show success message
 
-            // Store the token in localStorage
-          if (data.sellerToken) {
-              localStorage.setItem('sellerToken', data.sellerToken);
-              console.log("Seller token saved:", data.sellerToken);
-          } else {
-              console.warn("No seller token found in response.");
-          }
-          navigate("/sellerdashboard")
-      
-          // Redirect to seller dashboard or take further actions
+        // Store the token in localStorage
+        if (data.sellerToken) {
+          localStorage.setItem('sellerToken', data.sellerToken);
+          console.log("Seller token saved:", data.sellerToken);
+        } else {
+          console.warn("No seller token found in response.");
+        }
+        navigate("/sellerdashboard");
+
+        // Redirect to seller dashboard or take further actions
       }
       // Handle success...
-  } catch (error) {
+    } catch (error) {
       console.error("Error during login:", error);
       alert("An error occurred during login. Please try again.");
-  }
+    }
   };
 
   return (
     <div className="h-full flex items-center justify-center ">
       <div className="flex flex-col w-2/5 p-9 ">
         <h2 className="text-2xl font-bold mb-6 text-sky-900">Login as a Seller</h2>
-        
+
         <form onSubmit={handleSubmit}>
           {/* Phone Input */}
-        
 
           {/* Email Input */}
           <input
@@ -93,14 +92,9 @@ const SellerLogin = () => {
             required
           />
 
-          
-          <p className="text-sm mt-2 text-gray-600">
-            We require GSTIN for tax compliance as per government norms.
-          </p>
-
           {/* Terms and Privacy */}
           <p className="text-sm mt-4">
-            By continuing, I agree to YMLMart’s{" "}
+            By continuing, I agree to Kumbhar Mart’s{" "}
             <a href="#" className="text-blue-600 underline">
               Terms & Conditions
             </a>{" "}

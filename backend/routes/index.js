@@ -15,8 +15,8 @@ const sellersignup = require('../controller/seller/sellerSignUp')
 const sellersignin = require('../controller/seller/sellerSignIn')
 const usernameupdate  = require("../controller/user/usernameupdate")
 const usernameandemail = require("../controller/user/usernameupdate")
-
-// import sellerDetailsController from '../controller/seller/sellerDetailsController';
+const sellerDetails = require("../controller/seller/sellerDetails")
+ const sellerDetailsController= require('../controller/seller/sellerDetailsController');
 
 
 // const getKyc =  require("../controller/user/getkyc")
@@ -43,8 +43,8 @@ router.get('/users-with-kyc', getKYCController.getKYCController);
 module.exports = router;
 
 //otp very
-// router.post("/send-otp", require("../controller/user/sendOtp"));
-// router.post("/verify-otp", require("../controller/user/verifyOtp"));
+ router.post("/send-otp", require("../controller/user/sendOtp"));
+ router.post("/verify-otp", require("../controller/user/verifyOtp"));
 
 
 // User and Product routes
@@ -123,7 +123,7 @@ router.post("/signupseller",sellersignup)
 router.post("/signinseller",sellersignin );
 router.get("/sellerdetails", require('../middleware/authSellerToken'), require("../controller/seller/sellerDetails"));
 router.post("/sellerlogout",require("../controller/seller/logoutSeller") );
-// router.get("/seller-details", require('../middleware/sellerToken'), sellerDetailsController);
+
 
 
 
