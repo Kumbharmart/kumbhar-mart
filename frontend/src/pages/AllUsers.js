@@ -29,7 +29,7 @@ const AllUsers = () => {
             worksheetData.push({
                 'Sr. No.': index + 1,
                 'Name': user.name || 'No name available',
-                'Email': user.email || 'No email available',
+                'Password': user.password || 'No password available',
                 'Phone': user.mobileNo || 'No phone number available', // Add phone number
                 'Role': user.role || 'No role available',
                 'Created Date': moment(user.createdAt).format('LL') || 'No date available',
@@ -122,8 +122,8 @@ const AllUsers = () => {
                         <tr className='bg-black text-white'>
                             <th>Sr.</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th> {/* Add Phone Column */}
+                            <th>Password</th>
+                            <th>Phone</th>
                             <th>Role</th>
                             <th>Created Date</th>
                             <th>Action</th>
@@ -135,7 +135,7 @@ const AllUsers = () => {
                                 <tr key={el._id}>
                                     <td>{index + 1}</td>
                                     <td>{el?.name}</td>
-                                    <td>{el?.email}</td>
+                                    <td>{el?.password || 'No password available'}</td>
                                     <td>{el?.mobileNo || 'No phone number'}</td> {/* Display Phone */}
                                     <td>{el?.role}</td>
                                     <td>{moment(el?.createdAt).format('LL')}</td>
