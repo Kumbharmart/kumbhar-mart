@@ -33,7 +33,7 @@ const Cart = () => {
   const [streetSuggestions, setStreetSuggestions] = useState([]);
   const [citySuggestions, setCitySuggestions] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [paymentMethod, setPaymentMethod] = useState("razorpay"); // Default to Razorpay
    
   const [address, setAddress] = useState({
     name: "",
@@ -360,99 +360,140 @@ const Cart = () => {
   const handlePayment = async (finalAddress) => {
     if (!selectedAddress) {
       alert("Add Delivery Address");
-    } else {
-      try {
-        const validProducts = data.filter(
-          (product) =>
-            product.productId.quantity > 0 &&
-            product.productId.quantity >= product.quantity
-        );
-
-        if (validProducts.length === 0) {
-          alert("No valid products in your cart.");
-          return;
-        }
-
-        const totalAmount = validProducts.reduce((prev, curr) => {
-          return prev + (curr.quantity * curr.productId.sellingPrice);
-        }, 0);
-
-        const response = await fetch(SummaryApi.createOrder.url, {
-          method: "POST",
+      return;
+    }
+  
+    try {
+      const validProducts = data.filter(
+        (product) =>
+          product.productId.quantity > 0 &&
+          product.productId.quantity >= product.quantity
+      );
+  
+      if (validProducts.length === 0) {
+        alert("No valid products in your cart.");
+        return;
+      }
+  
+      // Calculate total amount in paisa
+      const totalAmount = Math.round(
+        validProducts.reduce(
+          (prev, curr) => prev + curr.quantity * (curr.productId.sellingPrice || 0),
+          0
+        )
+      );
+  
+      // Create order payload
+      const orderPayload = {
+        amount: totalAmount,
+        currency: "INR",
+        userId: user._id,
+        deliveryAddress: finalAddress,
+        isTakeFromShop: isTakeFromShop,
+        paymentMethod: paymentMethod, // Add payment method
+        products: validProducts.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          image: item.productId.productImage?.[0],
+          name: item.productId.productName,
+          price: item.productId.sellingPrice,
+        })),
+      };
+  
+      console.log("Request Payload:", orderPayload);
+  
+      // Send order to backend
+      const response = await fetch(SummaryApi.createOrder.url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(orderPayload),
+      });
+  
+      const responseData = await response.json();
+  
+      if (!response.ok || !responseData.success) {
+        console.error("Failed to create order:", responseData);
+        alert("Unable to create order.");
+        return;
+      }
+  
+      if (paymentMethod === "cod") {
+        // Handle COD
+        alert("Order placed successfully! You will pay on delivery.");
+        setData([]);
+        navigate('/user-details?section=ordered');
+  
+        // Clear cart on the server
+        const clearCartResponse = await fetch(SummaryApi.clear_cart.url, {
+          method: SummaryApi.clear_cart.method,
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
           },
-          body: JSON.stringify({
-            amount: totalAmount,
-            currency: "INR",
-            receipt: `receipt_${Date.now()}`,
-            products: validProducts,
-            userId: data[0].userId,
-            deliveryAddress: finalAddress,
-            isTakeFromShop:isTakeFromShop,
-           
-          }),
         });
-
-        const responseData = await response.json();
-        if (!responseData.success) {
-          alert("Unable to create order.");
-          return;
+  
+        const clearCartResult = await clearCartResponse.json();
+        if (!clearCartResult.success) {
+          console.error("Failed to clear cart on server.");
         }
-
-
+      } else {
+        // Handle Razorpay payment
         const options = {
-          key: 'rzp_test_WUtHzFCrju3HHH',
+          key: 'rzp_test_U4XuiM2cjeWzma',
           amount: responseData.order.amount,
           currency: responseData.order.currency,
           name: "Kumbhar Mart",
           description: "Payment for Order",
           image: "/kmlogo.png",
           order_id: responseData.order.id,
-          handler: async function (response) {
-            const paymentResponse = await fetch(SummaryApi.payment_Success.url, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                order_id: response.razorpay_order_id,
-                payment_id: response.razorpay_payment_id,
-                signature: response.razorpay_signature,
-                userId: data[0].userId,
-                products: validProducts,
-                amount: totalAmount,
-                currency: "INR",
-              }),
-            });
-
-            const paymentResult = await paymentResponse.json();
-            if (paymentResult.success) {
-              alert("Payment Successful!");
-              setData([])
-              navigate('/user-details?section=ordered')
-              try {
-                const response = await fetch(SummaryApi.clear_cart.url, {
+          handler: async (paymentResponse) => {
+            try {
+              const paymentResult = await fetch(SummaryApi.payment_Success.url, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${authToken}`,
+                },
+                body: JSON.stringify({
+                  order_id: paymentResponse.razorpay_order_id,
+                  payment_id: paymentResponse.razorpay_payment_id,
+                  signature: paymentResponse.razorpay_signature,
+                  userId: data[0]?.userId,
+                  products: validProducts,
+                  amount: totalAmount,
+                  currency: "INR",
+                }),
+              });
+  
+              const paymentJson = await paymentResult.json();
+  
+              if (paymentJson.success) {
+                alert("Payment Successful!");
+                setData([]);
+                navigate('/user-details?section=ordered');
+  
+                // Clear cart on the server
+                const clearCartResponse = await fetch(SummaryApi.clear_cart.url, {
                   method: SummaryApi.clear_cart.method,
                   headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${authToken}`, // Send the user token
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${authToken}`,
                   },
-                //  body: JSON.stringify({ userId: user._id }) // Pass userId in the request body
-
                 });
-          
-                const result = await response.json();
-                if (result.success) {
-                  console.log(result.message);
-                } else {
+  
+                const clearCartResult = await clearCartResponse.json();
+                if (!clearCartResult.success) {
                   console.error("Failed to clear cart on server.");
                 }
-              } catch (error) {
-                console.error("Error while clearing cart:", error);
+              } else {
+                alert("Payment successful, but order storing failed.");
               }
-            } else {
-              alert("Payment successful, but order storing failed.");
+            } catch (error) {
+              console.error("Error during payment confirmation:", error);
+              alert("Error during payment processing.");
             }
           },
           prefill: {
@@ -464,17 +505,22 @@ const Cart = () => {
             color: "#3399cc",
           },
         };
-
+  
         const rzp = new window.Razorpay(options);
         rzp.open();
+  
         rzp.on("payment.failed", function (response) {
+          console.error("Payment Failure Details:", response);
           alert("Payment Failed");
         });
-      } catch (error) {
-        console.error("Payment error:", error);
       }
+    } catch (error) {
+      console.error("Payment error:", error);
+      alert("An error occurred while processing payment.");
     }
   };
+  
+  
 
   const handleAddAddress = () => {
     navigate('/user-details?section=Address');
@@ -731,15 +777,40 @@ const Cart = () => {
   )}
 </div>
 
-    {/* Payment Section */}
-    <div className="p-6">
-      <h3 className="text-xl font-semibold mb-4 text-gray-800">Payment</h3>
-      <button
-        className="bg-green-600 text-white py-2 px-4 rounded-lg w-[300px]"
-        onClick={() => handlePayment(selectedAddress)}      >
-        Proceed to Payment
-      </button>
-    </div>
+<div className="p-6">
+  <h3 className="text-xl font-semibold mb-4 text-gray-800">Payment</h3>
+
+  {/* Payment Method Selection */}
+  <div className="mb-4">
+    <label className="flex items-center gap-2 mb-2">
+      <input
+        type="radio"
+        name="paymentMethod"
+        value="razorpay"
+        defaultChecked
+        onChange={() => setPaymentMethod("razorpay")}
+      />
+      <span className="text-gray-700">Pay Online (Razorpay)</span>
+    </label>
+    <label className="flex items-center gap-2">
+      <input
+        type="radio"
+        name="paymentMethod"
+        value="cod"
+        onChange={() => setPaymentMethod("cod")}
+      />
+      <span className="text-gray-700">Cash on Delivery (COD)</span>
+    </label>
+  </div>
+
+  {/* Proceed to Payment Button */}
+  <button
+    className="bg-green-600 text-white py-2 px-4 rounded-lg w-[300px]"
+    onClick={() => handlePayment(selectedAddress)}
+  >
+    {paymentMethod === "cod" ? "Place Order (COD)" : "Proceed to Payment"}
+  </button>
+</div>
   </div>
 
   {/*** Right Column - My Cart Summary ***/}
