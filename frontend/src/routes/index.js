@@ -43,6 +43,12 @@ import ReplacementPolicy from "../pages/ReplacementPolicy"
 import ShippingPolicy from "../pages/ShippingPolicy"
 
 import RequestForAcDeletion from '../components/RequestForAcDelete'
+import SalesmenLogin from "../pages/salesmen/salesmenregister";
+import SalesmenLogin1 from "../pages/salesmen/salesmenlogin";
+import SalesmenDashboard from '../pages/Dashboards/salesmendashboard';
+
+
+
 const router = createBrowserRouter([
     {
         path : "/",
@@ -60,6 +66,7 @@ const router = createBrowserRouter([
                 path : "admin-login",
                 element : <AdminLogin/>
             },
+           
             {
                 path : "request-for-delete-account",
                 element : <RequestForAcDeletion/>
@@ -211,6 +218,20 @@ const router = createBrowserRouter([
                 ]
             },
             {
+                path: "salesmen",
+                element: <SalesmenLogin />
+            },
+            {
+                path: "salesmen-login",
+                element: <SalesmenLogin1 />
+            },
+            {
+                path: "salesmen-dashboard",
+                element: <SalesmenDashboard />
+            },
+            
+            
+            {
                 path : "terms-and-condition",
                 element : <TermsAndConditions/>
             },
@@ -225,7 +246,8 @@ const router = createBrowserRouter([
             {
                 path : "replacement-policy",
                 element : <ReplacementPolicy/>
-            }
+            },
+          
         ]
     }
 ])

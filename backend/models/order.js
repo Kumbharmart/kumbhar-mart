@@ -32,7 +32,10 @@ const orderSchema = new mongoose.Schema({
     invoicePath:{type:String},
     deliveryStatus:{type: String, default:'Ordered'},
     deliveryAddress:  deliveryAddressSchema, 
-    isTakeFromShop:{ type: Boolean, default: false }  // Added field for isTakeFromShop
+    isTakeFromShop:{ type: Boolean, default: false } , // Added field for isTakeFromShop
+      // Salesman Assignment
+      salesmanId: { type: mongoose.Schema.Types.ObjectId, ref: 'Salesman' }, // Salesman who is handling the order
+      commissionEarned: { type: Number, default: 0 } // Commission calculated from the order
     
 });
 

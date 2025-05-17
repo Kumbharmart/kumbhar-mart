@@ -23,7 +23,7 @@ const Footer = () => {
       </div>
 
       {/* Footer Section */}
-     
+      
 
         {/* Bottom Section */}
         <div className="bg-sky-600 py-6">
@@ -69,10 +69,20 @@ const Footer = () => {
                 <li><Link to="/user-details" className="hover:text-gray-300">Profile</Link></li>
                 <li><Link to="/cart" className="hover:text-gray-300">Check your Carts & Discounts</Link></li>
                 <li><Link to="/refer" className="hover:text-gray-300">Refer a Friend</Link></li>
-       
-
               </ul>
             </div>
+            
+            {/* Salesmen Section */}
+<div>
+  <h3 className="text-lg font-semibold mb-3 text-white">Salesmen</h3>
+  <ul className="space-y-1 text-white">
+    <li><Link to="/salesmen-login" className="hover:text-gray-300">Salesmen Login</Link></li>
+    <li><Link to="/salesmen" className="hover:text-gray-300">Salesmen Dashboard </Link></li>
+    <li><Link to="/salesmen" className="hover:text-gray-300">Join as Salesman</Link></li>
+  </ul>
+</div>
+
+            
             <div>
               <h3 className="text-lg font-semibold mb-3 text-white">Customer Policy</h3>
               <ul className="space-y-1 text-white">
@@ -80,61 +90,15 @@ const Footer = () => {
                 <li><Link to="/privacy-policy" className="hover:text-gray-300">Privacy Policy</Link></li>
                 <li><Link to="/shipping-policy" className="hover:text-gray-300">Shipping Policy</Link></li>
                 <li><Link to="/replacement-policy" className="hover:text-gray-300">Replacement Policy</Link></li>
-       
-
               </ul>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-3 text-white">About us & more</h3>
               <ul className="space-y-1 text-white">
-             
                 <li><Link to="/about" className="hover:text-gray-300">About Company</Link></li>
                 <li><Link to="/contact" className="hover:text-gray-300">Contact Us</Link></li>
                 <li><Link to="/askquestion" className="hover:text-gray-300">Ask Questions</Link></li>
-
               </ul>
-            </div>
-
-           
-          </div>
-        </div>
-
-        {/* Contact Information */}
-        <div className="bg-sky-900 py-6">
-          <div className="container mx-auto px-4 flex flex-col lg:flex-row justify-between items-center">
-            <div className="mb-4 lg:mb-0">
-              <h4 className="text-lg font-semibold text-white">Start a conversation</h4>
-              <p className="text-gray-400">
-              Kumbhart Mart, Shimpore ( New ), Khednagar, Karjat, 
-              </p>
-              <p className="text-gray-400">Ahilyanagar, Maharashtra, 414403</p>
-            </div>
-
-            <div className="space-y-1 text-white">
-              <p className="flex items-center gap-2">
-                <IoIosCall className="text-lg" />
-                +91-7722035103
-              </p>
-              <p className="flex items-center gap-2">
-                <IoMdMail className="text-lg" />
-                martkumbhar@gmail.com
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Social Links & Copyright */}
-        <div className="bg-gray-800 text-gray-400 py-2">
-          <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-center md:text-left">&copy; 2024 | Kumbhar Mart .</p>
-            <div className="flex gap-3 justify-center md:justify-end mt-2 md:mt-0">
-              <a href="https://www.instagram.com/kumbharmart?igsh=anUxOWpseDhlMGty" target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                <FaInstagram size={18} />
-              </a>
-            </div>
-            <div className="flex gap-3 justify-center md:justify-end mt-2 md:mt-0">
-              <a href="#" className="hover:text-white">Terms and Conditions</a>
-              <a href="#" className="hover:text-white">Privacy Policy</a>
             </div>
           </div>
         </div>

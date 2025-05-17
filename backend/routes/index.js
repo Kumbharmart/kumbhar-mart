@@ -17,6 +17,7 @@ const usernameupdate  = require("../controller/user/usernameupdate")
 const usernameandemail = require("../controller/user/usernameupdate")
 const sellerDetails = require("../controller/seller/sellerDetails")
  const sellerDetailsController= require('../controller/seller/sellerDetailsController');
+ const { salesmanSignUp, salesmanLogin } = require("../controller/salesmen/salesmencontroller");
 
 
 // const getKyc =  require("../controller/user/getkyc")
@@ -127,6 +128,10 @@ router.post("/sellerlogout",require("../controller/seller/logoutSeller") );
 
 
 router.post("/forgetpassword",require("../controller/user/forgetpassword") );
+
+//salesmen
+router.post("/register", salesmanSignUp);
+router.post("/login", salesmanLogin);
 
 
 
